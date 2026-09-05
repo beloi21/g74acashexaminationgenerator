@@ -1,6 +1,6 @@
 {
-  "name": "GF 74(A) Cash Examination",
-  "short_name": "GF 74(A)",
+  "name": "Cash Count Generator by A.R.C. Alberto",
+  "short_name": "Cash Count",
   "description": "Count cash per accountable officer and fill General Form No. 74(A).",
   "start_url": "./index.html",
   "scope": "./",
