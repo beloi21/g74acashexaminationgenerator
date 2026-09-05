@@ -1,0 +1,1661 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GF 74(A) Cash Examination</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1f5c6e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="GF 74(A)">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<style>
+  :root{
+    --bg:#eef2f4;
+    --surface:#ffffff;
+    --surface-2:#f6f9fa;
+    --border:#dde3e7;
+    --border-strong:#c7cfd5;
+    --ink:#16212b;
+    --ink-2:#4b5a68;
+    --ink-3:#7c8b99;
+    --accent:#1f5c6e;
+    --accent-ink:#ffffff;
+    --accent-soft:#e3eef0;
+    --accent-soft-ink:#144452;
+    --success:#2f7d5a;
+    --success-soft:#e4f2ea;
+    --warning:#b8721c;
+    --warning-soft:#fbeedd;
+    --critical:#b0392f;
+    --critical-soft:#fbe7e4;
+    --focus:#3b82a6;
+    --type-financial:#1f6f6b;
+    --type-financial-soft:#e2f0ee;
+    --type-compliance:#a8631a;
+    --type-compliance-soft:#f7ecdc;
+    --type-performance:#6b4e8a;
+    --type-performance-soft:#efe8f5;
+    --type-it:#3e5c8a;
+    --type-it-soft:#e6ecf6;
+    --shadow: 0 1px 2px rgba(20,30,40,.06), 0 6px 20px rgba(20,30,40,.05);
+    --radius: 10px;
+    --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10171d;
+      --surface:#182229;
+      --surface-2:#1d2830;
+      --border:#2c3944;
+      --border-strong:#3a4a56;
+      --ink:#e8edf0;
+      --ink-2:#aebbc4;
+      --ink-3:#7f8f9b;
+      --accent:#5fb3ac;
+      --accent-ink:#0b2320;
+      --accent-soft:#1d3a3a;
+      --accent-soft-ink:#a9dcd6;
+      --success:#5fb98a;
+      --success-soft:#1a3327;
+      --warning:#e0a552;
+      --warning-soft:#3a2c16;
+      --critical:#e2887d;
+      --critical-soft:#3a201d;
+      --focus:#5fb3ac;
+      --type-financial:#5fb3ac;
+      --type-financial-soft:#1a3230;
+      --type-compliance:#d99a52;
+      --type-compliance-soft:#332711;
+      --type-performance:#b49bd6;
+      --type-performance-soft:#2a2338;
+      --type-it:#8ca7d6;
+      --type-it-soft:#20293a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10171d;
+    --surface:#182229;
+    --surface-2:#1d2830;
+    --border:#2c3944;
+    --border-strong:#3a4a56;
+    --ink:#e8edf0;
+    --ink-2:#aebbc4;
+    --ink-3:#7f8f9b;
+    --accent:#5fb3ac;
+    --accent-ink:#0b2320;
+    --accent-soft:#1d3a3a;
+    --accent-soft-ink:#a9dcd6;
+    --success:#5fb98a;
+    --success-soft:#1a3327;
+    --warning:#e0a552;
+    --warning-soft:#3a2c16;
+    --critical:#e2887d;
+    --critical-soft:#3a201d;
+    --focus:#5fb3ac;
+    --type-financial:#5fb3ac;
+    --type-financial-soft:#1a3230;
+    --type-compliance:#d99a52;
+    --type-compliance-soft:#332711;
+    --type-performance:#b49bd6;
+    --type-performance-soft:#2a2338;
+    --type-it:#8ca7d6;
+    --type-it-soft:#20293a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:14px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:var(--font-display);font-weight:700;margin:0;text-wrap:balance;letter-spacing:-.01em;}
+  a{color:var(--accent);}
+  button{font-family:var(--font-body);}
+  input,select,textarea{font-family:var(--font-body);font-size:13.5px;color:var(--ink);}
+  ::selection{background:var(--accent-soft);}
+  svg{width:1em;height:1em;flex:none;vertical-align:-0.15em;}
+  .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
+  .num{font-variant-numeric:tabular-nums;}
+
+  #app{min-height:100%;}
+  .shell{display:flex;min-height:100vh;}
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:230px;flex:0 0 230px;
+    background:var(--surface);
+    border-right:1px solid var(--border);
+    display:flex;flex-direction:column;
+    position:sticky;top:0;height:100vh;
+  }
+  .brand{padding:20px 18px 14px;border-bottom:1px solid var(--border);}
+  .brand-mark{
+    display:flex;align-items:center;gap:10px;margin-bottom:2px;
+  }
+  .brand-crest{
+    width:30px;height:30px;border-radius:7px;background:linear-gradient(155deg,var(--accent),var(--type-it));
+    display:flex;align-items:center;justify-content:center;color:var(--accent-ink);
+    font-family:var(--font-display);font-weight:700;font-size:15px;flex:none;
+  }
+  .brand-title{font-family:var(--font-display);font-weight:700;font-size:16.5px;line-height:1.15;}
+  .brand-title small{display:block;font-family:var(--font-body);font-weight:500;font-size:11px;color:var(--ink-3);letter-spacing:.03em;text-transform:uppercase;margin-top:2px;}
+  .brand-edit{background:none;border:none;color:var(--ink-3);cursor:pointer;font-size:11px;padding:2px 0 0;text-align:left;}
+  .brand-edit:hover{color:var(--accent);text-decoration:underline;}
+
+  nav.navlist{padding:10px;flex:1;overflow-y:auto;}
+  .navlink{
+    display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:8px;
+    color:var(--ink-2);text-decoration:none;cursor:pointer;font-size:13.5px;font-weight:500;
+    border:1px solid transparent;margin-bottom:2px;user-select:none;
+  }
+  .navlink:hover{background:var(--surface-2);color:var(--ink);}
+  .navlink.active{background:var(--accent-soft);color:var(--accent-soft-ink);}
+  .navlink .ico{width:18px;height:18px;flex:none;display:flex;align-items:center;justify-content:center;}
+  .navlink .ico svg{width:17px;height:17px;}
+
+  .sidebar-foot{border-top:1px solid var(--border);padding:12px;}
+  .identity{
+    display:flex;align-items:center;gap:9px;padding:8px;border-radius:8px;cursor:pointer;border:1px solid transparent;
+  }
+  .identity:hover{background:var(--surface-2);border-color:var(--border);}
+  .avatar{
+    width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);
+    display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;flex:none;
+  }
+  .identity-name{font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.2;}
+  .identity-sub{font-size:11px;color:var(--ink-3);}
+
+  /* ---------- Main ---------- */
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .topbar{
+    padding:18px 28px;border-bottom:1px solid var(--border);
+    display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    background:var(--surface);
+  }
+  .topbar h1{font-size:22px;}
+  .topbar .sub{color:var(--ink-3);font-size:12.5px;margin-top:3px;}
+  .view{padding:24px 28px 60px;max-width:1180px;}
+  .view[hidden]{display:none;}
+
+  .permnote{
+    display:flex;gap:8px;align-items:flex-start;background:var(--surface-2);border:1px solid var(--border);
+    border-radius:8px;padding:9px 12px;font-size:12px;color:var(--ink-2);margin-bottom:18px;
+  }
+  .permnote svg{flex:none;margin-top:1px;width:14px;height:14px;color:var(--ink-3);}
+
+  /* ---------- Cards / grid ---------- */
+  .grid{display:grid;gap:14px;}
+  .grid > *{min-width:0;}
+  .split-2col > *{min-width:0;}
+  .grid.cols-4{grid-template-columns:repeat(4,1fr);}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr);}
+  .grid.cols-2{grid-template-columns:repeat(2,1fr);}
+  @media (max-width:1000px){.grid.cols-4{grid-template-columns:repeat(2,1fr);} .grid.cols-3{grid-template-columns:repeat(2,1fr);}}
+
+  .card{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  .card-pad{padding:18px 20px;}
+  .card-head{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid var(--border);gap:10px;flex-wrap:wrap;}
+  .card-head h3{font-size:15.5px;}
+  .card-head .sub{font-size:11.5px;color:var(--ink-3);font-weight:500;margin-top:2px;}
+
+  .stat-tile{padding:16px 18px;}
+  .stat-tile .stat-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:600;}
+  .stat-tile .stat-value{font-family:var(--font-display);font-size:30px;font-weight:700;margin-top:6px;}
+  .stat-tile .stat-foot{font-size:11.5px;color:var(--ink-3);margin-top:4px;}
+
+  .quicklink{
+    display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--border);border-radius:var(--radius);
+    background:var(--surface);cursor:pointer;text-align:left;box-shadow:var(--shadow);
+  }
+  .quicklink:hover{border-color:var(--border-strong);}
+  .quicklink .ico{width:34px;height:34px;border-radius:8px;background:var(--accent-soft);color:var(--accent-soft-ink);display:flex;align-items:center;justify-content:center;flex:none;}
+  .quicklink .ico svg{width:18px;height:18px;}
+  .quicklink strong{font-size:13.5px;display:block;}
+  .quicklink span{font-size:11.5px;color:var(--ink-3);}
+
+  /* ---------- Buttons / inputs ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:7px;border:1px solid var(--border-strong);
+    background:var(--surface);color:var(--ink);font-size:13px;font-weight:600;cursor:pointer;line-height:1.2;white-space:nowrap;
+  }
+  .btn:hover{border-color:var(--ink-3);}
+  .btn:focus-visible, a:focus-visible, .navlink:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline:2px solid var(--focus);outline-offset:2px;
+  }
+  .btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
+  .btn-primary:hover{filter:brightness(1.06);}
+  .btn-ghost{border-color:transparent;background:transparent;}
+  .btn-ghost:hover{background:var(--surface-2);}
+  .btn-danger{color:var(--critical);}
+  .btn-sm{padding:5px 10px;font-size:12px;}
+  .btn[disabled]{opacity:.5;cursor:not-allowed;}
+
+  label{display:block;font-size:11.5px;font-weight:600;color:var(--ink-2);margin-bottom:5px;letter-spacing:.01em;}
+  .field{margin-bottom:13px;}
+  .field-row{display:grid;gap:12px;grid-template-columns:1fr 1fr;}
+  .field-row.three{grid-template-columns:1fr 1fr 1fr;}
+  input[type=text],input[type=date],input[type=time],input[type=number],input[type=url],select,textarea{
+    width:100%;padding:8px 10px;border:1px solid var(--border-strong);border-radius:7px;background:var(--surface);color:var(--ink);
+  }
+  textarea{resize:vertical;min-height:64px;}
+  input::placeholder,textarea::placeholder{color:var(--ink-3);}
+
+  .searchbar{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+  .searchbar input[type=text]{max-width:280px;}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .chip{
+    padding:6px 12px;border-radius:99px;border:1px solid var(--border-strong);background:var(--surface);
+    font-size:12px;font-weight:600;cursor:pointer;color:var(--ink-2);
+  }
+  .chip.active{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
+
+  /* ---------- Tables ---------- */
+  table{width:100%;border-collapse:collapse;}
+  .table-wrap{overflow-x:auto;}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top;}
+  th{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:600;background:var(--surface-2);}
+  tr:last-child td{border-bottom:none;}
+  td.actions{white-space:nowrap;text-align:right;}
+
+  /* ---------- Badges / pills ---------- */
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;}
+  .badge-financial{background:var(--type-financial-soft);color:var(--type-financial);}
+  .badge-compliance{background:var(--type-compliance-soft);color:var(--type-compliance);}
+  .badge-performance{background:var(--type-performance-soft);color:var(--type-performance);}
+  .badge-it{background:var(--type-it-soft);color:var(--type-it);}
+  .badge-dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
+  .pill{display:inline-flex;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--border);}
+  .pill-success{background:var(--success-soft);color:var(--success);border-color:transparent;}
+  .pill-warning{background:var(--warning-soft);color:var(--warning);border-color:transparent;}
+  .pill-critical{background:var(--critical-soft);color:var(--critical);border-color:transparent;}
+  .pill-sample{background:var(--surface-2);color:var(--ink-3);border-style:dashed;}
+
+  .empty{padding:36px 20px;text-align:center;color:var(--ink-3);}
+  .empty svg{width:30px;height:30px;margin-bottom:8px;opacity:.6;}
+  .empty p{margin:2px 0;font-size:13px;}
+
+  /* ---------- Calendar ---------- */
+  .cal-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+  .cal-nav{display:flex;align-items:center;gap:8px;}
+  .cal-month-label{font-family:var(--font-display);font-weight:700;font-size:16px;min-width:150px;text-align:center;}
+  .cal-viewtoggle{display:flex;border:1px solid var(--border-strong);border-radius:7px;overflow:hidden;}
+  .cal-viewtoggle button{border:none;background:var(--surface);padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;color:var(--ink-2);}
+  .cal-viewtoggle button.active{background:var(--accent);color:var(--accent-ink);}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--border);gap:1px;}
+  .cal-dow{background:var(--surface-2);padding:7px 8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);text-align:center;}
+  .cal-cell{background:var(--surface);min-height:96px;padding:6px 6px;display:flex;flex-direction:column;gap:3px;cursor:pointer;}
+  .cal-cell:hover{background:var(--surface-2);}
+  .cal-cell.other-month{background:var(--bg);}
+  .cal-cell.other-month .cal-daynum{color:var(--ink-3);}
+  .cal-daynum{font-size:11.5px;font-weight:600;color:var(--ink-2);}
+  .cal-daynum.today{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--accent-ink);}
+  .cal-evt{font-size:10.5px;padding:2px 5px;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;}
+  .cal-more{font-size:10px;color:var(--ink-3);font-weight:600;padding-left:5px;}
+
+  .agenda-group{margin-bottom:22px;}
+  .agenda-month{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);font-weight:700;margin-bottom:8px;}
+  .agenda-item{
+    display:flex;gap:14px;align-items:flex-start;padding:12px 14px;border:1px solid var(--border);border-radius:9px;
+    background:var(--surface);margin-bottom:8px;box-shadow:var(--shadow);cursor:pointer;
+  }
+  .agenda-date{width:46px;flex:none;text-align:center;}
+  .agenda-date .d{font-family:var(--font-display);font-weight:700;font-size:19px;line-height:1;}
+  .agenda-date .m{font-size:10px;color:var(--ink-3);text-transform:uppercase;font-weight:700;}
+  .agenda-body{flex:1;min-width:0;}
+  .agenda-title{font-weight:600;font-size:13.5px;margin-bottom:3px;}
+  .agenda-meta{font-size:11.5px;color:var(--ink-3);display:flex;gap:10px;flex-wrap:wrap;}
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop{
+    position:fixed;inset:0;background:rgba(15,22,28,.5);display:flex;align-items:flex-start;justify-content:center;
+    padding:5vh 16px;overflow-y:auto;z-index:100;
+  }
+  .modal{
+    background:var(--surface);border-radius:12px;max-width:560px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);
+    border:1px solid var(--border);
+  }
+  .modal.wide{max-width:820px;}
+  .modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .modal-head h3{font-size:16px;}
+  .modal-close{background:none;border:none;cursor:pointer;color:var(--ink-3);font-size:18px;line-height:1;padding:4px;}
+  .modal-close:hover{color:var(--ink);}
+  .modal-body{padding:18px 20px;max-height:72vh;overflow-y:auto;}
+  .modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
+
+  /* ---------- Toast ---------- */
+  #toastwrap{position:fixed;bottom:18px;right:18px;z-index:200;display:flex;flex-direction:column;gap:8px;}
+  .toast{
+    background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:12.5px;font-weight:500;
+    box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:320px;
+  }
+  .toast.err{background:var(--critical);color:#fff;}
+  .toast.ok{background:var(--success);color:#fff;}
+
+  /* ---------- Cash exam form ---------- */
+  .denom-table td,.denom-table th{padding:6px 10px;}
+  .denom-table input[type=number]{width:80px;text-align:right;}
+  .exam-total-row td{font-weight:700;background:var(--surface-2);}
+  .result-banner{
+    display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-radius:10px;margin:16px 0;
+    border:1px solid var(--border);flex-wrap:wrap;gap:10px;
+  }
+  .result-banner .label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;}
+  .result-banner .amt{font-family:var(--font-display);font-size:24px;font-weight:700;}
+  .result-balanced{background:var(--success-soft);color:var(--success);}
+  .result-shortage{background:var(--critical-soft);color:var(--critical);}
+  .result-overage{background:var(--warning-soft);color:var(--warning);}
+
+  .items-add-row{display:flex;gap:8px;margin-top:8px;}
+  .rm-row-btn{background:none;border:none;color:var(--critical);cursor:pointer;font-size:16px;line-height:1;padding:2px 6px;}
+
+  .print-doc{font-family:var(--font-body);color:#111;}
+  .print-doc h2{font-family:var(--font-display);font-size:16px;text-align:center;margin-bottom:2px;}
+  .print-doc .print-sub{text-align:center;font-size:11.5px;color:#555;margin-bottom:16px;}
+  .print-doc table{margin-bottom:14px;}
+  .print-doc th,.print-doc td{border:1px solid #999;padding:5px 8px;font-size:12px;}
+  .print-doc .sign-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:34px;}
+  .print-doc .sign-line{border-top:1px solid #333;margin-top:38px;padding-top:4px;font-size:11.5px;text-align:center;}
+
+  @media print{
+    body *{visibility:hidden;}
+    #print-area, #print-area *{visibility:visible;}
+    #print-area{position:absolute;top:0;left:0;width:100%;padding:20px;}
+  }
+
+
+  .split-2col{display:grid;gap:20px;align-items:flex-start;}
+  .split-2col.uta{grid-template-columns:270px minmax(0,1fr);}
+  .split-2col.exam{grid-template-columns:260px minmax(0,1fr);}
+  @media (max-width:900px){ .split-2col.uta, .split-2col.exam{grid-template-columns:minmax(0,1fr);} }
+  /* ---------- UTA org chart ---------- */
+  .org-board{border:1px solid var(--border);border-radius:10px;background:var(--surface-2);padding:12px 14px;margin-bottom:18px;}
+  .org-board-title{font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;color:var(--ink-3);margin-bottom:9px;}
+  .org-board-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;}
+  .org-board-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 11px;cursor:pointer;}
+  .org-board-card:hover{border-color:var(--accent);}
+  ul.org-tree{list-style:none;margin:0;padding:0 0 0 0;}
+  ul.org-tree ul.org-tree{padding-left:22px;position:relative;}
+  ul.org-tree ul.org-tree::before{content:"";position:absolute;left:8px;top:0;bottom:14px;border-left:1px solid var(--border-strong);}
+  li.org-node{position:relative;margin-bottom:8px;}
+  ul.org-tree ul.org-tree > li.org-node::before{content:"";position:absolute;left:-14px;top:18px;width:14px;border-top:1px solid var(--border-strong);}
+  .org-unit{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border-strong);border-left:3px solid var(--accent);border-radius:8px;padding:9px 12px;}
+  .org-unit-name{font-weight:700;font-size:13.5px;}
+  .org-toggle{width:20px;height:20px;flex:none;border:1px solid var(--border-strong);background:var(--surface-2);border-radius:5px;cursor:pointer;font-size:13px;line-height:1;color:var(--ink-2);}
+  .org-toggle:hover{border-color:var(--accent);color:var(--accent);}
+  ul.org-positions{list-style:none;margin:6px 0 0 22px;padding:0;position:relative;}
+  ul.org-positions::before{content:"";position:absolute;left:-14px;top:0;bottom:16px;border-left:1px solid var(--border);}
+  li.org-pos{position:relative;display:flex;align-items:center;gap:8px;padding:7px 11px;margin-bottom:5px;background:var(--surface);border:1px solid var(--border);border-radius:7px;cursor:pointer;}
+  li.org-pos::before{content:"";position:absolute;left:-14px;top:17px;width:14px;border-top:1px solid var(--border);}
+  li.org-pos:hover{border-color:var(--border-strong);}
+  li.org-pos.vacant{border-style:dashed;background:var(--surface-2);}
+  .org-pos-name{font-weight:600;font-size:12.5px;}
+  li.org-pos.vacant .org-pos-name{color:var(--ink-3);letter-spacing:.08em;font-size:11px;}
+  .org-pos-title{font-size:11.5px;color:var(--ink-3);}
+  .helptext{font-size:11.5px;color:var(--ink-3);margin-top:4px;}
+  .section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-2);margin:22px 0 10px;}
+  .section-title:first-child{margin-top:0;}
+
+  @media (max-width:860px){
+    .sidebar{position:fixed;transform:translateX(-100%);transition:transform .18s;z-index:80;box-shadow:0 0 40px rgba(0,0,0,.2);}
+    .sidebar.open{transform:translateX(0);}
+    .menubtn{display:inline-flex;}
+    .field-row,.field-row.three{grid-template-columns:1fr;}
+    .grid.cols-4,.grid.cols-3,.grid.cols-2{grid-template-columns:1fr;}
+  }
+  .menubtn{display:none;border:1px solid var(--border-strong);background:var(--surface);border-radius:7px;padding:7px 9px;cursor:pointer;}
+</style>
+
+<style>
+  .topbar{flex-wrap:wrap;gap:12px;}
+  .brand-crest{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    background:var(--accent);color:var(--accent-ink);font-family:var(--font-display);font-weight:700;font-size:13px;letter-spacing:.02em;}
+  .main{margin-left:0;}
+  .grid > *{min-width:0;}
+  .split-2col > *{min-width:0;}
+  .card-head{flex-wrap:wrap;gap:10px;}
+  .card-head > *{min-width:0;}
+  @media (max-width:760px){
+    .field-row, .field-row.three{grid-template-columns:minmax(0,1fr) !important;}
+    .topbar{align-items:flex-start;}
+    .topbar h1{font-size:17px;}
+    .denom-table input[type=number]{width:100%;min-width:60px;}
+  }
+</style>
+
+
+<style>
+  /* ---------- On-screen General Form No. 74(A) ---------- */
+  .gf-overlay{position:fixed;inset:0;background:rgba(12,18,24,.55);z-index:120;overflow:auto;padding:24px 16px;}
+  .modal-backdrop{z-index:200;}
+  .gf-sheet{max-width:1040px;margin:0 auto;background:#fff;color:#111;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+  .gf-actions{position:sticky;top:0;z-index:2;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end;
+    padding:10px 14px;background:var(--surface);color:var(--ink);border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;}
+  .gf-actions .gf-hint{margin-right:auto;font-size:11.5px;color:var(--ink-3);}
+  .gf-doc{padding:22px 26px 30px;font-family:"IBM Plex Sans",system-ui,sans-serif;color:#111;background:#fff;border-radius:0 0 10px 10px;}
+  .gf-doc table{width:100%;border-collapse:collapse;table-layout:fixed;}
+  .gf-doc td,.gf-doc th{border:1px solid #888;padding:3px 6px;font-size:11px;vertical-align:top;word-wrap:break-word;}
+  .gf-doc .nb{border:none;}
+  .gf-band{background:#f0f0f0;text-align:center;font-weight:700;letter-spacing:.02em;}
+  .gf-r{text-align:right;font-variant-numeric:tabular-nums;}
+  .gf-c{text-align:center;}
+  .gf-b{font-weight:700;}
+  .gf-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:6px;font-size:11px;}
+  .gf-top .gf-mid{text-align:center;flex:1;}
+  .gf-sig{height:34px;}
+  .gf-para{font-size:11px;line-height:1.45;text-align:justify;}
+  .gf-scroll{overflow-x:auto;}
+  .gf-copybox{width:100%;height:180px;font-family:var(--font-mono);font-size:11px;padding:8px;
+    border:1px solid var(--border-strong);border-radius:8px;background:var(--surface-2);color:var(--ink);}
+  @media print{
+    body *{visibility:hidden !important;}
+    .gf-overlay,.gf-overlay *{visibility:visible !important;}
+    .gf-overlay{position:absolute;inset:auto;padding:0;background:#fff;overflow:visible;}
+    .gf-sheet{max-width:none;margin:0;box-shadow:none;border-radius:0;}
+    .gf-actions{display:none !important;}
+    .gf-doc{padding:0;}
+    .gf-doc td,.gf-doc th{font-size:8.5pt;}
+    @page{size:A4 portrait;margin:10mm;}
+  }
+</style>
+
+
+<style>
+  /* ---------- installed-app chrome ---------- */
+  :root{ --safe-top:env(safe-area-inset-top,0px); --safe-bot:env(safe-area-inset-bottom,0px); }
+  body{ padding-top:var(--safe-top); padding-bottom:var(--safe-bot); }
+  .pwa-bar{
+    display:none;align-items:center;gap:10px;flex-wrap:wrap;
+    padding:10px 14px;background:var(--accent-soft);color:var(--accent-soft-ink);
+    border-bottom:1px solid var(--border);font-size:12.5px;
+  }
+  .pwa-bar.show{display:flex;}
+  .pwa-bar .grow{flex:1;min-width:160px;}
+  .offline-dot{
+    display:none;align-items:center;gap:6px;font-size:11.5px;color:var(--warning);
+    background:var(--warning-soft);border-radius:999px;padding:3px 10px;font-weight:600;
+  }
+  .offline-dot.show{display:inline-flex;}
+  @media (display-mode: standalone){
+    .pwa-bar#pwaInstall{display:none !important;}
+  }
+</style>
+
+</head>
+<body>
+<div id="app"></div>
+<div id="toastwrap"></div>
+<script>
+(function(){
+"use strict";
+
+/* ========================= ICONS ========================= */
+const ICONS = {
+  overview:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>',
+  calendar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+  cash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 6v0M18 18v0"/></svg>',
+  legal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0zM5 7h14M3 21h18"/></svg>',
+  coa:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h7"/></svg>',
+  team:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  org:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v5M5 17v-3h14v3"/></svg>',
+  upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><path d="M12 3v12"/></svg>',
+  info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>',
+  print:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>',
+  download:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><path d="M12 15V3"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
+  empty:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7 12 12l8.7-5M12 22V12"/></svg>',
+  trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+  edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>',
+  chevL:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
+  chevR:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
+  menu:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>',
+};
+
+
+/* ========================= UTIL ========================= */
+function esc(s){
+  return String(s==null?"":s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function uid(){ return Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4); }
+function peso(n){
+  n = Number(n)||0;
+  return "₱" + n.toLocaleString("en-PH", {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function fmtDate(iso, opts){
+  if(!iso) return "—";
+  const d = new Date(iso+"T00:00:00");
+  if(isNaN(d)) return iso;
+  return d.toLocaleDateString("en-PH", opts || {month:"short", day:"numeric", year:"numeric"});
+}
+function todayISO(){
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function toast(msg, kind){
+  const wrap = document.getElementById("toastwrap");
+  const el = document.createElement("div");
+  el.className = "toast" + (kind ? " "+kind : "");
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.transition="opacity .3s"; el.style.opacity="0"; setTimeout(()=>el.remove(),300); }, 3600);
+}
+function refocusEnd(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.focus();
+  const n = el.value.length;
+  try{ el.setSelectionRange(n, n); }catch(e){}
+}
+function initials(name){
+  if(!name) return "?";
+  const parts = name.trim().split(/\s+/);
+  return ((parts[0]||"")[0]||"") .toUpperCase() + ((parts[1]||"")[0]||"").toUpperCase();
+}
+
+
+/* ========================= LOCAL IDENTITY ========================= */
+const Me = {
+  get(){
+    try{
+      const raw = localStorage.getItem("audithub_me");
+      return raw ? JSON.parse(raw) : null;
+    }catch(e){ return null; }
+  },
+  set(name){
+    try{ localStorage.setItem("audithub_me", JSON.stringify({name: name.trim()})); }catch(e){}
+  }
+};
+
+
+/* ========================= INSTALL / OFFLINE ========================= */
+let deferredPrompt = null;
+
+function isStandalone(){
+  return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+}
+function isIOS(){
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+}
+function dismissedInstall(){
+  try{ return localStorage.getItem("gf74a_install_dismissed") === "1"; }catch(e){ return false; }
+}
+function renderInstallBar(){
+  const bar = document.getElementById("pwaInstall");
+  if(!bar) return;
+  if(isStandalone() || dismissedInstall()){ bar.classList.remove("show"); return; }
+  if(deferredPrompt){
+    bar.innerHTML = `<span class="grow"><strong>Install this on your phone</strong> — it then opens like an app and works with no signal.</span>
+      <button class="btn btn-sm btn-primary" id="pwaGo">Install</button>
+      <button class="btn btn-sm btn-ghost" id="pwaNo">Not now</button>`;
+    bar.classList.add("show");
+  } else if(isIOS()){
+    bar.innerHTML = `<span class="grow"><strong>Install this on your iPhone</strong> — tap the Share button, then
+      <em>Add to Home Screen</em>. It then opens like an app and works with no signal.</span>
+      <button class="btn btn-sm btn-ghost" id="pwaNo">Got it</button>`;
+    bar.classList.add("show");
+  } else {
+    bar.classList.remove("show");
+  }
+}
+window.addEventListener("beforeinstallprompt", (e)=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  renderInstallBar();
+});
+window.addEventListener("appinstalled", ()=>{
+  deferredPrompt = null;
+  const bar = document.getElementById("pwaInstall");
+  if(bar) bar.classList.remove("show");
+  toast("Installed. You can open it from your home screen, with or without a signal.", "ok");
+});
+document.addEventListener("click", async (e)=>{
+  if(e.target.closest("#pwaGo")){
+    if(!deferredPrompt) return;
+    deferredPrompt.prompt();
+    try{ await deferredPrompt.userChoice; }catch(err){}
+    deferredPrompt = null;
+    renderInstallBar();
+    return;
+  }
+  if(e.target.closest("#pwaNo")){
+    try{ localStorage.setItem("gf74a_install_dismissed","1"); }catch(err){}
+    const bar = document.getElementById("pwaInstall");
+    if(bar) bar.classList.remove("show");
+    return;
+  }
+});
+
+function renderNetworkDot(){
+  const dot = document.getElementById("netDot");
+  if(!dot) return;
+  if(navigator.onLine){ dot.classList.remove("show"); }
+  else { dot.textContent = "Offline — everything still works"; dot.classList.add("show"); }
+}
+window.addEventListener("online", renderNetworkDot);
+window.addEventListener("offline", renderNetworkDot);
+
+
+
+/* ========================= APP STATE ========================= */
+const State = {
+  view: "cashexam",
+  collections: { cashexams: [] },
+  lastAgency: "",
+  exam: null, examAo: 0,
+};
+
+/* ========================= DEVICE STORAGE ========================= */
+/* Everything this app keeps lives on this device. Nothing is uploaded. */
+const Store = {
+  KEY: "gf74a_saved_v1",
+  DRAFT: "gf74a_draft_v1",
+  AGENCY: "gf74a_agency_v1",
+  ok: true,
+  read(){
+    try{
+      const raw = localStorage.getItem(this.KEY);
+      const arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
+    }catch(e){ return []; }
+  },
+  write(arr){
+    try{ localStorage.setItem(this.KEY, JSON.stringify(arr)); return true; }
+    catch(e){ this.ok = false; return false; }
+  },
+  sort(arr){ return arr.slice().sort((a,b)=>String(b.examDate||"").localeCompare(String(a.examDate||""))); },
+  refresh(){ State.collections.cashexams = this.sort(this.read()); },
+  put(rec){
+    const arr = this.read();
+    const i = arr.findIndex(x=>x.id===rec.id);
+    if(i>=0) arr[i] = rec; else arr.push(rec);
+    const ok = this.write(arr);
+    this.refresh();
+    return ok;
+  },
+  remove(id){
+    const ok = this.write(this.read().filter(x=>x.id!==id));
+    this.refresh();
+    return ok;
+  },
+  parkDraft(){
+    try{
+      localStorage.setItem(this.DRAFT, JSON.stringify(State.exam));
+      if(State.exam && State.exam.agency) localStorage.setItem(this.AGENCY, State.exam.agency);
+    }catch(e){ this.ok = false; }
+  },
+  takeDraft(){
+    try{
+      const raw = localStorage.getItem(this.DRAFT);
+      const d = raw ? JSON.parse(raw) : null;
+      return (d && Array.isArray(d.aos) && d.aos.length) ? d : null;
+    }catch(e){ return null; }
+  },
+  probe(){
+    try{ localStorage.setItem("gf74a_probe","1"); localStorage.removeItem("gf74a_probe"); this.ok = true; }
+    catch(e){ this.ok = false; }
+    return this.ok;
+  }
+};
+
+/* ========================= RENDER ROOT ========================= */
+function render(){
+  document.getElementById("app").innerHTML = `
+    <div class="shell">
+      <main class="main">
+        <div class="pwa-bar" id="pwaInstall"></div>
+        <header class="topbar">
+          <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+            <div class="brand-crest" style="flex:none;">74A</div>
+            <div style="min-width:0;">
+              <h1>Cash Examination</h1>
+              <div class="sub">General Form No. 74(A) — one report per accountable officer</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex:none;flex-wrap:wrap;">
+            <span class="offline-dot" id="netDot"></span>
+            <button class="btn btn-sm" id="aboutBtn">${ICONS.info} About</button>
+            ${renderIdentityWidget()}
+          </div>
+        </header>
+        <div class="view" id="viewport"></div>
+      </main>
+    </div>
+  `;
+  renderViewport();
+  renderInstallBar();
+  renderNetworkDot();
+}
+function renderIdentityWidget(){
+  const me = Me.get();
+  return `<button class="btn btn-sm" id="identityBtn">${me ? esc(me.name) : "Set your name"}</button>`;
+}
+function renderViewport(){
+  document.getElementById("viewport").innerHTML = viewCashExam();
+  bindCashExamEvents();
+}
+
+/* ========================= INIT ========================= */
+document.addEventListener("DOMContentLoaded", init);
+
+function init(){
+  Store.probe();
+  Store.refresh();
+  try{ State.lastAgency = localStorage.getItem(Store.AGENCY) || ""; }catch(e){}
+  const draft = Store.takeDraft();
+  State.exam = draft || newSession();
+  if(draft){
+    State.exam.aos.forEach(a=>{ const fresh = newAO(a.label).denoms; a.denoms = Object.assign(fresh, a.denoms||{}); });
+    if(State.exam.id && !State.collections.cashexams.some(x=>x.id===State.exam.id)) State.exam.id = null;
+  }
+  render();
+  document.getElementById("app").addEventListener("click", (e)=>{
+    if(e.target.closest("#identityBtn")){ openIdentityModal(); return; }
+    if(e.target.closest("#aboutBtn")){ openAboutModal(); return; }
+  });
+  if(!Store.ok){
+    toast("This browser is blocking site storage, so nothing will be remembered between visits.", "err");
+  }
+  const secure = location.protocol === "https:" || ["localhost","127.0.0.1"].indexOf(location.hostname) >= 0;
+  if("serviceWorker" in navigator && secure){
+    navigator.serviceWorker.register("sw.js").catch(()=>{});
+  }
+}
+
+/* ========================= MODALS ========================= */
+function openModal(html, opts){
+  closeModal();
+  const wrap = document.createElement("div");
+  wrap.className = "modal-backdrop";
+  wrap.id = "modalBackdrop";
+  wrap.innerHTML = html;
+  document.body.appendChild(wrap);
+  wrap.addEventListener("click", (e)=>{ if(e.target === wrap) closeModal(); });
+  document.querySelectorAll("[data-modal-close]").forEach(b=>b.addEventListener("click", closeModal));
+  if(opts && opts.onMount) opts.onMount(wrap);
+}
+function closeModal(){
+  const el = document.getElementById("modalBackdrop");
+  if(el) el.remove();
+}
+function confirmDialog(message, okLabel){
+  return new Promise((resolve)=>{
+    openModal(`
+      <div class="modal" style="max-width:420px;">
+        <div class="modal-head"><h3>Please confirm</h3><button class="modal-close" data-modal-close>&times;</button></div>
+        <div class="modal-body"><p style="margin:0;font-size:13.5px;">${esc(message)}</p></div>
+        <div class="modal-foot">
+          <button class="btn" data-modal-close>Cancel</button>
+          <button class="btn btn-primary" id="confirmOk" style="background:var(--critical);border-color:var(--critical);color:#fff;">${esc(okLabel||"Yes, continue")}</button>
+        </div>
+      </div>
+    `, { onMount(wrap){
+      let done=false;
+      wrap.querySelector("#confirmOk").addEventListener("click", ()=>{ done=true; closeModal(); resolve(true); });
+      wrap.querySelectorAll("[data-modal-close]").forEach(b=>b.addEventListener("click", ()=>{ if(!done){ done=true; resolve(false); } }));
+      wrap.addEventListener("click", (e)=>{ if(e.target===wrap && !done){ done=true; resolve(false); } });
+      wrap.querySelector("#confirmOk").focus();
+    }});
+  });
+}
+function openIdentityModal(){
+  const me = Me.get();
+  openModal(`
+    <div class="modal">
+      <div class="modal-head"><h3>Your name</h3><button class="modal-close" data-modal-close>&times;</button></div>
+      <div class="modal-body">
+        <p class="helptext" style="margin-bottom:12px;">Used to pre-fill the examiner's name on a new cash count. Kept on this device only.</p>
+        <div class="field"><label>Full name</label><input type="text" id="meName" value="${esc(me?me.name:"")}" placeholder="e.g. Maria Santos" /></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" data-modal-close>Cancel</button>
+        <button class="btn btn-primary" id="meSave">Save</button>
+      </div>
+    </div>
+  `, { onMount(wrap){
+    const input = wrap.querySelector("#meName");
+    input.focus();
+    wrap.querySelector("#meSave").addEventListener("click", ()=>{
+      const v = input.value.trim();
+      if(!v){ toast("Enter a name first.", "err"); return; }
+      Me.set(v);
+      if(State.exam && !State.exam.auditor){ State.exam.auditor = v; Store.parkDraft(); }
+      closeModal();
+      render();
+    });
+  }});
+}
+function openAboutModal(){
+  openModal(`
+    <div class="modal" style="max-width:580px;">
+      <div class="modal-head"><h3>About this app</h3><button class="modal-close" data-modal-close>&times;</button></div>
+      <div class="modal-body" style="font-size:13.5px;line-height:1.6;">
+        <p style="margin-top:0;">A working sheet for a surprise cash count. Enter one accountable officer per tab —
+        cashier, teller, petty cash custodian, disbursing or collecting officer — count the bills and coins by
+        denomination, list the cash items (paid vouchers, cash advances, checks for deposit) and the unused
+        accountable forms, and the app computes the cash on hand, the accountability and any shortage or overage.</p>
+        <p><strong>GF 74(A) .xlsx</strong> fills a copy of General Form No. 74(A) for the officer you are on and
+        saves it to your device. <strong>View / Print</strong> shows the same form on screen to print or save as a
+        PDF. <strong>Summary</strong> covers every officer in the count on one sheet.</p>
+        <div class="banner" style="margin:14px 0;">
+          <div>
+            <strong>Works with no signal, and nothing leaves this device.</strong>
+            <div class="helptext" style="margin-top:4px;">Once installed, the app runs entirely offline. Saved
+            examinations and the in-progress draft live in this device's own storage — not uploaded, not shared,
+            not visible to anyone else. Clearing browsing data, or uninstalling, loses them: export the .xlsx for
+            anything you need to keep.</div>
+          </div>
+        </div>
+        <p class="helptext" style="margin-bottom:0;">Denominations follow the Philippine peso (₱1,000 to ₱0.01).
+        Amounts are computed to two decimal places. Verify the printed form against your own working papers before
+        signing.</p>
+      </div>
+      <div class="modal-foot"><button class="btn btn-primary" data-modal-close>Close</button></div>
+    </div>
+  `);
+}
+
+
+/* ========================= CASH EXAMINATION (GF 74-A) ========================= */
+const BILLS = [1000,500,200,100,50,20];
+const COINS = [20,10,5,1,0.25,0.10,0.05,0.01];
+const DENOM_ROWS = { "1000":26,"500":27,"200":28,"100":29,"50":30,"20":31, "c20":33,"c10":34,"c5":35,"c1":36,"c0_25":37,"c0_1":38,"c0_05":39,"c0_01":40 };
+const AO_PRESETS = ["Cashier","Teller/AO 1","Teller/AO 2","Teller/AO 3","Teller/AO 4","Teller/AO 5","Teller/AO 6","Petty Cash Custodian","Disbursing Officer","Collecting Officer"];
+function denomKey(v, isCoin){ return isCoin ? "c"+String(v).replace(".","_") : String(v); }
+function denomValue(k){ return parseFloat(k.startsWith("c") ? k.slice(1).replace("_",".") : k); }
+function longDate(iso){
+  if(!iso) return "";
+  const d = new Date(iso+"T00:00:00");
+  return isNaN(d) ? iso : d.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+}
+function money(n){ return "₱" + (Number(n)||0).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function num(v){ const n = parseFloat(v); return isNaN(n) ? 0 : n; }
+
+function newAO(label){
+  const denoms = {};
+  BILLS.forEach(v=>denoms[denomKey(v,false)]=0);
+  COINS.forEach(v=>denoms[denomKey(v,true)]=0);
+  return { id: uid(), label: label||"Cashier", name:"", position: label==="Petty Cash Custodian" ? "Petty Cash Custodian" : (label||"").toUpperCase().includes("TELLER") ? "Teller" : "Cashier",
+    maxAccountability:"", bondAmount:"", riskNo:"", bondEffective:"",
+    denoms, pcvPresented:0, pcvAllowed:0, checks:[], cashAdvances:[], formsWithValue:[], formsNoValue:[],
+    witness1:"", witness2:"", remarks:"" };
+}
+function newSession(){
+  const me = Me.get();
+  return { id:null, agency: State.lastAgency||"", station:"", examDate: todayISO(), auditor: me?me.name:"", auditorDesignation:"", aos:[newAO("Cashier")] };
+}
+/* ---- computed totals ---- */
+function aoTotals(ao){
+  let cash=0;
+  BILLS.forEach(v=>cash+=v*num(ao.denoms[denomKey(v,false)]));
+  COINS.forEach(v=>cash+=v*num(ao.denoms[denomKey(v,true)]));
+  const checks = ao.checks.reduce((s,c)=>s+num(c.amount),0);
+  const checksAllowed = ao.checks.reduce((s,c)=>s+(c.allowed===false?0:num(c.amount)),0);
+  const cas = ao.cashAdvances.reduce((s,c)=>s+Math.max(0,num(c.granted)-num(c.cashOnHand)),0);
+  const pcv = num(ao.pcvPresented), pcvAllowed = Math.min(num(ao.pcvAllowed), pcv);
+  const presented = pcv + checks + cas, allowed = pcvAllowed + checksAllowed + cas;
+  const formsValue = ao.formsWithValue.reduce((s,f)=>s+num(f.amount),0);
+  const formsNoValueQty = ao.formsNoValue.reduce((s,f)=>s+formQty(f),0);
+  return { cash, checks, checksAllowed, cas, pcv, pcvAllowed, presented, allowed, disallowed: presented-allowed, total: cash+presented, totalAllowed: cash+allowed, formsValue, formsNoValueQty };
+}
+function formQty(f){
+  if(f.qty!=="" && f.qty!=null && !isNaN(parseFloat(f.qty))) return num(f.qty);
+  const a=parseInt(String(f.serialFrom||"").replace(/\D/g,""),10), b=parseInt(String(f.serialTo||"").replace(/\D/g,""),10);
+  if(!isNaN(a)&&!isNaN(b)&&b>=a) return b-a+1;
+  return 0;
+}
+
+/* ---- view ---- */
+function viewExamList(){
+  const sessions = State.collections.cashexams; const ex = State.exam || {};
+  return `<div class="card" id="examList">
+        <div class="card-head"><div><h3>Examinations</h3><div class="sub">${sessions.length} saved on this device</div></div>
+          <button class="btn btn-sm btn-primary" id="exNew">${ICONS.plus} New</button></div>
+        <div style="padding:8px;max-height:70vh;overflow-y:auto;">
+          <div class="helptext" style="padding:2px 4px 10px;">Saved counts stay on this device — they are never uploaded. Export the .xlsx for anything you need to keep.</div>
+          ${sessions.length ? sessions.map(s=>`
+            <div class="agenda-item" style="padding:9px 10px;margin-bottom:6px;${ex.id===s.id?"border-color:var(--accent);":""}" data-load-exam="${s.id}">
+              <div style="flex:1;min-width:0;">
+                <div style="font-weight:600;font-size:12.5px;">${esc(s.agency||"Untitled")}</div>
+                <div class="helptext">${fmtDate(s.examDate)} · ${(s.aos||[]).length} AO${(s.aos||[]).length===1?"":"s"}${s.aos&&s.aos[0]&&s.aos[0].name?" · "+esc(s.aos.map(a=>a.name).filter(Boolean).join(", ")):""}</div>
+              </div>
+            </div>`).join("") : `<div class="empty" style="padding:20px 8px;"><p>No saved examinations yet.</p></div>`}
+        </div>
+      </div>`;
+}
+function viewCashExam(){
+  if(!State.exam) State.exam = newSession();
+  const ex = State.exam;
+  if(State.examAo==null || State.examAo>=ex.aos.length) State.examAo = 0;
+  return `
+    <div class="split-2col exam">
+      ${viewExamList()}
+      <div style="min-width:0;">
+        ${viewExamEditor(ex)}
+      </div>
+    </div>
+  `;
+}
+function viewExamEditor(ex){
+  const ao = ex.aos[State.examAo];
+  return `
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-head"><div><h3>${ex.id?"Cash examination":"New cash examination"}</h3><div class="sub">General Form No. 74(A) — one report per accountable officer</div></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-sm" id="exSummary">${ICONS.print} Summary</button>
+          <button class="btn btn-sm" id="exSummaryXlsx">${ICONS.download} Summary .xlsx</button>
+          <button class="btn btn-sm btn-primary" id="exSave">Save examination</button>
+          ${ex.id?`<button class="btn btn-sm btn-ghost btn-danger" id="exDelete">${ICONS.trash}</button>`:""}
+        </div></div>
+      <div class="card-pad">
+        <div class="field-row three">
+          <div class="field"><label>Agency</label><input type="text" data-bind="agency" value="${esc(ex.agency)}" placeholder="e.g. Matnog Water District" /></div>
+          <div class="field"><label>Station</label><input type="text" data-bind="station" value="${esc(ex.station)}" placeholder="e.g. Matnog, Sorsogon" /></div>
+          <div class="field"><label>Date of cash count</label><input type="date" data-bind="examDate" value="${esc(ex.examDate)}" /></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Auditor / examiner</label><input type="text" data-bind="auditor" value="${esc(ex.auditor)}" /></div>
+          <div class="field"><label>Official designation</label><input type="text" data-bind="auditorDesignation" value="${esc(ex.auditorDesignation)}" placeholder="e.g. State Auditor III / Audit Team Member" /></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cal-toolbar" style="margin-bottom:10px;">
+      <div class="chips" id="aoChips">
+        ${ex.aos.map((a,i)=>`<button class="chip ${i===State.examAo?"active":""}" data-ao="${i}">${esc(a.label)}${a.name?` · ${esc(a.name.split(" ")[0])}`:""}</button>`).join("")}
+        <button class="chip" id="aoAdd" style="border-style:dashed;">${ICONS.plus} Add AO</button>
+      </div>
+    </div>
+
+    ${ao ? viewAoPanel(ex, ao, State.examAo) : ""}
+
+    ${viewConsolidated(ex)}
+  `;
+}
+function viewAoPanel(ex, ao, i){
+  const t = aoTotals(ao);
+  const p = `aos.${i}.`;
+  const denomRow = (v,isCoin)=>{ const k=denomKey(v,isCoin); const q=num(ao.denoms[k]);
+    return `<tr><td class="num">₱${v.toLocaleString("en-PH",{minimumFractionDigits: isCoin&&v<1?2:0})}</td><td><input type="number" min="0" step="1" data-bind="${p}denoms.${k}" value="${q}" data-recalc /></td><td class="num" style="text-align:right;" data-amt="${k}">${peso(q*v)}</td></tr>`; };
+  return `
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-head"><div><h3 id="aoTitle">${esc(ao.label)}${ao.name?` — ${esc(ao.name)}`:""}</h3><div class="sub">Accountable officer details, cash count, cash items and unused accountable forms</div></div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-sm" id="aoForm">${ICONS.print} View / Print</button>
+          <button class="btn btn-sm btn-primary" id="aoXlsx">${ICONS.download} GF 74(A) .xlsx</button>
+          ${ex.aos.length>1?`<button class="btn btn-sm btn-ghost btn-danger" id="aoRemove" title="Remove this AO">${ICONS.trash}</button>`:""}
+        </div></div>
+      <div class="card-pad">
+        <div class="section-title">Accountable officer</div>
+        <div class="field-row three">
+          <div class="field"><label>Role in this count</label><input type="text" list="aoPresets" data-bind="${p}label" value="${esc(ao.label)}" data-rechip /><datalist id="aoPresets">${AO_PRESETS.map(x=>`<option value="${x}">`).join("")}</datalist></div>
+          <div class="field"><label>Name</label><input type="text" data-bind="${p}name" value="${esc(ao.name)}" placeholder="Full name" data-rechip /></div>
+          <div class="field"><label>Position / designation</label><input type="text" data-bind="${p}position" value="${esc(ao.position)}" /></div>
+        </div>
+        <div class="field-row" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+          <div class="field"><label>Maximum cash accountability</label><input type="number" min="0" step="0.01" data-bind="${p}maxAccountability" value="${esc(ao.maxAccountability)}" /></div>
+          <div class="field"><label>Amount of bond</label><input type="number" min="0" step="0.01" data-bind="${p}bondAmount" value="${esc(ao.bondAmount)}" /></div>
+          <div class="field"><label>Risk no.</label><input type="text" data-bind="${p}riskNo" value="${esc(ao.riskNo)}" /></div>
+          <div class="field"><label>Bond effective date</label><input type="text" data-bind="${p}bondEffective" value="${esc(ao.bondEffective)}" placeholder="mm/dd/yy" /></div>
+        </div>
+
+        <div class="section-title">Inventory of cash on hand</div>
+        <div class="grid cols-2" style="gap:18px;">
+          <div class="table-wrap"><table class="denom-table"><thead><tr><th>Bills</th><th>No. of pcs.</th><th style="text-align:right;">Amount</th></tr></thead>
+            <tbody>${BILLS.map(v=>denomRow(v,false)).join("")}</tbody></table></div>
+          <div class="table-wrap"><table class="denom-table"><thead><tr><th>Coins</th><th>No. of pcs.</th><th style="text-align:right;">Amount</th></tr></thead>
+            <tbody>${COINS.map(v=>denomRow(v,true)).join("")}</tbody></table></div>
+        </div>
+        <div style="text-align:right;font-weight:700;margin-top:8px;">Total cash on hand: <span class="num" data-total="cash">${peso(t.cash)}</span></div>
+
+        <div class="section-title">Inventory of cash items</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Petty cash fund vouchers (Appendix 1.1)</th><th style="text-align:right;">Presented</th><th style="text-align:right;">Allowed</th><th style="text-align:right;">Disallowed</th></tr></thead>
+          <tbody><tr><td>Total PCVs on hand</td>
+            <td><input type="number" min="0" step="0.01" data-bind="${p}pcvPresented" value="${num(ao.pcvPresented)}" data-recalc style="text-align:right;" /></td>
+            <td><input type="number" min="0" step="0.01" data-bind="${p}pcvAllowed" value="${num(ao.pcvAllowed)}" data-recalc style="text-align:right;" /></td>
+            <td class="num" style="text-align:right;" data-total="pcvDis">${peso(t.pcv-t.pcvAllowed)}</td></tr></tbody></table></div>
+
+        <div class="helptext" style="margin:14px 0 6px;font-weight:700;color:var(--ink-2);">Checks for deposit (Appendix 1.2)</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Bank</th><th>Check no.</th><th>Date</th><th>Payee</th><th style="text-align:right;">Amount</th><th>Allowed</th><th></th></tr></thead>
+          <tbody>${ao.checks.map((c,j)=>`<tr>
+            <td><input type="text" data-bind="${p}checks.${j}.bank" value="${esc(c.bank)}" placeholder="e.g. LBP" /></td>
+            <td><input type="text" data-bind="${p}checks.${j}.checkNo" value="${esc(c.checkNo)}" /></td>
+            <td><input type="date" data-bind="${p}checks.${j}.date" value="${esc(c.date)}" /></td>
+            <td><input type="text" data-bind="${p}checks.${j}.payee" value="${esc(c.payee)}" /></td>
+            <td><input type="number" min="0" step="0.01" data-bind="${p}checks.${j}.amount" value="${num(c.amount)}" data-recalc style="text-align:right;" /></td>
+            <td style="text-align:center;"><input type="checkbox" data-bind="${p}checks.${j}.allowed" ${c.allowed===false?"":"checked"} data-recalc style="width:auto;" /></td>
+            <td><button class="rm-row-btn" data-rm="${p}checks.${j}" type="button">&times;</button></td></tr>`).join("")}
+          ${ao.checks.length?"":`<tr><td colspan="7" class="helptext">No checks listed.</td></tr>`}</tbody></table></div>
+        <div class="items-add-row"><button class="btn btn-sm" data-add="${p}checks">${ICONS.plus} Add check</button><div style="flex:1;"></div><div style="font-weight:700;font-size:13px;">Total checks: <span class="num" data-total="checks">${peso(t.checks)}</span></div></div>
+
+        <div class="helptext" style="margin:14px 0 6px;font-weight:700;color:var(--ink-2);">Unliquidated cash advances (Appendix 1.3)</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Payee / AO granted</th><th>Date granted</th><th>Reference (check/DV no.)</th><th style="text-align:right;">Amount granted</th><th style="text-align:right;">Cash on hand</th><th style="text-align:right;">Unliquidated</th><th></th></tr></thead>
+          <tbody>${ao.cashAdvances.map((c,j)=>`<tr>
+            <td><input type="text" data-bind="${p}cashAdvances.${j}.payee" value="${esc(c.payee)}" /></td>
+            <td><input type="date" data-bind="${p}cashAdvances.${j}.date" value="${esc(c.date)}" /></td>
+            <td><input type="text" data-bind="${p}cashAdvances.${j}.ref" value="${esc(c.ref||"")}" /></td>
+            <td><input type="number" min="0" step="0.01" data-bind="${p}cashAdvances.${j}.granted" value="${num(c.granted)}" data-recalc style="text-align:right;" /></td>
+            <td><input type="number" min="0" step="0.01" data-bind="${p}cashAdvances.${j}.cashOnHand" value="${num(c.cashOnHand)}" data-recalc style="text-align:right;" /></td>
+            <td class="num" style="text-align:right;" data-ca-unliq="${j}">${peso(Math.max(0,num(c.granted)-num(c.cashOnHand)))}</td>
+            <td><button class="rm-row-btn" data-rm="${p}cashAdvances.${j}" type="button">&times;</button></td></tr>`).join("")}
+          ${ao.cashAdvances.length?"":`<tr><td colspan="7" class="helptext">No cash advances listed.</td></tr>`}</tbody></table></div>
+        <div class="items-add-row"><button class="btn btn-sm" data-add="${p}cashAdvances">${ICONS.plus} Add cash advance</button><div style="flex:1;"></div><div style="font-weight:700;font-size:13px;">Total unliquidated: <span class="num" data-total="cas">${peso(t.cas)}</span></div></div>
+
+        <div class="result-banner result-balanced" style="margin-top:18px;">
+          <div><div class="label">Total inventory of cash and allowed cash items (TOD)</div>
+            <div style="font-size:11.5px;opacity:.85;">Cash <span data-total="cash2">${peso(t.cash)}</span> + cash items presented <span data-total="presented">${peso(t.presented)}</span>; disallowed <span data-total="disallowed">${peso(t.disallowed)}</span></div></div>
+          <div class="amt num" data-total="total">${peso(t.total)}</div>
+        </div>
+
+        <div class="section-title">Unused accountable forms — with money value</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Name of form</th><th>Qty.</th><th>Inclusive serial no.</th><th>Denomination</th><th style="text-align:right;">Amount</th><th></th></tr></thead>
+          <tbody>${ao.formsWithValue.map((f,j)=>`<tr>
+            <td><input type="text" data-bind="${p}formsWithValue.${j}.name" value="${esc(f.name)}" /></td>
+            <td><input type="number" min="0" data-bind="${p}formsWithValue.${j}.qty" value="${esc(f.qty)}" style="width:80px;" /></td>
+            <td><input type="text" data-bind="${p}formsWithValue.${j}.serial" value="${esc(f.serial)}" placeholder="from–to" /></td>
+            <td><input type="text" data-bind="${p}formsWithValue.${j}.denomination" value="${esc(f.denomination)}" /></td>
+            <td><input type="number" min="0" step="0.01" data-bind="${p}formsWithValue.${j}.amount" value="${num(f.amount)}" data-recalc style="text-align:right;" /></td>
+            <td><button class="rm-row-btn" data-rm="${p}formsWithValue.${j}" type="button">&times;</button></td></tr>`).join("")}
+          ${ao.formsWithValue.length?"":`<tr><td colspan="6" class="helptext">None — the form will print “N O N E”.</td></tr>`}</tbody></table></div>
+        <div class="items-add-row"><button class="btn btn-sm" data-add="${p}formsWithValue">${ICONS.plus} Add form</button><div style="flex:1;"></div><div style="font-weight:700;font-size:13px;">Total: <span class="num" data-total="formsValue">${peso(t.formsValue)}</span></div></div>
+
+        <div class="section-title">Unused accountable forms — without money value</div>
+        <div class="helptext" style="margin-bottom:8px;">Enter the inclusive serial numbers; the quantity is computed as (to − from + 1). Type a quantity only to override it (e.g. for booklets counted by pad).</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Name of form</th><th>Serial from</th><th>Serial to</th><th>Qty.</th><th></th></tr></thead>
+          <tbody>${ao.formsNoValue.map((f,j)=>`<tr>
+            <td><input type="text" data-bind="${p}formsNoValue.${j}.name" value="${esc(f.name)}" placeholder="e.g. AF 51 Official Receipt" /></td>
+            <td><input type="text" data-bind="${p}formsNoValue.${j}.serialFrom" value="${esc(f.serialFrom)}" data-recalc /></td>
+            <td><input type="text" data-bind="${p}formsNoValue.${j}.serialTo" value="${esc(f.serialTo)}" data-recalc /></td>
+            <td><input type="number" min="0" data-bind="${p}formsNoValue.${j}.qty" value="${esc(f.qty)}" placeholder="${formQty(f)||""}" data-recalc style="width:90px;" /></td>
+            <td><button class="rm-row-btn" data-rm="${p}formsNoValue.${j}" type="button">&times;</button></td></tr>`).join("")}
+          ${ao.formsNoValue.length?"":`<tr><td colspan="5" class="helptext">No forms listed.</td></tr>`}</tbody></table></div>
+        <div class="items-add-row"><button class="btn btn-sm" data-add="${p}formsNoValue">${ICONS.plus} Add form</button><div style="flex:1;"></div><div style="font-weight:700;font-size:13px;">Total pieces: <span class="num" data-total="formsNoValueQty">${t.formsNoValueQty}</span></div></div>
+
+        <div class="section-title">Certification</div>
+        <div class="field-row">
+          <div class="field"><label>Witness 1 (name)</label><input type="text" data-bind="${p}witness1" value="${esc(ao.witness1)}" /></div>
+          <div class="field"><label>Witness 2 (name)</label><input type="text" data-bind="${p}witness2" value="${esc(ao.witness2)}" /></div>
+        </div>
+        <div class="field"><label>Remarks (kept in the hub, not printed on the form)</label><textarea data-bind="${p}remarks">${esc(ao.remarks)}</textarea></div>
+      </div>
+    </div>`;
+}
+function viewConsolidated(ex){
+  if(ex.aos.length<1) return "";
+  const totals = ex.aos.map(aoTotals);
+  const sum = k=>totals.reduce((s,t)=>s+t[k],0);
+  const row = (label, v, isCoin)=>{ const k=denomKey(v,isCoin); const qs=ex.aos.map(a=>num(a.denoms[k])); const tq=qs.reduce((s,q)=>s+q,0);
+    return `<tr><td class="num">${label}</td>${qs.map(q=>`<td class="num" style="text-align:right;">${q||""}</td>`).join("")}<td class="num" style="text-align:right;font-weight:600;">${tq||""}</td><td class="num" style="text-align:right;font-weight:600;">${peso(tq*v)}</td></tr>`; };
+  return `
+    <div class="card" id="consolidatedCard">
+      <div class="card-head"><div><h3>Consolidated cash count</h3><div class="sub">All accountable officers in this examination</div></div></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Denomination</th>${ex.aos.map(a=>`<th style="text-align:right;">${esc(a.label)}</th>`).join("")}<th style="text-align:right;">Total pcs.</th><th style="text-align:right;">Amount</th></tr></thead>
+        <tbody>
+          <tr><td colspan="${ex.aos.length+3}" style="font-weight:700;background:var(--surface-2);">Bills</td></tr>
+          ${BILLS.map(v=>row("₱"+v,v,false)).join("")}
+          <tr><td colspan="${ex.aos.length+3}" style="font-weight:700;background:var(--surface-2);">Coins</td></tr>
+          ${COINS.map(v=>row("₱"+v.toFixed(v<1?2:0),v,true)).join("")}
+          <tr class="exam-total-row"><td>Cash on hand</td>${totals.map(t=>`<td class="num" style="text-align:right;">${peso(t.cash)}</td>`).join("")}<td></td><td class="num" style="text-align:right;">${peso(sum("cash"))}</td></tr>
+          <tr><td>Checks for deposit</td>${totals.map(t=>`<td class="num" style="text-align:right;">${peso(t.checks)}</td>`).join("")}<td></td><td class="num" style="text-align:right;">${peso(sum("checks"))}</td></tr>
+          <tr><td>Unliquidated cash advances</td>${totals.map(t=>`<td class="num" style="text-align:right;">${peso(t.cas)}</td>`).join("")}<td></td><td class="num" style="text-align:right;">${peso(sum("cas"))}</td></tr>
+          <tr><td>Petty cash vouchers</td>${totals.map(t=>`<td class="num" style="text-align:right;">${peso(t.pcv)}</td>`).join("")}<td></td><td class="num" style="text-align:right;">${peso(sum("pcv"))}</td></tr>
+          <tr class="exam-total-row"><td>Total inventory (TOD)</td>${totals.map(t=>`<td class="num" style="text-align:right;">${peso(t.total)}</td>`).join("")}<td></td><td class="num" style="text-align:right;">${peso(sum("total"))}</td></tr>
+        </tbody></table></div>
+    </div>`;
+}
+
+/* ---- state binding ---- */
+function setPath(obj, path, value){
+  const parts = path.split("."); let o = obj;
+  for(let i=0;i<parts.length-1;i++){ o = o[parts[i]]; if(o==null) return; }
+  o[parts[parts.length-1]] = value;
+}
+function getPath(obj, path){ return path.split(".").reduce((o,k)=>o==null?undefined:o[k], obj); }
+
+function refreshAoTotals(){
+  const ex = State.exam, ao = ex.aos[State.examAo]; if(!ao) return;
+  const t = aoTotals(ao);
+  const vp = document.getElementById("viewport");
+  vp.querySelectorAll("[data-amt]").forEach(el=>{ const k=el.getAttribute("data-amt"); const v = denomValue(k); el.textContent = peso(num(ao.denoms[k])*v); });
+  vp.querySelectorAll("[data-ca-unliq]").forEach(el=>{ const c=ao.cashAdvances[+el.getAttribute("data-ca-unliq")]; if(c) el.textContent = peso(Math.max(0,num(c.granted)-num(c.cashOnHand))); });
+  const map = {cash:peso(t.cash), cash2:peso(t.cash), checks:peso(t.checks), cas:peso(t.cas), presented:peso(t.presented), disallowed:peso(t.disallowed), total:peso(t.total), pcvDis:peso(t.pcv-t.pcvAllowed), formsValue:peso(t.formsValue), formsNoValueQty:String(t.formsNoValueQty)};
+  vp.querySelectorAll("[data-total]").forEach(el=>{ const k=el.getAttribute("data-total"); if(map[k]!=null) el.textContent = map[k]; });
+  // consolidated card is cheap to re-render in place
+  const cons = document.getElementById("consolidatedCard");
+  if(cons){ const tmp=document.createElement("div"); tmp.innerHTML=viewConsolidated(ex); cons.replaceWith(tmp.firstElementChild); }
+}
+
+function bindCashExamEvents(){
+  const vp = document.getElementById("viewport");
+  if(vp._exBound) return; vp._exBound = true;
+  vp.addEventListener("input", (e)=>{
+    if(State.view!=="cashexam") return;
+    const el = e.target; const path = el.getAttribute && el.getAttribute("data-bind"); if(!path) return;
+    let v = el.type==="checkbox" ? el.checked : el.value;
+    setPath(State.exam, path, v);
+    if(el.hasAttribute("data-recalc")) refreshAoTotals();
+    Store.parkDraft();
+    if(el.hasAttribute("data-rechip")){ const i=State.examAo; const chip=vp.querySelector(`[data-ao="${i}"]`); const a=State.exam.aos[i]; if(chip) chip.textContent = a.label + (a.name?` · ${a.name.split(" ")[0]}`:""); const h=document.getElementById("aoTitle"); if(h) h.textContent = a.label + (a.name?` — ${a.name}`:""); }
+  });
+  vp.addEventListener("click", async (e)=>{
+    if(State.view!=="cashexam") return;
+    const t = e.target.closest("button,[data-load-exam],[data-ao]"); if(!t) return;
+    if(t.id==="exNew"){ State.exam = newSession(); State.examAo=0; renderViewport(); return; }
+    if(t.hasAttribute("data-load-exam")){ const s = State.collections.cashexams.find(x=>x.id===t.getAttribute("data-load-exam")); if(s){ State.exam = JSON.parse(JSON.stringify(s)); State.exam.aos.forEach(a=>{ const fresh=newAO(a.label).denoms; a.denoms=Object.assign(fresh, a.denoms||{}); }); State.examAo=0; renderViewport(); } return; }
+    if(t.hasAttribute("data-ao")){ State.examAo = +t.getAttribute("data-ao"); renderViewport(); return; }
+    if(t.id==="aoAdd"){ const n=State.exam.aos.length; State.exam.aos.push(newAO(AO_PRESETS[Math.min(n,AO_PRESETS.length-1)])); State.examAo=n; renderViewport(); return; }
+    if(t.id==="aoRemove"){ if(!await confirmDialog("Remove this accountable officer from the examination? Their cash count in this session will be discarded.","Remove")) return; State.exam.aos.splice(State.examAo,1); State.examAo=0; renderViewport(); return; }
+    if(t.hasAttribute("data-add")){ const arr = getPath(State.exam, t.getAttribute("data-add")); const kind=t.getAttribute("data-add").split(".").pop();
+      arr.push(kind==="checks"?{bank:"",checkNo:"",date:"",payee:"",amount:0,allowed:true}:kind==="cashAdvances"?{payee:"",date:"",ref:"",granted:0,cashOnHand:0}:kind==="formsWithValue"?{name:"",qty:"",serial:"",denomination:"",amount:0}:{name:"",serialFrom:"",serialTo:"",qty:""});
+      renderViewport(); return; }
+    if(t.hasAttribute("data-rm")){ const path=t.getAttribute("data-rm"); const idx=+path.split(".").pop(); const arr=getPath(State.exam, path.split(".").slice(0,-1).join(".")); arr.splice(idx,1); renderViewport(); return; }
+    if(t.id==="exSave"){ await saveExam(); return; }
+    if(t.id==="exDelete"){ if(!await confirmDialog("Delete this saved examination? It is removed from this device only.","Delete")) return; Store.remove(State.exam.id); State.exam=newSession(); State.examAo=0; renderViewport(); toast("Examination deleted.","ok"); return; }
+    if(t.id==="aoForm"){ showGF74A(State.exam, State.exam.aos[State.examAo]); return; }
+    if(t.id==="aoXlsx"){ await downloadGF74A(State.exam, State.exam.aos[State.examAo]); return; }
+    if(t.id==="exSummary"){ showDenomSummary(State.exam); return; }
+    if(t.id==="exSummaryXlsx"){ await downloadDenomSummary(State.exam); return; }
+  });
+}
+async function saveExam(){
+  const ex = State.exam;
+  if(!ex.agency.trim()){ toast("Enter the agency name first.", "err"); return; }
+  const body = JSON.parse(JSON.stringify(ex));
+  body.id = ex.id || uid();
+  body.updatedAt = new Date().toISOString();
+  body.updatedBy = (Me.get()||{}).name || "";
+  if(!ex.id) body.createdAt = body.updatedAt;
+  if(Store.put(body)){
+    State.exam.id = body.id;
+    State.lastAgency = ex.agency;
+    Store.parkDraft();
+    renderViewport();
+    toast("Saved on this device.", "ok");
+  } else {
+    toast("This browser is blocking storage, so nothing was saved. Export the .xlsx before you leave.", "err");
+  }
+}
+
+/* ---- Excel generation (ExcelJS) ---- */
+async function ensureExcelJS(){
+  if(window.ExcelJS) return window.ExcelJS;
+  await new Promise((res)=>{ const s=document.createElement("script"); s.src="exceljs.min.js"; s.onload=res; s.onerror=res; document.head.appendChild(s); });
+  return window.ExcelJS || null;
+}
+function b64ToBuf(b64){ const bin=atob(b64); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return u.buffer; }
+
+/* ---- file delivery (no artifact sandbox here: a plain blob download works) ---- */
+function nativeSave(filename, blob){
+  try{
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{ a.remove(); URL.revokeObjectURL(url); }, 2000);
+    return true;
+  }catch(e){ return false; }
+}
+
+async function saveWorkbook(wb, filename){
+  const raw = await wb.xlsx.writeBuffer();
+  // ExcelJS returns a Buffer view that may sit inside a larger pooled ArrayBuffer — copy exactly the bytes we need
+  const bytes = new Uint8Array(raw.buffer ? raw.buffer : raw, raw.byteOffset || 0, raw.byteLength).slice();
+  if(window.__captureXlsx){ window.__captureXlsx(filename, bytes.buffer); return; }
+  const blob = new Blob([bytes], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  if(nativeSave(filename, blob)) toast("Saved "+filename, "ok");
+  else toast("Couldn't save the file. Use View / Print instead.", "err");
+}
+function copyStyle(ws, from, to){ const a=ws.getCell(from), b=ws.getCell(to); b.numFmt=a.numFmt; b.font=a.font; b.alignment=a.alignment; }
+function safeName(s){ return String(s||"AO").replace(/[^A-Za-z0-9 _-]+/g,"").trim().replace(/\s+/g,"_").slice(0,40) || "AO"; }
+
+async function downloadGF74A(ex, ao){
+  const XL = await ensureExcelJS(); if(!XL){ toast("The Excel library could not be loaded. Check your connection and try again.", "err"); return; }
+  const wb = new XL.Workbook(); await wb.xlsx.load(b64ToBuf(GF74A_TEMPLATE_B64));
+  const ws = wb.getWorksheet("GF74A"); const t = aoTotals(ao); const set=(a,v)=>{ ws.getCell(a).value=v; };
+  const name=(ao.name||"").toUpperCase(), pos=(ao.position||"").toUpperCase(), agency=(ex.agency||"").toUpperCase(), station=(ex.station||"").toUpperCase();
+  set("A5","Name of Accountable Officer: "+name); set("L5","Position/Designation: "+pos);
+  set("A6","Agency: "+agency); set("L6","Station: "+station);
+  set("A7","Maximum Cash Accountability: "+(ao.maxAccountability!==""?money(ao.maxAccountability):""));
+  set("K7","Amount of Bond: "+(ao.bondAmount!==""?money(ao.bondAmount):"")); set("M7","Risk No.: "+(ao.riskNo||"")); set("P7","Effective Date: "+(ao.bondEffective||""));
+  set("A8","Auditor/Examiner:\n                "+(ex.auditor||"").toUpperCase()); set("K9",(ex.auditorDesignation||"").toUpperCase());
+  set("A12","TO: Accountable Officer: "+name); set("K12","Position/Designation: "+pos); set("O12","Date: "+longDate(ex.examDate));
+  set("A13",`DEMAND, is hereby made that you produce all your cash, checks, money orders, cash items, paid vouchers, and/or unused accountable forms, etc., for which you are officially accountable as ${pos||"______"} of the ${agency||"______"} and any fund, checks, and/or cash items in your possession held by you for deposit and safekeeping.`);
+  set("C18",name); set("K18",longDate(ex.examDate)); set("M18",(ex.auditor||"").toUpperCase());
+  BILLS.forEach(v=>{ const r=DENOM_ROWS[String(v)]; const q=num(ao.denoms[denomKey(v,false)]); ws.getCell(`C${r}`).value=q; ws.getCell(`D${r}`).value={formula:`A${r}*C${r}`, result:q*v}; });
+  COINS.forEach(v=>{ const r=DENOM_ROWS[denomKey(v,true)]; const q=num(ao.denoms[denomKey(v,true)]); ws.getCell(`C${r}`).value=q; ws.getCell(`D${r}`).value={formula:`A${r}*C${r}`, result:q*v}; });
+  ws.getCell("D41").value={formula:"SUM(D25:I40)", result:t.cash};
+  // cash items rows 25..40
+  set("N25",t.pcv); set("O25",t.pcvAllowed); ws.getCell("P25").value={formula:"N25-O25", result:t.pcv-t.pcvAllowed};
+  const items=[];
+  const short=(str,n)=>{ str=String(str||"").replace(/\s+/g," ").trim(); return str.length>n ? str.slice(0,n-1)+"…" : str; };
+  ao.checks.forEach(c=>items.push({label:short(`Check ${c.bank||""} #${c.checkNo||""}${c.payee?" – "+c.payee:""}`,38), presented:num(c.amount), allowed:c.allowed===false?0:num(c.amount)}));
+  ao.cashAdvances.forEach(c=>{ const u=Math.max(0,num(c.granted)-num(c.cashOnHand)); items.push({label:short(`Unliq. CA – ${c.payee||""}${c.ref?" ("+c.ref+")":""}`,38), presented:u, allowed:u}); });
+  let r=26; const maxRow=40;
+  const write=(it)=>{ set(`J${r}`,it.label); set(`N${r}`,it.presented); set(`O${r}`,it.allowed); ws.getCell(`P${r}`).value={formula:`N${r}-O${r}`, result:it.presented-it.allowed}; copyStyle(ws,"J25",`J${r}`); ws.getCell(`J${r}`).alignment={horizontal:"left",vertical:"center"}; [`K${r}`,`L${r}`,`M${r}`].forEach(a=>{ if(ws.getCell(a).value==="" ) ws.getCell(a).value=null; }); copyStyle(ws,"N25",`N${r}`); copyStyle(ws,"O25",`O${r}`); copyStyle(ws,"P25",`P${r}`); try{ ws.mergeCells(`P${r}:Q${r}`); }catch(e){} r++; };
+  if(items.length <= maxRow-26+1){ items.forEach(write); }
+  else { const room = maxRow-26; items.slice(0,room).forEach(write); const rest=items.slice(room); write({label:`Other cash items – ${rest.length} more (see Appendix)`, presented:rest.reduce((s,i)=>s+i.presented,0), allowed:rest.reduce((s,i)=>s+i.allowed,0)}); }
+  ws.getCell("N41").value={formula:"SUM(N25:N40)", result:t.presented}; ws.getCell("O41").value={formula:"SUM(O25:O40)", result:t.allowed}; ws.getCell("P41").value={formula:"SUM(P25:P40)", result:t.disallowed};
+  ws.getCell("P42").value={formula:"D41+N41", result:t.total};
+  // accountable forms rows 48..55
+  if(ao.formsWithValue.length===0){ set("A48","N O N E"); set("D48",0); set("K48","-"); set("L48",0); }
+  ao.formsWithValue.slice(0,8).forEach((f,i)=>{ const rr=48+i; set(`A${rr}`,f.name||""); set(`D${rr}`,num(f.qty)); set(`E${rr}`,f.serial||""); set(`K${rr}`,f.denomination||""); set(`L${rr}`,num(f.amount)); copyStyle(ws,"L48",`L${rr}`); });
+  ao.formsNoValue.slice(0,8).forEach((f,i)=>{ const rr=48+i; set(`M${rr}`,f.name||""); set(`O${rr}`,formQty(f)); set(`P${rr}`,[f.serialFrom,f.serialTo].filter(Boolean).join("-")); });
+  ws.getCell("L56").value={formula:"SUM(L48:L55)", result:t.formsValue}; ws.getCell("O56").value={formula:"SUM(O48:O55)", result:t.formsNoValueQty};
+  set("A58",`          I HEREBY CERTIFY on my official oath: (1) That upon demand by the Auditor/Examiner I produced all my cash, checks, money orders, cash items, paid vouchers, unused accountable forms, etc., for which I am officially accountable; (2) That the inventory of such cash items and unused accountable forms in my possession and produced to the Auditor/Examiner at the time of cash count today ${longDate(ex.examDate)} is correctly stated above and is broken down as follows: `);
+  ws.getCell("N61").value={formula:"P42", result:t.total}; ws.getCell("N62").value={formula:"L56", result:t.formsValue}; ws.getCell("N63").value={formula:"O56", result:t.formsNoValueQty};
+  set("A65",`of which ${money(t.disallowed)} was disallowed by the Auditor/Examiner and (3) That said cash, checks, money orders, cash items, paid vouchers, unused accountable forms, etc., were returned to me intact after the cash count. `);
+  set("A67","Accountable Officer's Signature:\n\n          "+name); set("J67","Position/Designation:\n\n                         "+pos); set("N67","Agency/Station:\n"+[agency,station].filter(Boolean).join(", "));
+  set("A69","Witness' name and signature: "+(ao.witness1||"")); set("L69","Witness' name and signature: "+(ao.witness2||""));
+  // appendix sheet
+  if(ao.checks.length || ao.cashAdvances.length){
+    const ap = wb.addWorksheet("Appendix", {pageSetup:{orientation:"landscape", fitToPage:true, fitToWidth:1, fitToHeight:0}}); ap.columns=[{width:6},{width:22},{width:16},{width:14},{width:30},{width:16},{width:16},{width:16}];
+    const bold={bold:true}; let row=1;
+    ap.getCell(`A${row}`).value=`${agency} — ${name} (${pos}) — Cash count ${longDate(ex.examDate)}`; ap.getCell(`A${row}`).font=bold; row+=2;
+    if(ao.checks.length){ ap.getCell(`A${row}`).value="Appendix 1.2 — Checks for deposit"; ap.getCell(`A${row}`).font=bold; row++;
+      ["No.","Bank","Check no.","Date","Payee","Amount","Allowed"].forEach((h,i)=>{ const c=ap.getCell(row,i+1); c.value=h; c.font=bold; }); row++;
+      ao.checks.forEach((c,i)=>{ [i+1,c.bank,c.checkNo,c.date,c.payee,num(c.amount),c.allowed===false?"No":"Yes"].forEach((v,k)=>{ const cell=ap.getCell(row,k+1); cell.value=v; if(k===5) cell.numFmt="#,##0.00"; }); row++; });
+      ap.getCell(row,5).value="Total"; ap.getCell(row,5).font=bold; ap.getCell(row,6).value=t.checks; ap.getCell(row,6).numFmt="#,##0.00"; ap.getCell(row,6).font=bold; row+=2; }
+    if(ao.cashAdvances.length){ ap.getCell(`A${row}`).value="Appendix 1.3 — Unliquidated cash advances"; ap.getCell(`A${row}`).font=bold; row++;
+      ["No.","Payee","Reference","Date","","Amount granted","Cash on hand","Unliquidated"].forEach((h,i)=>{ const c=ap.getCell(row,i+1); c.value=h; c.font=bold; }); row++;
+      ao.cashAdvances.forEach((c,i)=>{ [i+1,c.payee,c.ref||"",c.date,"",num(c.granted),num(c.cashOnHand),Math.max(0,num(c.granted)-num(c.cashOnHand))].forEach((v,k)=>{ const cell=ap.getCell(row,k+1); cell.value=v; if(k>=5) cell.numFmt="#,##0.00"; }); row++; });
+      ap.getCell(row,5).value="Total"; ap.getCell(row,5).font=bold; ap.getCell(row,8).value=t.cas; ap.getCell(row,8).numFmt="#,##0.00"; ap.getCell(row,8).font=bold; }
+  }
+  wb.calcProperties.fullCalcOnLoad = true;
+  await saveWorkbook(wb, `GF74A_${safeName(ao.name||ao.label)}_${ex.examDate||todayISO()}.xlsx`);
+}
+
+async function downloadDenomSummary(ex){
+  const XL = await ensureExcelJS(); if(!XL){ toast("The Excel library could not be loaded. Check your connection and try again.", "err"); return; }
+  const wb = new XL.Workbook(); const ws = wb.addWorksheet("Denom", {pageSetup:{orientation:"landscape", fitToPage:true, fitToWidth:1, fitToHeight:0}}); const bold={bold:true}; const money2="#,##0.00";
+  ws.getCell("A1").value = `CASH IN CURRENCY — ${ex.agency||""} — ${longDate(ex.examDate)}`; ws.getCell("A1").font=bold;
+  const groups = [{label:"TOTAL"}].concat(ex.aos.map(a=>({label:(a.label+(a.name?" – "+a.name:"")).toUpperCase()})));
+  ws.getRow(2).values=[]; groups.forEach((g,i)=>{ const c=2+i*4; ws.mergeCells(2,c,2,c+2); const cell=ws.getCell(2,c); cell.value=g.label; cell.font=bold; cell.alignment={horizontal:"center"}; });
+  ws.getCell(3,1).value="Denomination"; groups.forEach((g,i)=>{ const c=2+i*4; ws.getCell(3,c).value="Denom"; ws.getCell(3,c+1).value="Pcs"; ws.getCell(3,c+2).value="Amount"; [0,1,2].forEach(k=>ws.getCell(3,c+k).font=bold); });
+  let row=4; const totalsAo = ex.aos.map(aoTotals);
+  const writeDenom=(v,isCoin)=>{ const k=denomKey(v,isCoin); ws.getCell(row,1).value=v; let tq=0;
+    ex.aos.forEach((a,i)=>{ const c=2+(i+1)*4; const q=num(a.denoms[k]); tq+=q; ws.getCell(row,c).value=v; ws.getCell(row,c+1).value=q; ws.getCell(row,c+2).value=q*v; ws.getCell(row,c+2).numFmt=money2; });
+    ws.getCell(row,2).value=v; ws.getCell(row,3).value=tq; ws.getCell(row,4).value=tq*v; ws.getCell(row,4).numFmt=money2; row++; };
+  ws.getCell(row,1).value="BILLS"; ws.getCell(row,1).font=bold; row++; BILLS.forEach(v=>writeDenom(v,false));
+  ws.getCell(row,1).value="COINS"; ws.getCell(row,1).font=bold; row++; COINS.forEach(v=>writeDenom(v,true));
+  const line=(label,key)=>{ ws.getCell(row,1).value=label; ws.getCell(row,1).font=bold; let s=0; totalsAo.forEach((t,i)=>{ const c=2+(i+1)*4+2; ws.getCell(row,c).value=t[key]; ws.getCell(row,c).numFmt=money2; s+=t[key]; }); ws.getCell(row,4).value=s; ws.getCell(row,4).numFmt=money2; ws.getCell(row,4).font=bold; row++; };
+  line("Cash on hand","cash"); ws.getCell(row,1).value="CASH ITEMS"; ws.getCell(row,1).font=bold; row++;
+  line("Checks","checks"); line("Unliquidated CAs","cas"); line("PCVs","pcv"); line("TOTAL","total");
+  ws.getColumn(1).width=18; for(let c=2;c<2+groups.length*4;c++) ws.getColumn(c).width=12;
+  // Checks sheet
+  const cs = wb.addWorksheet("Checks"); cs.addRow(["AO","BANK","CHECK NO.","DATE","PAYEE","CHECK AMOUNT","ALLOWED"]).font=bold;
+  ex.aos.forEach(a=>a.checks.forEach(c=>cs.addRow([a.label,c.bank,c.checkNo,c.date,c.payee,num(c.amount),c.allowed===false?"No":"Yes"])));
+  cs.addRow(["TOTAL","","","","",totalsAo.reduce((s,t)=>s+t.checks,0)]).font=bold; cs.getColumn(6).numFmt=money2; [14,16,14,12,28,16,10].forEach((w,i)=>cs.getColumn(i+1).width=w);
+  const ca = wb.addWorksheet("UNLIQ CA"); ca.addRow(["AO","PAYEE","REFERENCE","DATE","AMOUNT GRANTED","CASH ON HAND","UNLIQUIDATED AMOUNT"]).font=bold;
+  ex.aos.forEach(a=>a.cashAdvances.forEach(c=>ca.addRow([a.label,c.payee,c.ref||"",c.date,num(c.granted),num(c.cashOnHand),Math.max(0,num(c.granted)-num(c.cashOnHand))])));
+  ca.addRow(["TOTAL","","","","","",totalsAo.reduce((s,t)=>s+t.cas,0)]).font=bold; [5,6,7].forEach(c=>ca.getColumn(c).numFmt=money2); [14,26,16,12,16,14,20].forEach((w,i)=>ca.getColumn(i+1).width=w);
+  await saveWorkbook(wb, `Cash_Count_Denomination_${ex.examDate||todayISO()}.xlsx`);
+}
+
+const GF74A_TEMPLATE_B64 = "UEsDBBQAAAAIAKsgJF1Gx01IlQAAAM0AAAAQAAAAZG9jUHJvcHMvYXBwLnhtbE3PTQvCMAwG4L9SdreZih6kDkQ9ip68zy51hbYpbYT67+0EP255ecgboi6JIia2mEXxLuRtMzLHDUDWI/o+y8qhiqHke64x3YGMsRoPpB8eA8OibdeAhTEMOMzit7Dp1C5GZ3XPlkJ3sjpRJsPiWDQ6sScfq9wcChDneiU+ixNLOZcrBf+LU8sVU57mym/8ZAW/B7oXUEsDBBQAAAAIAKsgJF1WuJVmNQEAAJwCAAARAAAAZG9jUHJvcHMvY29yZS54bWzFkkFvwjAMhf/K1HubpAXGolJNY9ppSEirtIlblBqIaJooMSrs1y/taBna7jvGfu/5c+RcWi6Ng7UzFhwq8HcnXTeeS7uI9oiWE+LlHrTwSVA0obk1TgsMT7cjVsiD2AFJKZ0RDSgqgYJ0gbEdE6MirySXDgQad4mv5Bhvj67uwypJoAYNDXrCEkaiYrkH5845udq7KASn/XcBqjGvr/4Z2ndIdFGevBpVbdsmbdbrwgaMfKxe3/plY9V4FI2E4PKK49nCIhomv2fL5/IlKlLKZjGdxCwt6ZyzOc+mm471hu8KrE2ltuqfidNA/BCgSzrhdMrT7AfxAFjk4Shq4XF1KTydC2/qRHwaBMEezRFrYw6JNDonv6WDe+1U031AGDrthrL7ks54xjidbEbfIOoLt4dYfAFQSwMEFAAAAAgAqyAkXcKH2/LHBQAA1xsAABMAAAB4bC90aGVtZS90aGVtZTEueG1s7VlPjxs1FL8j8R2subeTSWZ2s6tmq002aaHddrWbFvXozDgzbjzjke3sNjfUHpGQEAVxQeLGAQGVWolL+TQLRVCkfgXe/EniSZxtli4C1OaQjO3f++/3/Dy5cvVBzNAxEZLypGU5l2sWIonPA5qELetOv3epaSGpcBJgxhPSsiZEWld33n/vCt5WEYkJAvpEbuOWFSmVbtu29GEay8s8JQmsDbmIsYKhCO1A4BPgGzO7Xqtt2DGmiYUSHAPb28Mh9Qnq5yxhdRNdgh+nZu1MBXUZfCVKZhM+E0d+Dq1QL9IFIyf7kRPZYQIdY9ayQH7AT/rkgbIQw1LBQsuq5R/L3rliz4iYWkGr0fXyT0lXEgSjek4nwsGM0Om5W5t7M/71gv8yrtvtdrrOjF8OwL4PVjtLWLfXdNpTnhqoeFzm3al5NbeK1/g3lvBb7Xbb26rgG3O8u4Rv1jbc3XoF787x3rL+7d1OZ6OC9+b4jSV8b3Nrw63ic1DEaDJaQmfxnEVmBhlydt0IbwK8Od0Ac5St7bSCPlHr7LsY3+eiB+A80FjRBKlJSobYB5oOjgeC4kwY3iZYWymmfLk0lclF0hc0VS3rwxRD1swhr55//+r5U/Tq+ZPTh89OH/50+ujR6cMfDYTXcRLqhC+//ezPrz9Gfzz95uXjL8x4qeN//eGTX37+3AxUOvDFl09+e/bkxVef/v7dYwN8V+CBDu/TmEh0i5ygQx6DbQYBZCDOR9GPMK1Q4AiQBmBXRRXgrQlmJlybVJ13V0AxMAGvje9XdD2KxFhRA/BGFFeA+5yzNhdGc25ksnRzxkloFi7GOu4Q42OT7M5CaLvjFHY1NbHsRKSi5gGDaOOQJEShbI2PCDGQ3aO04td96gsu+VChexS1MTW6pE8Hykx0ncYQl4lJQQh1xTf7d1GbMxP7PXJcRUJCYGZiSVjFjdfwWOHYqDGOmY68iVVkUvJoIvyKw6WCSIeEcdQNiJQmmttiUlH3BoaqZAz7PpvEVaRQdGRC3sSc68g9PupEOE6NOtMk0rEfyBFsUYwOuDIqwasZko0hDjhZGe67lKjzpfUdGkbmDZKtjIUpJQiv5uOEDTFJylpfqdQxTc4q24xC3X5XtqfwXTjETMmzWKxX4f6HJXoPj5MDAlnxrkK/q9BvY4VelcsXX5fnpdjW++6cTbxWEz6kjB2pCSM3ZV7QJZga9GAyH+QMZv1/GsFjKbqCCwXOn5Hg6iOqoqMIpyDSySWEsmQdSpRyCbcOayXv/BpLwf58zpveNwGN1T4PiumGfg+dsclHodQFNTIG6wprbL6ZMKcArinN8czSvDOl2Zo3IYcQzt4+OBv1QjRsGsxIkPm9YDANy4WHSEY4IGWMHKMhTmNNtzVf7zVN2lbjzaStEyRdnLtCnHcBUaotRcleTkeWVEfoBLTy6p6FfJy2rCH0X/AYp8BPZmULszBpWb4qTXltMi8abN6WTm2lwRURqZBqD8uooMqXpq9pkrn+dc/N/HAxBhiq0XpaNJrOv6iFvRhaMhwSX62YmQ/LNT5WRBxFwQkasLE4xKC3W+yugEo4NurTgYAMdcuNV838MgsWXweV2YFZGuGyJjW12Bfw/HmmQz7S1LNX6P43TWlcoCne22tKtnOh2W0E+TUMWgKBUbZHWxYXKuJQhdKI+j0BTUQuC/RCkBaZSohlL70zXcnxvG4VPIoiF0bqkIZIUKh0KhKEHKjSztcwc+r6+TplVNaZmboyLX4H5Jiwfpa9G5n9Foqm1aR0RI5bDJptyq5B2PsPdz7uis7n7PZgLsg9Ty/iakVfOwq23kyFcx61dbPFdW/tozaFKwvKvqBwU+EzMutv+/wQoo9mHSWCjXipWabfbHIAOjc14zJW/2wbNQ9Bc0W8L7L51JzdWOHss8X9fWd7Bl97Z7vaXk5RW7vU5KOlP7z44D7I3oO70pgpWbyDegAX1M707wngY89Jd/4CUEsDBBQAAAAIAKsgJF1fDC40oB0AAE3QAAAYAAAAeGwvd29ya3NoZWV0cy9zaGVldDEueG1stZ3ZcttIlobv6ykQmojpqp4aicTGpW1FUAQXcAFAU1hvJmgJshimCDUJ2aV++kmQyKRAnfxFOrodtcj6kCe3P9eTCXz6mW2+bx/TNFf+elqtt58vHvP8uX11tb17TJ8W28vsOV0z8pBtnhY5++vm29X2eZMu7neBnlZXaq1mXj0tluuL60+733mb60/54ms3W2UbZfPt6+eLfr9Wu6kZtYur60/Pi2/pPM39Z2+jPCzz28xjv/h8US/YlQh/v3xK19tltlY26cPni069nTR3j+yeCJbpz+2bn5U8e56kD3k3Xa3Yw60L5V9Z9jS/W6xSp0g3+2W9VrtQirx+zbLvRRj7/vNFrUhyukrv8iKmBfvfj3RvY6ypF8r2n7vIi59F4oqgb3/myejvyofl6etim7Ksh8v7/PHzRfNCuU8fFi+r/M3vLls1UzUE+ZL9HKbLb485S6VWxHSXrba7/yo/9yHqNR7k7mWbZ0+loTpLYv66YqWnFexpud797mnxV1meb0zULg1dbZnNxilG1NKIemSkeY4RrTSiHRs5IaxehtWPwmonhDXKsAYP+7i8v0/3RfMr+TBLew25vVPMNEszzaMs1S91Q6ufVLet0kTr2IR2qZma2jzNSr3GJVI7stM6PSl1obNjodXVyzPSwpVWP5aaeUpoLrH6scbOaTBca3Xj2Ej9stZsNXXtJJnUuU7YD1U7jTOKtcGNNN41vY8ypHMbXGn1Y6mp5jlVw9VWfye3MySrcrGpx2JjVs7pkbje1Hd6q5+RKVX0bMd6Y7I9ow2pXHnqcQ/F7JwhGpV3Vuo78alnFQ8Xn3osvtN1owrtmVpzl62r/UC0G9+sRb64/rTJfiqbXfD9aHUpDIsRjA2pd8UznSKOwj4rcvb75Xq1XKfzfMP4khndTTfa2+fFHUsEm09s082P9OJ6kK7TzWKlFMOp4mSXSkP/vfOH8u/88+kqZ1kr0nB1V6b1pprWYiYjWBcwa8+MVp3O4/WX9Pnl62p5p2QPSv6YKt7jcrV8fmZPbYlkeHtzrM4rUV2xUhdFr4ryVcuHm5K4u+50as/ntuso7J+Ob9m31TgrdjVUpSzty7vvN1mlfjV5udwA1gXMAqwHWB+wAWBDmlUKRi8LRj+5YPSd0YauyUTR89wvt4rbV7qd+VDpRZ2p7XRuWUVR0uTWdKIoAbMA6wHWB2wA2BAwG7ARYGPAJoBNAXMAcwHzAJtxZshlZAh5GGW7bZ3TLzqLp7ToRDp3d9nLmq2uVqniPjws79JNm+zRjDJJJiEbwCzAeoD1ARsANgTMBmwE2JizBiGbsvRbtXNK38u2y2KJeGWl2+W39aL4mSz2KUiWA5gLmAfYjM5qRXmmUJ65z3tD0jHRee98S9d3r7TIzDL2JiEywCzAeoD1ARsANgTMBmwE2JizFiEyXtD6OQU9z4GuQEocwFzAPMBmdO4qumoIXTV+RVfTxV/Lp5cnpbvYPh66NTY9yiViawCxAWYB1gOsD9gAsCFgNmCjhlxQ40Y5TzHParlPRZkWo8ZNtr4nC3XCDRNd5fSXIv2y3H4vJu5kdA43SUmVMyL/3i8lpffwkO629BS2eEnJBM1Kw1pNrvOm0HlzX0PGWWNH5+V+mWebq95fC7bMYsP1b6csSHhUdULsgFmA9QDrAzYAbAiYDdiIM2JSPuZMNn/ezXuWbJH4djSmxA0SMAXMAcwFzANsxpkuF1pLCK1VPmy8N3TDGTWxA8wCrAdYH7ABYEPAbMBGnBE90piz90veQ6UD21PAHMBcwDzAZpyBUbTYjS3WkqcvL4sQuz6LUoeAlDwQtBDsIdhHcIDgEEEbwZGAlEwEJIaZCTI7RdBB0EXQQ3AmIFIJ33EzT5fJfjOpYUpGq+vOpbLfgPC+uJbfLfYfFMe9tbs9coeMm6NGJAQtBHsI9hEcIDhE0EZwhOAYwQmCUwQdBF0EPQRnAhKD7LzOtzWJ/YxbBH0EAwRDBCMEYwQTCaw2ILVsQE2wYa2W5XXWOubWbZ++K8OjILdlELQQ7CHYR3CA4BBBG8GRgGT3zMv5rOXxyXswE5SyKYIOSrZbQvM8eUiXHh5KyUyUETHIz0soabsA+ggGCIYIRgjGCCYSWG27pW+iGCClbVcry0uyQry2etOOY/2pLLfKY7pJv74qT4v7lI2ci1x5zV6U5012/3KXKovVqvj7RrlbbB//VO4e07vv2z+Vp2ydvirZ5j7dsL8VTFnm6RP7+XmxvFd+ZC/syQIt1vdX2UZ5Wb9s03tl8aZjKE7QsAfS/O7yz+Ivyk82aj/uIl9sis3d/apm9VoJtdgq/7f7w11I5d9YPOzfV+XhZX1/SGYZ+yF9ynK9z85ztt2m292Jmsd0da+wAihiLtJxnz4XbWtncrt4SL+n6fNy/e2S7MA0sDBF0EKwh2AfwQGCQwRtBEcIjhGcIDhF0EHQRdBDcCYg0f7mdQ11JQD6CAYIhghGCMYIJhJY7Uq4N08DXUnpzTGJQWAmILG0mJdQUpgA+ggGCIYIRgjGCCYSWC1M44TCNFBhGqgwDVSYAPoIBgiGCEYIxggmElgtTPOEwix35cl9IQHJqSWAFoI9BPsIDhAcImgjOEJwjOAEwSmCDoIugh6CMwGJLe95CSX6B9BHMEAwRDBCMEYwkcCq/g/upHq5Ka9LTg5dO+5tz1LYdI6cofDQGtUOSleVLll6XBMrub9tlfluwfGySaltZqs0KpnZANhHcIDgEEEbwRGCY1F4hmwaXSxnyEUXD0k2ro/MHjtJPipzR1gkV2oAegjOBCRHpAZqkQD6CAYIhghGCMYIJhJYbZEHx1e9WRaL5MxKcdbMm9g9ukGWgY0a1SBLv4j53vIbyZYPNQgLYwHfn8F7o05gYSrg+/7mjTJ4QkllNJEyAPQRDBAMEYwQjBFMJLCqjNbZhwXrrQ8UFNq3Q1I9LaSe0sHSIPr6kYCkakDICQo5FZA6XMYhvZMLoIfgTEByJ7eFxAegj2CAYIhghGCMYCKB1QOwtbMPZKq1sspkw88Nd4V0Xd+5pWQoTFCzawQtBHsI9hEcIDhE0EZwhOAYwQmCUwQdBF0EPQRnAhID/byEdKNB0EcwQDBEMEIwRjCRwGqjedMYSq9QQ3Zu3HaCnnPrfonFCWXXUYb0bHsorBFdpV1CjTrlMRIhZSPC+3TYt73pXPndXt+tXu5Tyd5ssb/6B5HUMY+QXBsiOEXQQdBF0ENwJiC1NuQFS6sXOe8QDBAMEYwQjBFMJLCq3jeXHkq/SFPm1fYWz+lmt5XdzZbrLbV4uOFGyKOECFoI9hDsIzhAcIigLSAhk1EJTVW22vWUhbJRcmWp3Ckvymr3N+piyphHQ+54IzgVkOgDHFGbkvsz8FwjkU4XlZWH4EwkhZpiqcjhhqCPYIBgiGCEYIxgIoHV9sYvA6nofpda+hWa5/lD03XGlvg79+1vZOPU5ILpijhlii6ujGUPine3pdxXVhne1H7lIC1hsKcCz0sfwQGCQwRtVEIjDqmFzVRAYrR2eNnIe4uiQNZ5ek+2vI9Cd1ar7CcZ1vswrLXcLqTBZ6g85ipycCHoIxggGCIYIRgjmEhgtenqJzXd0otFOhIEJObNXQ6bREiLQ0p7toCE9kbCLLns4AkiJ24ATlFWHJQVF0EPpXaG4pyryEOIoI9ggGCIYIRgjGAigVU1Hm69qXsfmK7JJm43y9WKmnvclCHJVUS3hEaLkJxVQlMll94G6rkBHCA4RNBGcMSh1O3hpXn+ur8v039hE9ygPHSi/D5PU6Xz/Jyu75d/KfXLOr3+4eVInYrlkTcJ1U55SJMcNjg85OnHde3T1Y9KczrhIU+kodh4frhmlv+XBfx09VA8XH12JkqSkOZcBc7YWwR9BAMEQwQjBGMEEwmstrLDDT+19LS96dh/XNdrtaOivhHPkW2KQ1NeWVb5UKPZ2lUWi/nvLCBZWTZ/lu76eWzUUUEBSc2WZlvUNm0Jdeo6kcPNktu0CHolNOtEfzPjUCMSNOdmaVEify6CAYIhghGCMYKJBFZFefDnqg1ClMZ7TTaQJhunaLJxpMkG02RDoskG0mQZG7XfPhaQch2UkL8R4kiTIIeOMEtqEkCPZ4WKc8Yh6bdSkUcTQR/BAMEQwQjBGMFEAquaPHg01SahSfW9JptIk81TNNk80mSTabIp0STwUo54bJQmJyWUyA5kwhFmSdkB6PHU0rJD7lIVOCBvEfQRDBAMEYwQjBFMJLAqu8PFPrVFyK7+XnYtJLvWKbJrHcmuxWTXksgOuDtHPDZKdlOUTgdBVwVuXY8nqEWEnHFIKwv5QhH0EQwQDBGMEIwRTCSw+tKemlCWViMH2SNhiafIF/PUThBW+ZAQllb7OwtIC4s/SwqLx0YKC6XTQdAVkBIWTxApLA5JYWnAA3eLoI9ggGCIYIRgjGAigVVhvXnNU+mgeXOCtxgpj4UFXH1dAaGwyoeatVJYdSasukRYwOs4EgkmhQXS6SDoCkgKq46EVUfCQq48BH0EAwRDBCMEYwQTCawK6+DK09SKsIhDZYUDj9oR4iFpsanvxPZGZKp8+dYTkMhcH8EBgkMEbQGJfcaRKCFSyaAQHARdAUklq+VMklrgCkjtunCztJKRkwzBAMEQwQjBGMFEAqtK1g5K1k7qIjWkWu2daokuUjvqIjXWRWqSLhK4ekYiwaSwQDodBF0BSWFpSFgaEhZy4SDoIxggGCIYIRgjmEhgVVj6QVg6Iaz6O2HpSFj6KcLSj4SlM2HpEmEhP45IMCkskE4HQVdAUlg6Gnt1NPYibwyCPoIBgiGCEYIxgokEVoV18MZoBiEs41hXyPEiINSVcaQrg+mK3tG3y2clujKQrkA6HQRdAUldAdfSTECyw0L+BwR9BAMEQwQjBGMEEwms6urgf9BMQlf1Y10h54N2ivOBPyR0ZTJdSZwPGnI+iPSSugLpdBB0BSR1ZSJdmUhXyIWAoI9ggGCIYIRgjGAigVVdHVwIWoPQVe1SfddlIR+CdooPgT8kpNVg0pL4EDTkQ9CAD2GK0ukg6ApISquBpNVA0kKeAAR9BAMEQwQjBGMEEwmsSuvgCdCapLTedVrIE6Cd4gngDwllNZmyJJ4ADXkCNOAJmKJ0Ogi6ApLKaiJlNZGy0GY/gj6CAYIhghGCMYKJBFaVddjs11qksmrvOi2026+dstvPHxLSajFpSXb7NbTbr6HdfpROB0FXQ7v9Gtrt19Buv4Z2+xH0EQwQDBGMEIwRTCSw+ib6w26/zjfPW1VpHfda/DmqsrsCgkM5ls63zLW9tPTa31lAUlo9/iz5rgAEBwgOEbQFJI6PjEQOKT8+hzp1ph3BKSpVB0FXQKIb9XhWGsSRlZnIJ3UfhJslGwKCPoIBgiGCEYIxgokEVhvCm28tlHvOsldtX99m+WL1p9LZKuL4Mvg2CGtCNfIjDHxrmzoTi6Clc8+Avms/c3/6u6UababbPySNqAxA3iJBcIDgEEFbQOoWiShiye1J+sy8ouxKnjqIiMprguAUQUeUtCFK2mEl7chK2iUCuCyAKwvgiQCmCOCxAJ4swIwHIC+V6Mjzg6CPYIBgiGCEYIxgIoHVRqvye7vyc+l66Q2pyd7iduvedibK+5uBHce6cr8oncnEDXtW5bbgrWtRx2FvdHBrqYughWAPwT6CAwSHCNoIjhAcIzhBcIqgg6CLoMdhq7FrYqz7/B/WsCWtixuilh068kYh6CMYIBgiGCEYI5hIYLV18XckXh6+F/bRZ4pKD1GLug7HITnv1pFDBkEfwQDBEMEIwRjBRAKrZauf/wko7iSRvXGge1ntxXzHnxfvNOru3kDQuZn0lL77ZToney5unHoXAYIWgj0E+wgOEBwiaCM4QnCM4ATBKYIOgi6CHoIzAalLQTpyQyHoIxggGCIYIRgjmEhgtTkZqKsSLah0PFBT0qHOvS/U0VMekqqIuY5cMwj6CAYIhghGCMYIJhJYLeuDa0bnFzZkF7BCZankyiNbBU2VTFkrqfJaLIkCZaGslBclJbsiU76q6CJoIdhDsI/gAMEhgjaCIwTHCE4EJHQ8FXUiuf8u6iRjFZCfUTEOSpOLoIfgTCSYXNAg9xSCPoIBgiGCEYIxgokEVttWg/de+29/77+qWnQ8hy1gvfFBo+Pf9StMkA0MffVKQEJbVgm1hux43Sx/pe7I9z4MuHv/yrb4rtI83RTf4XEyylAfpX2A4BBBG8ERKpKxyJns1TdvX05AveTww6LZvymA+oDbh0E/UIKDcub+amV7QqCyHohV9iWu55mwoYLGcnC46dy3RUoaOL4s/b2b7Y1mABwhs2MdXJ6Z8JAtsv/ew2aN3AgG37hyUWo9YZac3tBfkiq7YORsQ9BHMEAwRDBCMEYwkcCqqt70tC2kKuDzsvT3HrY3qgJwhMyOSyhR1cFhR6iqVVY/5WdDcbootZ6O/Gw68rPpyM+GoI9ggGCIYIRgjGAigdVP9R78bEYNqEpASlUGuIcyFJBSFTI7QWanJTRaxGFyR0BqZYsS5ImQlO9fQKo7MpBfCkEfwQDBEMEIwRjBRAKrwjksX406Eg64vmIZ4J7JsIRkVdgCUu8FQnFOUJxTAan9EmTWRSE9HpLsjjgkuyNullYVcpwgGCAYIhghGCOYSGBVVYcrM4aKVKUiVYE7H0MBye4ImJ0gs1Nk1kFmXRTS4yFp4ahIOMgngKCPYIBgiGCEYIxgIoFV4RxuqBgaEg64KmIZ4E7HUEBSOMDsBJmdlpCeACGzLkqQx0PSwkEODwM5PBD0EQwQDBGMEIwRTCSwKpzDDRRDR8LRkXB0JBwdCQeYnSCzU2TWQWZdFNLjIWnh6Eg4aGsfQR/BAMEQwQjBGMFEAqvCOdwwMQwkHHDXwzLApYyhgKRwgNkJMjtFZh1k1kUhPR6SFg76+pGB/BQI+ggGCIYIRgjGCCYSWBXOwU9hlDcgGme9VhSc6RJ/ZAeSbgzkxUDQQrCHYB/BAYJDBG0ERwiOEZxw+Oao1ERvtlmjok8+TcsAGuXwdERU1FYmD9lURVQui8qVReVxa01qt0xAymHBo6IbGXJYIBggGCIYIRgjmEhgtZE1Pj6BZTTKqZek9V13FaWnKF9Ya1IUW1H6u/+yX3b4b1yHbGLIj4GghWAPwT6CAwSHCNoIjhAcIzhBcIqgg6CLoIfgzKC39cumg+4LIegjGCAYIhghGCOYSGC16TT3TcdATYfv2uu/NnDZyrD3pXcTK93el1u7HyvZWnl6Fd+FVbJF/thWfq//odwWH619eWb8Pn0qXnX/9XX3adjjr2gxk+Vnbe9337Vl1n7xq7anf87WVhZPkm/Z/kP5XS0TX6R2uf6RrllyiywqWxbT28/WFrmSRVp805Zl5c0XbYunRU7zjC6MMtp8ufez7SLbWWYh7hev/MO6yy377WaT3uUs9dt8URwYX3zNfqS7WBj9usm+p6zos5/r4uu8D1nxZuot/b1vgztrqEOmCFoI9hDsIzhAcIigjeAIwTGCEwSnCDoIugh6CM4EJDe0kX8NQR/BAMEQwQjBGMFEAqvd3sG/ZlQ/4HVUZiUkj1wZyHuEoI9ggGCIYIRgjGAigZUyMw/eI7MGyoxDssxM4Iq4RdBHMEAwRDBCMEYwkcBqmR1GUbNeKbNTR1Hq20Tc1HkfqGDjK2VtxK2pZ12D2b2t+/1X2f/7v5qqVvvHv/V/l5dUup0y3c3afunm6Sp9mp7nj9Yjcrkg6CMYIBgiGCEYI5hIYFWPB5eLqcrb8JDD8xSmyhSm/orCfNks6ecyfyxneD8Wq5cUim43AyXlw7O4v782MejXbMz4c7R8kOMFQR/BAMEQwQjBGMFEAqvyOTheTA3JR/sV+Wgy+Wj/dvlkLzlQEOtwaMnwbO17HFcqGQ1JBrlcEPQRDBAMEYwQjBFMJLAqmYPLxdTRrEFHZYa8DQj6CAYIhghGCMYIJhJYLTPjlG/dmEY5/knuFNLNgi0Q9+tZpnXNbP2juBis/GTLvXvxKSLpqrtYJ/6ulSvdbbGQ/g+tun+mm1TZpPnLZr1f9z4Vq+p8cZcri4ecpaRI3mGdS84PZiZyQ5jIDYGgj2CAYIhghGCMYCKBVUWZJymq3FMmv54kIHU5C0ELwR6CfQQHCA4RtBEcIThGcILgFEEHQRdBD8GZgNSrFUzkI0DQRzBAMEQwQjBGMJHAagsofQR68XKtEy87muWLpQzJsXrJR/Xe9GpusV+Ybv62VebLb+sF69DS9m+/HbZGyekO91RIjrzTsXrZdlmc7r+y0u0uKvZzJaqjP9T7C8qY6f0sBKcCUgdbRIbOK8Zv6fru9Wqel1mhvs2H0uQhOBOQ2gwzkQ8AQR/BAMEQwQjBGMFEAqtNo/mx+8wsNw91mftsbg+cnqXYjnI77Cnel96853R7itsnP1QrzBFp7iJoIdhDsI/gAMEhgjaCIwTHCE4QnCLoIOgi6CE4E5CYHMxNtH2MoI9ggGCIYIRgjGAigdUW0ypbjHnyxXmT3304a/svXObrdLv9m7IuLlEV8++tGEdIvwyPpk69FwtBC8Eegn0EBwgOEbQRHCE4FpAcxzhU/5MVMUUJdBB0EfQQnAlIHKKfm8hbgaCPYIBgiGCEYIxgIoGVJtoQ3op5A/kcEPQRDBAMEYwQjBFMJLCa8/oh52h3G0EfwQDBEMEIwRjBRAKrOVcPOUcbswj6CAYIhghGCMYIJhJYzbl2yDnaX0TQRzBAMEQwQjBGMJHAas71Q87RLiGCPoIBgiGCEYIxgokEVnNuHHKOdrMQ9BEMEAwRjBCMEUwksJpz85BztIuBoI9ggGCIYIRgjGAigdWcNw45R4tUBH0EAwRDBCMEYwQTCazmvHnIOVpsIOgjGCAYIhghGCOYSGA1561DztEcDkEfwQDBEMEIwRjBRAIrOW8e5nBNNIdD0EcwQDBEMEIwRjCRwGrOD3O4JprDIegjGCAYIhghGCOYSOA+51fbxzTNrUW+uP70lG6+pd10tdruHTxsIV0v5nbi98omfdi9g7ZdvOL16h3p6Ga7eEMRQVStfcMS8J5MDb1d3KWiwqhtW1UJMjIb7WLzkwhjmO3i6sF7sntLrmoQxNNa7eLF4JQ1tV3cgyXC6M128eqM98RhqZ6RqR7Xm+1JnYqnpzfaxatmqHga7RlJOnqrXbyIgshpve1StTNlthyJLRYJZUljNa2RNV1X26M6lcsOq5uhpG5YmRlUmU0MBqjcszqbkXXWMYx2ce2Lqk2WGY3MDdOgLdFgvV1cPSesMQXMSAV0dLVdvHuUsMbqeUbWs8tKbUaW2phJkKxLjaVZ06j4m+0RqdlCftTvmcSoWumy1I7I1Hoqy4dK1ZelsbakUaXvsjJ2yTLusDLukmVssRqzyRrztFq7+I4qlUtGVIo4TH8zUn+WZraLz/dQ9a+1i4vARL2wIqBKwDMKydKa1VjKyBLQi2ZG5pOVzYwsm47J4jHpNBtth0zBkGl2RPdaLBqyZ2AhHDLElPUyDtnLeGwUmNGjgFFrFy8zIfpt1jdO6RbI+lOH7E+HusH6RrIPMFvtYtORKk+zPSNHgQ7rA7uSnpY1QTqnKlOUSoWZsGjIWOpMA3WKdJk6umQJWFqzXXynhSobFg05qloqU7RKkSFT9IhUtMfIjCTdOusi6lQ+babPEanPIavrkaSumT5UOgyrUVK5HZM1N5Mqgw6bJXTJWYLHyIwkQ1ajI3qEZDVqkzXqqUwFKtmv1ovGQ44RbJSckaOkp7NeSif7LzZNoWuUqUDS57I0a/S4yjRF1uiEtZAZ2UIcpkNHosNW2yZnQxbrjW2yNx6y1jsiW2+HqWBIqsBiJW3TJW2w9mbQ85Rmu0vHY7BpH6k1vT0i1WGxurHputFZC9HJtsPG/Bk55o/ZyO6QI/uU9UXOvi+6Okywrz89b5br3H0uvOxb5THbLP+VrfPFqlt8UmKT3u88Wj/STb68q/6S2XlefEuni823JQu5Sh/YPL12WW+ZTaOmtbRGrdZoFhtZm71jjEJ59kyDr1meZ080e0wX9+mmYIff1urG7rLfQ5blElamd57mL88KyybLyu5oweeL52yTbxbLnK1OWB7T3TZLUUo/s8333ark+v8BUEsDBBQAAAAIAKsgJF2NcUQ4YgEAAMkDAAAiAAAAeGwvZXh0ZXJuYWxMaW5rcy9leHRlcm5hbExpbmsxLnhtbI1T227CMAz9lahP2wsplzEJUaQOilapA2mdxnNWXBrRJpWTMfb3c9mFMlqpbz4+Psexk0zhaAGVyCOp9uxY5Mp4TmZtOeHcJBkUwvR0CYqYVGMhLEHccVMiiK3JAGyR84HrjnkhpHJm01+/B61//CbYxVGnqUxgoZP3ApT9tkTIhZVamUyWxmE4kVvPwXDbpz6n3itRgKnF7CByz3mGRCsWa9/hV1zsL/3lZv302sRVcNhG9BuIFLWy7GbgDka3DfSbSPbt7EncoqrS/GrEhbAiBltD7BSFtBaX9gMpgskCRE0rP5/3srDftXDQtXDYtXDUkr9ryY/pnlF/sMrSpTiBPK9AQIhZzzEWKXuYBZEfrgIWBeHLI4t7bB0F/pQfaIWV4qyL/unmgl4WYL2UU79z036t6ZxQXRxrNHpHD20u7SfbCHr2bCGJlYm9duR/4zVOet+4Qn5567z+t2qw+rqzL1BLAwQUAAAACACrICRdSknEJfAAAAByAQAALQAAAHhsL2V4dGVybmFsTGlua3MvX3JlbHMvZXh0ZXJuYWxMaW5rMS54bWwucmVsc42QUUvDQAzHv0o58HFLLbOitIXaDikoEzfZo4Rr2h5t747LKd239wSFCT7sIQ/5J/nln2SvNKFXRvOgLEfLPGnOxeC9vQdgOdCMvDaWdKh0xs3oQ+p6sChH7AmSOE7BnTNEkZ0zo8PJ0iVE03VKUm3kx0za/wMGWjw5jdOT0uML+kFEB3Q9+VzAG5NjkAadgZ2m2qlPgpp49MbCY/kA1a6EI4b5qySuFXunpGeI0/e9cWx6o4NeNf4U9iYbqJCHIGwXnCFd3W7KkKxCxHfJzXfDvjrW62Xi5dfCs2nDkdsfgyJq2ly4pr0WUGTw58XFF1BLAwQUAAAACACrICRdAZd/BmIXAADqGQIADQAAAHhsL3N0eWxlcy54bWztXW1vI8cN/iuCUxRJkYu00kqyey95OTRFgTY49O5DgLo46Oz1WaleXL0kdj72H/Uv9ZdUK8mrlS2OuEM+M9yL78tJ8i7nGZLDITnDmRfzxd0oe3udZYvG7Xg0mb88uV4sbv7YbM4vrrPxYP7V9CabrP5yNZ2NB4vV19nH5vxmlg0u5/lL41Gz3Wr1muPBcHLy6sVkOf5+vJg3LqbLyeLlSdIpfmts/vvL5erXXnrS2NB7Pb3MXp68//wPjc++/Oyz1vsvnuefzz9ffzvffPv9v5fTxfNnm/++/nr9zDfvvzhpHiTdfUB6+97//vPfzYdtS1+1Wu+fPT93/vXAuw+x5A998/4ZgaW3j+X8DfFc/yHmByAfoKoK4/Qht8/flCjm7Mx/2DJ99dP5/U/VOH+238w/fvesk7bO/jle/TtvXF6ef3neuFv9e/7N4ff7rf33t+/dv0a8lDx8qXl52XQ2095/I+9wi3i0s//oA224ZxfxcvqIHSVuHGXGAzVedcvdqx4xou4l/Ei+qx+e7Yu0uR28r15cTSe7MdztnWx+WbU7GGeNnwejlyevB6Phh9kwf+1qMB6O7jY/t/MfLqaj6ayxWFmPFZAk/2X+6+bPyeZbbli2dMbDyXS2bnzTQqx2vp0NB6ODrRQ0W16vf9i+zSbl6nGZmGbv3w3H2bzxQ/ZL4+/T8WDysO2E7EhbSFSN0IYbw8lldputxsOpKvHHbAc1NF/Mhv/KgrUmVcd9hXMNjcYPg9ls+otjGBd9TPps0h6K8YC6i4XHTY8P5oqWQgngqQK+aobw4nowm698ys0rndSfZKmbLKLeXeerus7MclDgqYJslpsv8+Hk4yhTnrXktAt6vfzbz9ls8e1o+HGypbv8ML+YDW8WMtKKI9BXYzZqOPv44eXJ96t/ra2XiVCkY03JPRdMCywWYbihO0QCNblvJDxGDte3FPjr2WSxnN01/jxdXA8v4o+yVuUOVHK/FRuu5LHJ7Rtr7IEmEiXafvQqj4HKkuRxYxhRrmrAMa2xppUq4+VUSOeo3KRAK9tEb6IIpGdKYpLSkXut3hz4qiuk6kjnlEW2/i/P0A1HoyJD1z7Z/PDqxc1gschmk+9XX9bvrH989KfG9vO7u5tVYx9ng7ukvcW/fnT936qRD9PZZTYrmunnicDNb69ejLKrxeqN2fDjdf7/YnqTs2a6WEzHqw+Xw8HH6WSwBnH/RvnNxnrVYWVKs8vhcnzyKGjrbcKg/NG9NpjvrZ68B8N8Y/PwceBNm3CYZNfP2kDuqwHNIIJFt1JZXihA4QYiwypIB1eFJgIMGKAZrGJq5SoH6UhdBVB3Nkayn4vr9fYAHWPlJEaaKudbByY6FciHTVpUKCyij8ddFMx+EpeYRyZXfEa1ZycsKIGl8Yx2hbhoaslCKWhoGMU1Md6u5F4Dg+Viug21D9mvy+nywyg7+LTSnPigBesqEMCBhwwNUz5pbcO3yKKR+U8mrFbk6UoqeFAGpKIXagZ3ABsR2QrCJVMHB6hmvTNl3auK5GlI1THk/i30rbJmmkjw1AN1KF+wQvgCVmkGkjCZTg+WwHSqAlPES4ZxR1sYOEYSPJ+2u2XHUISKpOu4EmEi4I6csgjmE0ROxluYn2CYMTOH2Qg6Wo60rj00GHDXRYbYoWUmUwDxKOqWvwnmm5qcM6KPyHqlJfCCgY5J4HYWM0atrrNp5P4ZGrk2piU9H2D7Yb56NxuN3ubUfrwq6ijSvF7j9qp0fMv65JvJ5iSX1cfhaLT9dUNn86X54KW04/NWqam059VWlddSccf4jfF61hjc3Izu1nWz42x9RNVKGIP7r428qHZ4kZfdXKy+Zpsyv9srh7xOsU0xOf/U1lNbT209tfXU1lNbptranky3nSzPws3LT03JmgrpQ32SDHxqqkZNgb34T5+Bn05TZ1FsoDuqbpbzCJusQimhcJqkjoxCi+7DzfDn6eK75WIxnay/58faZm9m2dXwdv399qpAQFFvQ6l39KmnZ1Dw27OtlegnzuSIWLKPyZd479B9BcmmUfSme2jcshssD/Dr6Wz466q1CkPcoczxQDlU1B6opKsz7ilJ5FML0q60sTYXTV6JOxT32xUUzIf7WtpD8qeNZb+AfNLDak/SDeURkMIVKCfDRnc6WPIplnxicd5rm5yN2x2LqLD6ITCMDOo9JW+alBjbMDr93X5QT2i97HxUHbpQW+rosfc8WQpPqJxK+1TA0UQ6wsKK2ZkaTy2iKrHKkWjR0A+x+j0ezkyWaqAXh8fu2J4iz3dincYuaUEtS0Lv9lAhD/Ax93adABI3ZfiAtFbSh2ZuDGi+EnpqSm338bOehu4AEmesnCU/PDxgllkNsCM4J4MQ+BnksdQD8AbgkeWbMaMkIEGQ8kAD4I3JMAkiw7LZijfsMYJ2xFfcbgdVv7LnCvDN9rb8YOdv7MpOG+u4UvogcA4Y1NmugVf+RYc6hV0n70qmdbFiTQRLDgzyOlk7irpO1o6iLsjacRiPXSqBjifsMo/OQkPYZd31tLaukNkQPOrMYFXaYQhhybTXq2/DyXK6nB/vvXV89YR3ZgQedpJ3OCjwgd3z7zx2Gg9i1VKTe2kUBk6CXB3WwGdk0oo48tqm0fnzLoRkO8fRUTlhpaiPIq8V3GBXiduAhbQyecAqY5k8lY9Xmo4p8kphMUVeKbKkyCuFlhR5pdiSIq8UXJIrOVjySgEgNayQm64qTPYdRwhoAZ9raJjG17OBr0PtAFAaPb6TUiLKIOg4BOT2c8GUV17/991eIOONgDoTfFW9Tpiu4tFVIoc6eGMSL12RWsSeQJxrxS7yAEFst6R5VLDLlw7c61muTdVI+njyYZddk173OCr27JB67YOX7JFhoGfHFI/Rc1bKw+9QZZR1COKo8po3JEhmN4AzaL4b/o3n5JC6WMXLJNkXfrAwuBYBVdJjlH5hlyZ8PAZGr1nbpmgFiVrmE5hVUlSpVVQqO9+oDceCDbsJg7zIGPiVwbC67YNLFtUkvT5jnhb4Aax+C8IFlrglQxspbkk85ydulFcmtDl77HJoYWApxmQXb79qtCEbYUwlYFPFoi/ZtsiyVZIJH6jl4f0QFizMkoBj7HF0RLCEx6KP3R8autIi6Z0qZuT8Si0EDgiHvMCd5ZAXVChx0pWYeZdXhS93GQ1t6VNLASGNsQI8K+u0tpdpY3BPlD6D7sdS2jhC0hesPzAjWINCU+o0bYWA1OtYjyBcPvYAJUsHcHQo4hE8YT1UGSZM9tiZuVN0aw8tunIObTw2SJ0bT8pcdR0cGDruZAHDGHzHnpizaKBczOowtCR4/NDRPGf4ccwEJt82yNH9w+AcZebxAkVH4grpWCpt16b8SmyhcfDUNQNTTEiUFAQJN9B+MMVlIDITHVESHXycVfmagA62GMfVZaAJCJ1AD7mNttLNIoHih07LzqorB5aScpO91sn7uODHqhDdj6Aq3Zwi3gEp1MUQXOv6w1NKDVHko265ctoHZK+V6mso8krnLFHkJfcjcGYkNvO9DgFUtP3V3ZoINiAmSPWCGAZMJe2UH6XlWa8ioM/gjtLavrjyxJM5AtPApR/vkEYHU+OdIw9hlcImpbCLg8wNgmR4j1nZEUZ+gvskWJYSbQyC7+jlDAtkQZPiLOmDE1reitZSyJ1BsER63ARFDONaIVZNw4bSXKYhttLXDVX1ZI2mMNWSNVG5dnwAxBWq4KAxTAKcW4zvWvjzVrXUB1abJ0vkWipGVbjH0StOMAyXTmorleqGKUsHJq90RBtFXmlVIQUfqUrJVok7pCOHPaM7bsmyCxV2L5xHt/XOsogx/TJWvcy4nzwRQgNQYxGO00M5YxrZaDt1zBTjskDF5FTYwFTGKMzMIcMUeoMMBxOmgkm2R07ic/EqzqNmxVy75Lz9CtQ2POGkxDpwrUI06iduTNwljQZFPgIQlsScI484wQxaMa7w7IJLEeeAGoVlExV2te34eq+dlD/3vBZYeviX2eDmXXZLX5PBPvElHkTU+GS4CDJ/0CImUIAvqnfBVCLL4ovQsmMd/xXbxYHYB4UTm+xMjzHLiozOj8JT3KJu0kqpOs+45xZaqqBh4YqpWc7Cm2ioaM2yyauYqELzijsfYnDJ52kaV9xUBEa7kLiM8is8u0oucyouAk6dNRIJotepvNvi4mT/bkPpJ+zSft8G2HV17ga65JZ2pQboHvCvVvFrIGXXc3o20JaslzkGz8NitsX05uhIorkgOXMyGEhJtuIYSH9UkvvHcajAWo0eNV3+hVCew5JdjOPZANy2gyZlmd4dPZRNbK+R5tS72130eIPaPosG2uDEpgRJ0yHQ4pLiHKYEib+1xXcCYG90NmagmVET3XE0Z0XHZgI73pXkFDxxpSBFSRi4eJvLnAPEohgTKK7SGerVi4vjJFCqQ076ScTIFcloVCDri5kz/vEGGT3VKaq3HltFKWScWcWaLwEuw7Ojt/Jyh19gPeHA6sIdYHiKRVJRgXSAq4Dw7bhK2p3UDaUsC9kAPq+PlkEqOSRKrnzOFROja2kWrT8qCBFO4tD1kqO6ZVTnQ0c/vAmWtnFwI2o0DwJdsdJM3HpLp7yFqUvVkHVBaunY34h2mjooZ9QmKlFCD4cK5PYKYaGmLKlmSYwRTIaiYBg3CiUWywsVy5UHx+e98HkcDiyJrwWTRU8S07OEYbPbkoCbNfIkt/7B7EEvpj0gI9yexK+GT7C4ad/kRCYynjBUHcnKEsyKQLcWVYyL6Bg/blqL1H5QMCXF1Y6wqsHiV1xczlUHi/yCLkWbyGzt24dKtfkh4DGOMygd4gop2SjfQkvbR4xzUPEcdxZSjCt9j7TS+RP+q6+JQ2Cs6FHSACuUD7+CwIEFsrNGNyfIdlejVugdNbCsDVLQuRKzPwrFSuT+KNT+SJf4O0wD7r9EUW7C0vLnft/JembJ2pY0grNz6EjZdbUIKs9jG0GVcs5Alqi714kj0c6LlmESmXGvQyH65RNjzChVi6FTmDN0uSf1WWQVBUq04RsnQJuoJMupOFSYA92EqEzeyRDVLFCgbKq6RVCSBTkYKElGBwfKJiqTRkG0MIVDZdJWxQ1sTIZbpABtWiuTvDLpwWDiUneJJibgSuC8iuoYtyyaBUVQePHFPW8/zjXSRwNmKo0W+XICO9k9FrPiytBidEOBiuqyk+khi6CizjYUqPDuAkfRMVZh/zLk1FhGVAtdZENvx6Lu+aWKPrzQsWHB8hiWev5W2Cs4xNeRhk/PsGCFz4SwYEVNG1GaFTXDRlYHRAVF7RxgF5u6L72myCtdaE6RF1zZzbqvTuJjAa/Rk3hZQFgSgw6E5SHE5Dgs6dWRGBkyL3Op3e1F4d29p/s/AbissssDF8NERBGjEBfqaiVplPN04xN7F93TbUH6uH5bhqt+t3VHtA/u5Ey3xrgie12p0StJaVyRjRdiZ4inF9GPO11XqwGMMnczIHKuI4xhO0ozwNP94n4QWVccS9KYwJuXJYlMICxJghx5T3Vk19HQZBXxQmhpmlzkaEvvi1fMpsAxiVx/H1DwNJ2fUsGzdLZ0PQAsm6gix0iKlSuKCU3FKpEAqCS7u0zxSjo997rHYUnmnBQHS3aHB87CB1d4DqrwCl+ypGT9StxSERpW1HmHhhV3+6dmtKPmkyqGFHBMwf1kjjMTd98UhSruMQYUqrj1koiUEQ6VyYMoMAaUNwABG6iEkOLctm397MdjgL0xhrzVWoerqDsxcYihVxXVnsf+bDV0ic76xCht465w1xgFCzTqpbCMXswpOr8j1HAQHecRCmS3DoalG9Be+4MMOHEfA+m8JRMG0hsV6gJIoX9r9IB10YFmyDv04t7tR85hKJ2X4op97SmFK7Icg99F8tNyvhhe3Rn31HVRolx1XZSoDEOBcjeregEPfXMwHDfqwns4cNQdLXiOg4wtnuPGVSW4UTF0b44mLOztCAIxGk1NoEyoVX7V7RoTlneEDOVtZq3N8crqje7i2+SMRlcxolH+nTIIZOwLX0iWgUI9MTBUBM+7ioZOLCBzzd6ooEtrx4UYHBdXu2gxhr+AiSPHuH4XLUabsEA2VXyv2dPNhHxUKOdZCgs0EoWwUJkWKbdABkJ462XkS6Jp9zkCLpThSkwargCofAyXEBYrZMROiopXlopudFZDyhG1T3oghAZ6ONcBYKGSKVJYNr0yVKpVemF03AxPlzz7Fruf5bHRqLReQ8PGJqaqW2USKWoRUh8pyunUn+m6oWc6pV0g9YQNTubDuG3asgVf0AHDBq+8omCHNs5Kql1P2CGrmPy3HYdW5Nrobn3UtT5WjFhxSWujqDys5jSARFoboOAtRYpI29YyaHQhTF2AhnZt/Vf36wLUmuhJoNZET1c6gtIJuuWYIHuvW0RYh8LWtA6cFB2DFIyTgapva5FtgYIOdTaBbqYl0ECrQ54Fy2iQhw0FjVpuwHIaWYAO43Qd1SNFOmXm9ljYLPUX8gp5gIh5n6Wexz2Zt+YikKGstwgkanFbF6RNixOzSJDOKgbLf8qWk4IllmRHAJniZr5QaGTLPYd5IFTiBJzJgtWOyZJjaPbKHxUyxLBqef1xxa2qogsvbcIyWnIc0OOtV5pIETGUx/bzhTUQuwrEQBGudMQH2hUmhRl2rcB8ykC81SpszrcuaV7/2m1ru/dppNh4SROpuSoTSkt71vav0EhrsyUIPKKsjh+ro8Xq/kP/AMxovAqdmCtV/5E2JCrC9QA4GvRLlK7jdyIBC5fE/PrhQt3jXJRee15MH+96accpUBxQyLvoiU3+3Wi8chcfcHBFvnM3JS8hlTDM89ASFi4Jv4C4wrOrNBdp3tkqVC4OqqiXo5KoJHMiEJUHs4RzDwtWeHvKgmXzJlnMXYhSVDEvjaQwSfKYKEw2dQrDKbFPGsGfKQdl5F2y0GMiXq++DSfL6XKumeJJ4obgVJB2ypdmszr1Myj1fNoCks9roYDk8wOvkeR1JBtne7dkLZoCnLsZQH6nOuKkF4dibmYiO40d4F3sAM/XBYHk801CCuTp1KTEa1ffSEnKsIK/4OACPa9aW+QhGQFVNh3jFmeDp1rJraH7n0mM4GmiZ7jOlLTDYDOvY4HoRT8Tp+NwJiQBn5mH71hjBT15hj5p0HtwYF2stk6QQ6/Ux93BTXYbG5hibXw/Lk/puQfrkJqrRDZ+irp3UKfjqdIHKofePqhUxRv6bDGdrEeKnT4EvlWS27Fohaq+uV7OwfCoXI300oHwd4TwZAydNzAi7oMwC8/+R8GSsgt1Hrn8qkKrlzumbCcyTQ6YVlYTkYVi9IY/uo4kwu7ePYapWvYADENdniArdUbNzuKzq2Ou8NCHgBrlVh+kWz8t54vh1R3D+943sqljkQmwC1rqJ4B23hfc23lafIZGNymQEmjowi0Ecd/QAUYUxg42ru2C19P6hs7ZJXlQbQdJ8yIbjX68mr96kX94u7gbZfPGxXSZdy1tn5R+bkwG4+zlyQ/T2Xgw2tFofFgOR6tQraD48IXX0/F4sNtmXX6+c+j5TQON9v0rbZLo7pmDhF4vZ7NscnFXCGCv7ZQm27l/o+vAVzzUcz20g9in20vvnzmln0kKsZ05Hiri/oQWRSMpMCWJ46mig4lLArsOJoeFsH1sR83B+PaOFclB3t8/1i0eO8j94rESOgf/S1JKHCLYNeoQQa9QW4cE+sVDDgGcFg85+H9WPHSQ+3+6Xf3S+C7X+mfDSWNvKLYPCuLBG/ujve0aEDsNbbuGxE5H2wdFcv/YbvwfFMm9lSjZiYNSKZ4rFLBzUDC750pW5aB0iicLXe0cFNDuuRJFl8Xb0Tsome1ThRZ2XMIo1LDjkkWhhx2XKApF7LgkUWhi56Ac3mSzPHbYsSJ1iWFnfDZpkuZucnr1YjH4MMr2Z6qV6l1mV4PlaPGu+OPLk93nv2WXw+W4XTz1Jp8gt0/tPv819863FmU6ms7mecvz/C9vr7Ns8er/UEsDBBQAAAAIAKsgJF2XirscwAAAABMCAAALAAAAX3JlbHMvLnJlbHOdkrluwzAMQH/F0J4wB9AhiDNl8RYE+QFWog/YEgWKRZ2/r9qlcZALGXk9PBLcHmlA7TiktoupGP0QUmla1bgBSLYlj2nOkUKu1CweNYfSQETbY0OwWiw+QC4ZZre9ZBanc6RXiFzXnaU92y9PQW+ArzpMcUJpSEszDvDN0n8y9/MMNUXlSiOVWxp40+X+duBJ0aEiWBaaRcnToh2lfx3H9pDT6a9jIrR6W+j5cWhUCo7cYyWMcWK0/jWCyQ/sfgBQSwMEFAAAAAgAqyAkXZ+EloNyAQAA7QIAAA8AAAB4bC93b3JrYm9vay54bWytkstOwzAQRX8l8h6SlpdaNZUQiIeEAAGCtRtPmhF+ROMpKXw940QpSLBgwcq+dyzP8R0vukCvqxBes62zPpaqYW7neR6rBpyO+6EFL5U6kNMsktZ5bAm0iQ0AO5tPi+I4dxq9Wi7Gu+4pXy7S5hmhi19+ktkbRlyhRX4vVb+3oDKHHh1+gClVobLYhO4qEH4Ez9o+VhSsLdVkKDwDMVY/7MfE86RXsXe2L+hN6Eq1N5kdTOTK9y8jya5XL2i4kfOzw+nOuwJcNyzmpEgm69WDZgylOi5E1kiR+1alOlKZrhjfQLr22HrD4QItA51rhksKmxb9OvFIHPm3PPrsxnUIfk5/iT7UNVZwHqqNA89D9gQ2AfrYYBtV5rWDUl1enByepmCkwbUZQmKB+hY5zVEKdG0GvJEJtsLvtX2AGgh8Bb95/8y8Q5n2KL8hGKjRg7mV10U5I/Ov7ilLS/+8mUxrJuPZWHsm3p2/CdqMyY/fb/kJUEsDBBQAAAAIAKsgJF2dRm95wQAAAJYCAAAaAAAAeGwvX3JlbHMvd29ya2Jvb2sueG1sLnJlbHO1kj0OgzAMha+CcoAaaNWhAqYuSJ0qLhCB+REhiWJXhduXwgCROnRhip7tvPfJcvJEJbkzmtrOUjAOSlMqWmZ7A6CyxUHSyVjUc6c2bpA8S9eAlWUvG4Q4DK/g9h4iS/aeQTFZ/MfR1HVX4t2UrwE1/zCGt3E9tYgsgkK6BjkVMKqtTLA80Wl2FkFepcLlVSTgMCAcGZ2W6tHp3mfad/w5ny4+kI54Ukgb16q9+POB8Tz/xS19kWvRX8HlywDeGWYfUEsDBBQAAAAIAKsgJF2IAowYLAEAAGQEAAATAAAAW0NvbnRlbnRfVHlwZXNdLnhtbK2Uz07DMAzGX6XqdWozOHBA6y6MG4IdeIHQumvU/FPsje7tcdptYmiUoe6SKLX9/Rx/VRbvew+YdEZbLNKGyD8KgWUDRmLuPFiO1C4YSXwMG+Fl2coNiPv5/EGUzhJYyihqpMvFCmq51ZQ8d/wZlbNFGkBjmjwNiZFVpNJ7rUpJHBc7W/2gZAdCzpV9DjbK44wTUnGRECO/Aw51bzsIQVWQrGWgV2k4S3RaIO01YD4ucaFHV9eqhMqVW8MlOfoAssIGgIzOB9HZOJl4wjCsd5P5vcwYkDPXwXlkxwL8H3e0JFZnnoUgkBq/4onI0pPvB9HtCqor2TzeTxfa3g8U/TZ9xucen/T/6CN2HqzUL8q2eHa6dUffta8Yzodz7a3/+7jnRip75Iv+cVl+AVBLAQIUAxQAAAAIAKsgJF1Gx01IlQAAAM0AAAAQAAAAAAAAAAAAAACAAQAAAABkb2NQcm9wcy9hcHAueG1sUEsBAhQDFAAAAAgAqyAkXVa4lWY1AQAAnAIAABEAAAAAAAAAAAAAAIABwwAAAGRvY1Byb3BzL2NvcmUueG1sUEsBAhQDFAAAAAgAqyAkXcKH2/LHBQAA1xsAABMAAAAAAAAAAAAAAIABJwIAAHhsL3RoZW1lL3RoZW1lMS54bWxQSwECFAMUAAAACACrICRdXwwuNKAdAABN0AAAGAAAAAAAAAAAAAAAgIEfCAAAeGwvd29ya3NoZWV0cy9zaGVldDEueG1sUEsBAhQDFAAAAAgAqyAkXY1xRDhiAQAAyQMAACIAAAAAAAAAAAAAAIAB9SUAAHhsL2V4dGVybmFsTGlua3MvZXh0ZXJuYWxMaW5rMS54bWxQSwECFAMUAAAACACrICRdSknEJfAAAAByAQAALQAAAAAAAAAAAAAAgAGXJwAAeGwvZXh0ZXJuYWxMaW5rcy9fcmVscy9leHRlcm5hbExpbmsxLnhtbC5yZWxzUEsBAhQDFAAAAAgAqyAkXQGXfwZiFwAA6hkCAA0AAAAAAAAAAAAAAIAB0igAAHhsL3N0eWxlcy54bWxQSwECFAMUAAAACACrICRdl4q7HMAAAAATAgAACwAAAAAAAAAAAAAAgAFfQAAAX3JlbHMvLnJlbHNQSwECFAMUAAAACACrICRdn4SWg3IBAADtAgAADwAAAAAAAAAAAAAAgAFIQQAAeGwvd29ya2Jvb2sueG1sUEsBAhQDFAAAAAgAqyAkXZ1Gb3nBAAAAlgIAABoAAAAAAAAAAAAAAIAB50IAAHhsL19yZWxzL3dvcmtib29rLnhtbC5yZWxzUEsBAhQDFAAAAAgAqyAkXYgCjBgsAQAAZAQAABMAAAAAAAAAAAAAAIAB4EMAAFtDb250ZW50X1R5cGVzXS54bWxQSwUGAAAAAAsACwDpAgAAPUUAAAAA";
+
+/* ========================= GENERAL FORM No. 74(A) — ON-SCREEN ========================= */
+function up(s){ return String(s==null?"":s).toUpperCase(); }
+function m0(v){ return v==="" || v==null ? "" : money(v); }
+
+function cashItemRows(ao){
+  const rows = [];
+  const t = aoTotals(ao);
+  rows.push({ label:"Petty Cash Fund Vouchers (See Appendix 1.1)", presented:t.pcv, allowed:t.pcvAllowed, disallowed:t.pcv-t.pcvAllowed });
+  ao.checks.forEach(c=>{
+    const amt = num(c.amount), all = c.allowed===false ? 0 : amt;
+    rows.push({ label:`Check ${c.bank||""} #${c.checkNo||""}${c.payee?" – "+c.payee:""}`.replace(/\s+/g," ").trim(), presented:amt, allowed:all, disallowed:amt-all });
+  });
+  ao.cashAdvances.forEach(c=>{
+    const u = Math.max(0, num(c.granted)-num(c.cashOnHand));
+    rows.push({ label:`Unliq. CA – ${c.payee||""}${c.ref?" ("+c.ref+")":""}`.replace(/\s+/g," ").trim(), presented:u, allowed:u, disallowed:0 });
+  });
+  return rows;
+}
+
+function renderGF74A(ex, ao){
+  const t = aoTotals(ao);
+  const name = up(ao.name), pos = up(ao.position), agency = up(ex.agency), station = up(ex.station);
+  const items = cashItemRows(ao);
+  const denomLines = []
+    .concat([{head:"Bills"}], BILLS.map(v=>({v, q:num(ao.denoms[denomKey(v,false)]), coin:false})))
+    .concat([{head:"Coins"}], COINS.map(v=>({v, q:num(ao.denoms[denomKey(v,true)]), coin:true})));
+  const bodyRows = Math.max(denomLines.length, items.length);
+
+  const denomCell = (i)=>{
+    const d = denomLines[i];
+    if(!d) return `<td class="nb"></td><td class="nb"></td><td class="nb"></td>`;
+    if(d.head) return `<td class="gf-b" colspan="3">${esc(d.head)}</td>`;
+    return `<td class="gf-r">${d.v.toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`
+         + `<td class="gf-c">${d.q}</td><td class="gf-r">${(d.q*d.v).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`;
+  };
+  const itemCell = (i)=>{
+    const it = items[i];
+    if(!it) return `<td class="nb"></td><td class="nb"></td><td class="nb"></td><td class="nb"></td>`;
+    return `<td>${esc(it.label)}</td><td class="gf-r">${it.presented.toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`
+         + `<td class="gf-r">${it.allowed.toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`
+         + `<td class="gf-r">${it.disallowed.toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`;
+  };
+
+  const fwv = ao.formsWithValue.length ? ao.formsWithValue : [{name:"N O N E", qty:0, serial:"", denomination:"-", amount:0}];
+  const fnv = ao.formsNoValue;
+  const formRows = Math.max(fwv.length, fnv.length, 4);
+
+  return `
+  <div class="gf-doc" id="gfDoc">
+    <div class="gf-top">
+      <div>General Form No. 74(A)</div>
+      <div class="gf-mid">Republic of the Philippines<br><strong>COMMISSION ON AUDIT</strong></div>
+      <div style="width:130px;"></div>
+    </div>
+    <table>
+      <tr><td class="gf-band" colspan="4">REPORT OF CASH EXAMINATION</td></tr>
+      <tr><td colspan="2">Name of Accountable Officer: <strong>${esc(name)}</strong></td>
+          <td colspan="2">Position/Designation: ${esc(pos)}</td></tr>
+      <tr><td colspan="2">Agency: ${esc(agency)}</td><td colspan="2">Station: ${esc(station)}</td></tr>
+      <tr><td colspan="2">Maximum Cash Accountability: ${esc(m0(ao.maxAccountability))}</td>
+          <td>Amount of Bond: ${esc(m0(ao.bondAmount))}</td>
+          <td>Risk No.: ${esc(ao.riskNo)} &nbsp; Effective Date: ${esc(ao.bondEffective)}</td></tr>
+      <tr><td colspan="2">Auditor/Examiner:<div class="gf-c gf-b" style="margin-top:6px;">${esc(up(ex.auditor))}</div></td>
+          <td colspan="2">Official Designation:<div class="gf-c gf-b" style="margin-top:6px;">${esc(up(ex.auditorDesignation))}</div></td></tr>
+      <tr><td class="gf-band" colspan="4">A. &nbsp; CASH PRODUCTION NOTICE</td></tr>
+      <tr><td colspan="2">TO: Accountable Officer: ${esc(name)}</td>
+          <td>Position/Designation: ${esc(pos)}</td>
+          <td>Date: ${esc(longDate(ex.examDate))}</td></tr>
+      <tr><td colspan="4" style="height:96px;">
+        <p class="gf-para">DEMAND, is hereby made that you produce all your cash, checks, money orders, cash items,
+        paid vouchers, and/or unused accountable forms, etc., for which you are officially accountable as
+        ${esc(pos||"______")} of the ${esc(agency||"______")} and any fund, checks, and/or cash items in your
+        possession held by you for deposit and safekeeping.</p></td></tr>
+      <tr><td style="width:14%;">NOTED AND COMPLIED WITH</td>
+          <td>Accountable Officer's Signature:<div class="gf-c gf-b gf-sig" style="padding-top:14px;">${esc(name)}</div></td>
+          <td>Date:<div class="gf-c gf-b gf-sig" style="padding-top:14px;">${esc(longDate(ex.examDate))}</div></td>
+          <td>Auditor/Examiner's Signature:<div class="gf-c gf-b gf-sig" style="padding-top:14px;">${esc(up(ex.auditor))}</div></td></tr>
+      <tr><td class="gf-band" colspan="4">B. &nbsp; CASH COUNT</td></tr>
+    </table>
+
+    <div class="gf-scroll">
+    <table style="min-width:720px;">
+      <colgroup><col style="width:11%"><col style="width:8%"><col style="width:14%"><col style="width:29%"><col style="width:12%"><col style="width:12%"><col style="width:14%"></colgroup>
+      <tr><td class="gf-c gf-b" colspan="3">INVENTORY OF CASH ON HAND</td>
+          <td class="gf-c gf-b" colspan="4">INVENTORY OF CASH ITEMS (Include checks, money orders, etc.)</td></tr>
+      <tr><td class="gf-c" colspan="3">Paper and Coins:</td>
+          <td rowspan="2" class="gf-c" style="vertical-align:bottom;">P a r t i c u l a r s</td>
+          <td class="gf-c" colspan="3">Amount</td></tr>
+      <tr><td class="gf-c">Denomination</td><td class="gf-c">No. of Pcs.</td><td class="gf-c">Amount</td>
+          <td class="gf-c">Presented</td><td class="gf-c">Allowed</td><td class="gf-c">Disallowed</td></tr>
+      ${Array.from({length:bodyRows}, (_,i)=>`<tr>${denomCell(i)}${itemCell(i)}</tr>`).join("")}
+      <tr><td class="gf-b" colspan="2">Total, As Presented</td>
+          <td class="gf-r gf-b">${esc(money(t.cash))}</td>
+          <td class="gf-b">Total</td>
+          <td class="gf-r gf-b">${esc(money(t.presented))}</td>
+          <td class="gf-r gf-b">${esc(money(t.allowed))}</td>
+          <td class="gf-r gf-b">${esc(money(t.disallowed))}</td></tr>
+      <tr><td class="gf-b" colspan="6">TOTAL INVENTORY OF CASH AND/OR ALLOWED CASH ITEMS (TOD)</td>
+          <td class="gf-r gf-b">${esc(money(t.total))}</td></tr>
+    </table>
+    </div>
+
+    <div class="gf-scroll">
+    <table style="min-width:720px;">
+      <tr><td class="gf-band" colspan="8">C. &nbsp; INVENTORY OF UNUSED ACCOUNTABLE FORMS</td></tr>
+      <tr><td class="gf-c gf-b" colspan="5">W i t h &nbsp; M o n e y &nbsp; V a l u e</td>
+          <td class="gf-c gf-b" colspan="3">W i t h o u t &nbsp; M o n e y &nbsp; V a l u e</td></tr>
+      <tr><td class="gf-c">Name of Form</td><td class="gf-c">Qty.</td><td class="gf-c">Inclusive Serial No.</td>
+          <td class="gf-c">Denomination</td><td class="gf-c">Amount</td>
+          <td class="gf-c">Name of Form</td><td class="gf-c">Qty.</td><td class="gf-c">Inc. Serial No.</td></tr>
+      ${Array.from({length:formRows}, (_,i)=>{
+        const a = fwv[i], b = fnv[i];
+        return `<tr>
+          <td>${a?esc(a.name):""}</td><td class="gf-c">${a?esc(a.qty===""?"":a.qty):""}</td><td>${a?esc(a.serial||""):""}</td>
+          <td class="gf-c">${a?esc(a.denomination||""):""}</td><td class="gf-r">${a?esc(money(a.amount)):""}</td>
+          <td>${b?esc(b.name):""}</td><td class="gf-c">${b?formQty(b):""}</td>
+          <td>${b?esc([b.serialFrom,b.serialTo].filter(Boolean).join("-")):""}</td></tr>`;
+      }).join("")}
+      <tr><td class="gf-c gf-b" colspan="4">Total</td><td class="gf-r gf-b">${esc(money(t.formsValue))}</td>
+          <td></td><td class="gf-c gf-b">${t.formsNoValueQty}</td><td></td></tr>
+    </table>
+    </div>
+
+    <table>
+      <tr><td class="gf-band">C E R T I F I C A T I O N</td></tr>
+      <tr><td>
+        <p class="gf-para">&nbsp;&nbsp;&nbsp;&nbsp;I HEREBY CERTIFY on my official oath: (1) That upon demand by the
+        Auditor/Examiner I produced all my cash, checks, money orders, cash items, paid vouchers, unused accountable
+        forms, etc., for which I am officially accountable; (2) That the inventory of such cash items and unused
+        accountable forms in my possession and produced to the Auditor/Examiner at the time of cash count today
+        ${esc(longDate(ex.examDate))} is correctly stated above and is broken down as follows:</p>
+        <table style="width:70%;margin:12px auto;border:none;">
+          <tr><td class="nb" style="text-align:right;">Cash and/or cash items &nbsp;……………………………</td>
+              <td class="nb gf-r gf-b" style="border-bottom:1px solid #333;width:120px;">${esc(money(t.total))}</td></tr>
+          <tr><td class="nb" style="text-align:right;">Unused accountable forms with money value …………</td>
+              <td class="nb gf-r gf-b" style="border-bottom:1px solid #333;">${esc(money(t.formsValue))}</td></tr>
+          <tr><td class="nb" style="text-align:right;">Unused accountable forms without money value ……</td>
+              <td class="nb gf-r gf-b" style="border-bottom:1px solid #333;">${t.formsNoValueQty}</td></tr>
+        </table>
+        <p class="gf-para">of which ${esc(money(t.disallowed))} was disallowed by the Auditor/Examiner and (3) That said
+        cash, checks, money orders, cash items, paid vouchers, unused accountable forms, etc., were returned to me
+        intact after the cash count.</p>
+      </td></tr>
+    </table>
+
+    <table>
+      <tr><td style="width:34%;">Accountable Officer's Signature:<div class="gf-c gf-b gf-sig" style="padding-top:16px;">${esc(name)}</div></td>
+          <td style="width:33%;">Position/Designation:<div class="gf-c gf-b gf-sig" style="padding-top:16px;">${esc(pos)}</div></td>
+          <td>Agency/Station:<div class="gf-b" style="padding-top:6px;">${esc([agency,station].filter(Boolean).join(", "))}</div></td></tr>
+      <tr><td class="gf-band" colspan="3">SIGNED IN THE PRESENCE OF:</td></tr>
+      <tr><td colspan="2">Witness' name and signature: ${esc(ao.witness1)}</td>
+          <td>Witness' name and signature: ${esc(ao.witness2)}</td></tr>
+    </table>
+    ${ao.remarks ? `<table style="margin-top:8px;"><tr><td><strong>Remarks:</strong> ${esc(ao.remarks)}</td></tr></table>` : ""}
+  </div>`;
+}
+
+function renderDenomSummary(ex){
+  const totalsAo = ex.aos.map(aoTotals);
+  const grand = k => totalsAo.reduce((s,t)=>s+t[k], 0);
+  const denomRowsHtml = (list, isCoin, head) => {
+    let out = `<tr><td class="gf-b" colspan="${3+ex.aos.length*2}">${head}</td></tr>`;
+    list.forEach(v=>{
+      const k = denomKey(v, isCoin);
+      let tq = 0;
+      const cells = ex.aos.map(a=>{ const q = num(a.denoms[k]); tq += q;
+        return `<td class="gf-c">${q}</td><td class="gf-r">${(q*v).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`; }).join("");
+      out += `<tr><td class="gf-r">${v.toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`
+           + `<td class="gf-c gf-b">${tq}</td><td class="gf-r gf-b">${(tq*v).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`
+           + cells + `</tr>`;
+    });
+    return out;
+  };
+  const lineRow = (label, key) => `<tr><td class="gf-b" colspan="2">${label}</td>`
+      + `<td class="gf-r gf-b">${money(grand(key))}</td>`
+      + totalsAo.map(t=>`<td colspan="2" class="gf-r">${money(t[key])}</td>`).join("") + `</tr>`;
+
+  const checks = [];
+  ex.aos.forEach(a=>a.checks.forEach(c=>checks.push({ao:a.label, ...c})));
+  const cas = [];
+  ex.aos.forEach(a=>a.cashAdvances.forEach(c=>cas.push({ao:a.label, ...c})));
+
+  return `
+  <div class="gf-doc" id="gfDoc">
+    <h3 style="font-family:var(--font-display);font-size:15px;margin-bottom:2px;">CASH IN CURRENCY</h3>
+    <div style="font-size:11px;margin-bottom:12px;">${esc([up(ex.agency), longDate(ex.examDate)].filter(Boolean).join(" — "))}</div>
+    <div class="gf-scroll">
+    <table style="min-width:${420 + ex.aos.length*180}px;">
+      <tr><td rowspan="2" class="gf-c gf-b" style="vertical-align:middle;">Denomination</td>
+          <td colspan="2" class="gf-c gf-b">TOTAL</td>
+          ${ex.aos.map(a=>`<td colspan="2" class="gf-c gf-b">${esc(up(a.label + (a.name?" – "+a.name:"")))}</td>`).join("")}</tr>
+      <tr><td class="gf-c">Pcs</td><td class="gf-c">Amount</td>
+          ${ex.aos.map(()=>`<td class="gf-c">Pcs</td><td class="gf-c">Amount</td>`).join("")}</tr>
+      ${denomRowsHtml(BILLS, false, "BILLS")}
+      ${denomRowsHtml(COINS, true, "COINS")}
+      ${lineRow("Cash on hand","cash")}
+      <tr><td class="gf-b" colspan="${3+ex.aos.length*2}">CASH ITEMS</td></tr>
+      ${lineRow("Checks","checks")}
+      ${lineRow("Unliquidated CAs","cas")}
+      ${lineRow("PCVs","pcv")}
+      ${lineRow("TOTAL","total")}
+    </table>
+    </div>
+
+    ${checks.length ? `<h3 style="font-family:var(--font-display);font-size:13px;margin:18px 0 6px;">Checks for deposit</h3>
+    <div class="gf-scroll"><table style="min-width:640px;">
+      <tr><td class="gf-b">AO</td><td class="gf-b">Bank</td><td class="gf-b">Check no.</td><td class="gf-b">Date</td>
+          <td class="gf-b">Payee</td><td class="gf-b gf-r">Amount</td><td class="gf-b gf-c">Allowed</td></tr>
+      ${checks.map(c=>`<tr><td>${esc(c.ao)}</td><td>${esc(c.bank)}</td><td>${esc(c.checkNo)}</td><td>${esc(c.date)}</td>
+        <td>${esc(c.payee)}</td><td class="gf-r">${money(c.amount)}</td><td class="gf-c">${c.allowed===false?"No":"Yes"}</td></tr>`).join("")}
+      <tr><td class="gf-b" colspan="5">TOTAL</td><td class="gf-r gf-b">${money(grand("checks"))}</td><td></td></tr>
+    </table></div>` : ""}
+
+    ${cas.length ? `<h3 style="font-family:var(--font-display);font-size:13px;margin:18px 0 6px;">Unliquidated cash advances</h3>
+    <div class="gf-scroll"><table style="min-width:640px;">
+      <tr><td class="gf-b">AO</td><td class="gf-b">Payee</td><td class="gf-b">Reference</td><td class="gf-b">Date</td>
+          <td class="gf-b gf-r">Granted</td><td class="gf-b gf-r">Cash on hand</td><td class="gf-b gf-r">Unliquidated</td></tr>
+      ${cas.map(c=>`<tr><td>${esc(c.ao)}</td><td>${esc(c.payee)}</td><td>${esc(c.ref||"")}</td><td>${esc(c.date)}</td>
+        <td class="gf-r">${money(c.granted)}</td><td class="gf-r">${money(c.cashOnHand)}</td>
+        <td class="gf-r">${money(Math.max(0,num(c.granted)-num(c.cashOnHand)))}</td></tr>`).join("")}
+      <tr><td class="gf-b" colspan="6">TOTAL</td><td class="gf-r gf-b">${money(grand("cas"))}</td></tr>
+    </table></div>` : ""}
+  </div>`;
+}
+
+/* ---- overlay plumbing ---- */
+function openSheet(title, html, tsv){
+  closeSheet();
+  const wrap = document.createElement("div");
+  wrap.className = "gf-overlay";
+  wrap.id = "gfOverlay";
+  wrap.innerHTML = `
+    <div class="gf-sheet">
+      <div class="gf-actions">
+        <span class="gf-hint">${esc(title)}</span>
+        <button class="btn btn-sm" id="gfPrint">${ICONS.print} Print / Save as PDF</button>
+        <button class="btn btn-sm" id="gfCopy">Copy for Excel</button>
+        <button class="btn btn-sm btn-primary" id="gfClose">Close</button>
+      </div>
+      ${html}
+    </div>`;
+  document.body.appendChild(wrap);
+  wrap.addEventListener("click", (e)=>{ if(e.target === wrap) closeSheet(); });
+  wrap.querySelector("#gfClose").addEventListener("click", closeSheet);
+  wrap.querySelector("#gfPrint").addEventListener("click", ()=>{
+    try{ window.print(); }
+    catch(e){ toast("Your browser blocked printing here — use the browser's own Print command.", "err"); }
+  });
+  wrap.querySelector("#gfCopy").addEventListener("click", ()=>openCopyBox(tsv));
+  document.addEventListener("keydown", escSheet);
+}
+function closeSheet(){
+  const el = document.getElementById("gfOverlay");
+  if(el) el.remove();
+  document.removeEventListener("keydown", escSheet);
+}
+function escSheet(e){ if(e.key === "Escape") closeSheet(); }
+
+function openCopyBox(tsv){
+  openModal(`
+    <div class="modal" style="max-width:620px;">
+      <div class="modal-head"><h3>Copy into Excel</h3><button class="modal-close" data-modal-close>&times;</button></div>
+      <div class="modal-body">
+        <p class="helptext" style="margin-bottom:10px;">Everything below is already selected. Press
+        <strong>Ctrl+C</strong> (<strong>⌘C</strong> on a Mac), then paste into a blank sheet — the columns land
+        in separate cells.</p>
+        <textarea class="gf-copybox" id="gfTsv" readonly>${esc(tsv)}</textarea>
+      </div>
+      <div class="modal-foot"><button class="btn btn-primary" data-modal-close>Done</button></div>
+    </div>
+  `, { onMount(wrap){
+    const ta = wrap.querySelector("#gfTsv");
+    ta.focus(); ta.select();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(ta.value).then(()=>toast("Copied to the clipboard.", "ok")).catch(()=>{});
+    }
+  }});
+}
+
+/* ---- tab-separated renditions ---- */
+function tsvGF74A(ex, ao){
+  const t = aoTotals(ao), L = [], row = (...c)=>L.push(c.join("\t"));
+  row("REPORT OF CASH EXAMINATION — General Form No. 74(A)");
+  row("Name of Accountable Officer", up(ao.name)); row("Position/Designation", up(ao.position));
+  row("Agency", up(ex.agency)); row("Station", up(ex.station));
+  row("Maximum Cash Accountability", num(ao.maxAccountability)); row("Amount of Bond", num(ao.bondAmount));
+  row("Risk No.", ao.riskNo); row("Bond effective", ao.bondEffective);
+  row("Auditor/Examiner", up(ex.auditor)); row("Official Designation", up(ex.auditorDesignation));
+  row("Date of cash count", longDate(ex.examDate)); row("");
+  row("INVENTORY OF CASH ON HAND"); row("Denomination","No. of Pcs.","Amount");
+  row("Bills");
+  BILLS.forEach(v=>{ const q = num(ao.denoms[denomKey(v,false)]); row(v, q, q*v); });
+  row("Coins");
+  COINS.forEach(v=>{ const q = num(ao.denoms[denomKey(v,true)]); row(v, q, q*v); });
+  row("Total, As Presented","", t.cash); row("");
+  row("INVENTORY OF CASH ITEMS"); row("Particulars","Presented","Allowed","Disallowed");
+  cashItemRows(ao).forEach(it=>row(it.label, it.presented, it.allowed, it.disallowed));
+  row("Total","", t.presented, t.allowed, t.disallowed);
+  row("TOTAL INVENTORY OF CASH AND/OR ALLOWED CASH ITEMS (TOD)","", t.total); row("");
+  row("UNUSED ACCOUNTABLE FORMS — WITH MONEY VALUE");
+  row("Name of Form","Qty.","Inclusive Serial No.","Denomination","Amount");
+  ao.formsWithValue.forEach(f=>row(f.name, f.qty, f.serial, f.denomination, num(f.amount)));
+  row("Total","","","", t.formsValue); row("");
+  row("UNUSED ACCOUNTABLE FORMS — WITHOUT MONEY VALUE");
+  row("Name of Form","Qty.","Inclusive Serial No.");
+  ao.formsNoValue.forEach(f=>row(f.name, formQty(f), [f.serialFrom,f.serialTo].filter(Boolean).join("-")));
+  row("Total", t.formsNoValueQty); row("");
+  row("Witnesses", ao.witness1, ao.witness2);
+  if(ao.remarks) row("Remarks", ao.remarks);
+  return L.join("\n");
+}
+
+function tsvDenom(ex){
+  const totalsAo = ex.aos.map(aoTotals), L = [], row = (...c)=>L.push(c.join("\t"));
+  const grand = k => totalsAo.reduce((s,t)=>s+t[k], 0);
+  row("CASH IN CURRENCY", up(ex.agency), longDate(ex.examDate)); row("");
+  row("Denomination", "TOTAL Pcs", "TOTAL Amount", ...ex.aos.flatMap(a=>[a.label+" Pcs", a.label+" Amount"]));
+  const block = (list, isCoin, head)=>{
+    row(head);
+    list.forEach(v=>{
+      let tq = 0;
+      const cells = ex.aos.flatMap(a=>{ const q = num(a.denoms[denomKey(v,isCoin)]); tq += q; return [q, q*v]; });
+      row(v, tq, tq*v, ...cells);
+    });
+  };
+  block(BILLS, false, "BILLS"); block(COINS, true, "COINS");
+  const line = (label,key)=>row(label, "", grand(key), ...ex.aos.map((a,i)=>["", totalsAo[i][key]]).flat());
+  line("Cash on hand","cash"); row("CASH ITEMS");
+  line("Checks","checks"); line("Unliquidated CAs","cas"); line("PCVs","pcv"); line("TOTAL","total");
+  return L.join("\n");
+}
+
+function showGF74A(ex, ao){
+  if(!ao){ toast("Add an accountable officer first.", "err"); return; }
+  openSheet(`GF 74(A) — ${ao.name || ao.label}`, renderGF74A(ex, ao), tsvGF74A(ex, ao));
+}
+function showDenomSummary(ex){
+  openSheet(`Denomination summary — ${ex.agency || "cash count"}`, renderDenomSummary(ex), tsvDenom(ex));
+}
+
+
+})();
+</script>
+</body>
+</html>
