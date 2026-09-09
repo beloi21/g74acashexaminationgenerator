@@ -418,12 +418,202 @@
     .grid.cols-4,.grid.cols-3,.grid.cols-2{grid-template-columns:1fr;}
   }
   .menubtn{display:none;border:1px solid var(--border-strong);background:var(--surface);border-radius:7px;padding:7px 9px;cursor:pointer;}
+
+  /* =========================================================================
+     CASH EXAMINATION WORKBENCH — "cx-" namespaced module.
+     Purpose-built layer for the Cash Count Generator workflow (examination
+     details, accountable-officer roster, physical cash, reconciliation,
+     accountable forms, certification, review & output, saved-examination
+     register). Namespaced so it never collides with the Hub's other tools
+     (calendar, org chart, UTA, budget, procurement, etc.), which keep using
+     the generic .card/.btn/.table system above unchanged.
+     ========================================================================= */
+
+  .cx-status-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px 3px 8px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.02em;line-height:1.5;white-space:nowrap;}
+  .cx-status-pill svg{width:12px;height:12px;flex:none;}
+  .cx-status-pill.ok{background:var(--success-soft);color:var(--success);}
+  .cx-status-pill.attention{background:var(--critical-soft);color:var(--critical);}
+  .cx-status-pill.progress{background:var(--warning-soft);color:var(--warning);}
+  .cx-status-pill.pending{background:var(--surface-2);color:var(--ink-3);border:1px solid var(--border);}
+
+  /* ---------- context bar: examination / active AO / save state, always visible ---------- */
+  .cx-context{
+    position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:9px 16px;margin-bottom:16px;background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);box-shadow:var(--shadow);font-size:12.5px;
+  }
+  .cx-context .cx-c-who{display:flex;flex-direction:column;gap:0;min-width:0;}
+  .cx-context .cx-c-agency{font-weight:700;color:var(--ink);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:34vw;}
+  .cx-context .cx-c-sub{color:var(--ink-3);font-size:11px;white-space:nowrap;}
+  .cx-context .cx-c-div{width:1px;align-self:stretch;background:var(--border);flex:none;}
+  .cx-context .cx-c-nav{display:flex;gap:4px;flex-wrap:wrap;flex:1;min-width:0;}
+  .cx-context .cx-c-nav a{
+    color:var(--ink-2);text-decoration:none;font-weight:600;font-size:11px;white-space:nowrap;
+    padding:5px 9px;border-radius:6px;cursor:pointer;border:1px solid transparent;
+  }
+  .cx-context .cx-c-nav a:hover,.cx-context .cx-c-nav a:focus-visible{background:var(--surface-2);color:var(--ink);}
+  .cx-context .cx-c-save{margin-left:auto;flex:none;font-size:11px;font-weight:600;color:var(--ink-3);display:flex;align-items:center;gap:5px;white-space:nowrap;}
+  .cx-context .cx-c-save svg{width:11px;height:11px;}
+  .cx-context .cx-c-save.dirty{color:var(--save-warn-ink,var(--warning));}
+  .cx-context .cx-c-save.clean{color:var(--success);}
+  @media (max-width:900px){ .cx-context .cx-c-nav{display:none;} .cx-context .cx-c-agency{max-width:50vw;} }
+  @media (max-width:560px){ .cx-context{gap:8px;} .cx-context .cx-c-sub{display:none;} }
+
+  /* ---------- workflow stepper ---------- */
+  .cx-stepper{display:flex;align-items:stretch;gap:0;margin-bottom:18px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);overflow-x:auto;}
+  .cx-step{
+    display:flex;align-items:center;gap:8px;padding:11px 14px;flex:1 0 auto;min-width:0;
+    color:var(--ink-3);text-decoration:none;cursor:pointer;border-right:1px solid var(--border);font-size:12px;font-weight:600;
+    background:none;border-top:none;border-bottom:none;border-left:none;font-family:var(--font-body);
+  }
+  .cx-step:last-child{border-right:none;}
+  .cx-step-num{
+    width:20px;height:20px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+    font-size:10.5px;font-weight:700;background:var(--surface-2);color:var(--ink-3);border:1px solid var(--border-strong);
+  }
+  .cx-step-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cx-step:hover{background:var(--surface-2);color:var(--ink);}
+  .cx-step:focus-visible{outline:2px solid var(--focus);outline-offset:-2px;}
+  .cx-step.done .cx-step-num{background:var(--success);border-color:var(--success);color:#fff;}
+  .cx-step.done{color:var(--ink-2);}
+  .cx-step.current{color:var(--accent-soft-ink);background:var(--accent-soft);}
+  .cx-step.current .cx-step-num{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
+  @media (max-width:760px){ .cx-step-label{display:none;} .cx-step{flex:none;padding:10px 12px;} }
+
+  /* ---------- section anchors ---------- */
+  .cx-section{scroll-margin-top:64px;}
+  .cx-section-head{display:flex;align-items:baseline;gap:10px;justify-content:space-between;flex-wrap:wrap;margin:24px 0 10px;}
+  .cx-section-head:first-child{margin-top:0;}
+  .cx-section-head h4{font-family:var(--font-body);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-2);}
+  .cx-section-hint{font-size:11.5px;color:var(--ink-3);}
+
+  /* ---------- AO roster ---------- */
+  .cx-ao-roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:4px;}
+  .cx-ao-card{
+    display:flex;flex-direction:column;gap:6px;text-align:left;padding:12px 13px;border-radius:9px;
+    border:1px solid var(--border-strong);background:var(--surface);cursor:pointer;font-family:var(--font-body);box-shadow:var(--shadow);
+  }
+  .cx-ao-card:hover{border-color:var(--accent);}
+  .cx-ao-card:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+  .cx-ao-card.active{border-color:var(--accent);border-width:2px;background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent) inset,var(--shadow);}
+  .cx-ao-role{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;color:var(--ink-3);}
+  .cx-ao-card.active .cx-ao-role{color:var(--accent-soft-ink);opacity:.85;}
+  .cx-ao-name{font-weight:700;font-size:14px;color:var(--ink);line-height:1.25;}
+  .cx-ao-card.active .cx-ao-name{color:var(--accent-soft-ink);}
+  .cx-ao-name.unset{color:var(--ink-3);font-weight:600;font-style:italic;}
+  .cx-ao-foot{font-size:11px;color:var(--ink-3);margin-top:1px;}
+  .cx-ao-card.active .cx-ao-foot{color:var(--accent-soft-ink);opacity:.8;}
+  .cx-ao-add{
+    display:flex;align-items:center;justify-content:center;gap:6px;border:1.5px dashed var(--border-strong);
+    border-radius:9px;background:transparent;color:var(--ink-2);font-weight:600;font-size:12.5px;cursor:pointer;
+    padding:12px;min-height:76px;font-family:var(--font-body);
+  }
+  .cx-ao-add:hover{border-color:var(--accent);color:var(--accent);}
+  .cx-ao-add:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+
+  /* ---------- physical cash entry ---------- */
+  .cx-cash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:760px){ .cx-cash-grid{grid-template-columns:1fr;} }
+  table.cx-denom{width:100%;border-collapse:collapse;}
+  table.cx-denom caption{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;color:var(--ink-3);padding-bottom:6px;}
+  table.cx-denom th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);font-weight:700;text-align:left;padding:5px 8px;border-bottom:1px solid var(--border-strong);background:none;}
+  table.cx-denom th.r,table.cx-denom td.r{text-align:right;}
+  table.cx-denom td{padding:3px 8px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  table.cx-denom tr:last-child td{border-bottom:none;}
+  table.cx-denom .cx-denom-label{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:13px;color:var(--ink-2);white-space:nowrap;}
+  table.cx-denom input[type=number]{
+    width:100%;max-width:88px;text-align:center;padding:7px 6px;font-family:var(--font-mono);font-size:14px;font-weight:600;
+    -moz-appearance:textfield;
+  }
+  table.cx-denom .cx-denom-amt{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;}
+  .cx-cash-total{
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:10px;padding:12px 14px;
+    border-radius:9px;background:var(--surface-2);border:1px solid var(--border);
+  }
+  .cx-cash-total .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;color:var(--ink-2);}
+  .cx-cash-total .val{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--ink);}
+
+  /* ---------- item tables (checks / cash advances / forms) ---------- */
+  .cx-item-table th{font-size:10.5px;}
+  .cx-empty-row{text-align:center !important;color:var(--ink-3);font-style:italic;padding:14px 10px !important;font-size:12.5px;}
+  .cx-item-foot{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;}
+  .cx-item-foot .grow{flex:1;}
+  .cx-item-total{font-weight:700;font-size:13px;color:var(--ink);}
+  .cx-item-total .num{font-family:var(--font-mono);}
+  .cx-appendix-note{font-size:11px;color:var(--accent);font-weight:600;background:var(--accent-soft);padding:2px 8px;border-radius:99px;}
+
+  /* ---------- reconciliation ---------- */
+  .cx-recon{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:16px 0 4px;box-shadow:var(--shadow);}
+  .cx-recon-tiles{display:grid;grid-template-columns:repeat(3,1fr);background:var(--border);gap:1px;}
+  .cx-recon-tile{background:var(--surface);padding:12px 16px;}
+  .cx-recon-tile .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;color:var(--ink-3);}
+  .cx-recon-tile .val{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:16px;font-weight:700;color:var(--ink);margin-top:4px;}
+  @media (max-width:640px){ .cx-recon-tiles{grid-template-columns:1fr 1fr;} }
+  .cx-recon-status{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:14px 16px;
+    border-top:1px solid var(--border);
+  }
+  .cx-recon-status.ok{background:var(--success-soft);color:var(--success);}
+  .cx-recon-status.attention{background:var(--critical-soft);color:var(--critical);}
+  .cx-recon-status .cx-rs-label{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;letter-spacing:.01em;}
+  .cx-recon-status .cx-rs-label svg{width:17px;height:17px;flex:none;}
+  .cx-recon-status .cx-rs-note{font-size:11.5px;font-weight:500;opacity:.9;}
+  .cx-recon-status .cx-rs-amt{font-family:var(--font-display);font-size:21px;font-weight:700;}
+
+  /* ---------- certification ---------- */
+  .cx-certify{border:1px solid var(--border-strong);border-radius:var(--radius);padding:16px 18px;background:var(--surface-2);}
+  .cx-certify-note{display:flex;gap:8px;align-items:flex-start;font-size:11.5px;color:var(--ink-2);margin-bottom:14px;padding:9px 11px;background:var(--surface);border:1px solid var(--border);border-radius:8px;}
+  .cx-certify-note svg{flex:none;width:14px;height:14px;margin-top:1px;color:var(--ink-3);}
+
+  /* ---------- review & output ---------- */
+  .cx-review-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:16px;}
+  @media (max-width:700px){ .cx-review-grid{grid-template-columns:1fr 1fr;} }
+  .cx-review-tile{background:var(--surface);padding:13px 15px;}
+  .cx-review-tile .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;color:var(--ink-3);}
+  .cx-review-tile .val{font-family:var(--font-display);font-size:19px;font-weight:700;color:var(--ink);margin-top:4px;}
+  .cx-review-tile .val.small{font-family:var(--font-body);font-size:13px;font-weight:700;}
+  .cx-output-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .cx-output-actions .cx-out-group{display:flex;gap:8px;flex-wrap:wrap;}
+  .cx-output-hint{font-size:11px;color:var(--ink-3);margin-top:8px;}
+
+  /* ---------- saved-examination register ---------- */
+  .cx-register-item{
+    display:flex;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--border);border-radius:9px;
+    background:var(--surface);cursor:pointer;margin-bottom:7px;
+  }
+  .cx-register-item:hover{border-color:var(--border-strong);}
+  .cx-register-item:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+  .cx-register-item.active{border-color:var(--accent);background:var(--accent-soft);}
+  .cx-register-main{flex:1;min-width:0;}
+  .cx-register-agency{font-weight:700;font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cx-register-item.active .cx-register-agency{color:var(--accent-soft-ink);}
+  .cx-register-meta{font-size:11px;color:var(--ink-3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cx-register-item.active .cx-register-meta{color:var(--accent-soft-ink);opacity:.85;}
+  .cx-register-badge{flex:none;font-size:10.5px;font-weight:700;color:var(--ink-3);background:var(--surface-2);border:1px solid var(--border);border-radius:99px;padding:2px 9px;}
+
+  @media (pointer:coarse){
+    .btn{padding:10px 14px;min-height:40px;}
+    .btn-sm{padding:9px 12px;min-height:38px;}
+    .rm-row-btn{padding:9px 10px;font-size:19px;}
+    input[type=checkbox]{width:19px;height:19px;}
+    table.cx-denom input[type=number]{min-height:38px;}
+    .cx-ao-card,.cx-register-item{min-height:44px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto !important;}
+    *{transition:none !important;animation:none !important;}
+  }
+  :root{ --save-warn-ink:#935b16; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --save-warn-ink:var(--warning); } }
+  :root[data-theme="dark"]{ --save-warn-ink:var(--warning); }
 </style>
 
 <style>
   .topbar{flex-wrap:wrap;gap:12px;}
-  .brand-crest{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  .brand-crest{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;
     background:var(--accent);color:var(--accent-ink);font-family:var(--font-display);font-weight:700;font-size:13px;letter-spacing:.02em;}
+  .topbar h1{font-size:20px;letter-spacing:-.01em;line-height:1.15;}
+  .topbar .sub{font-weight:600;color:var(--ink-2);font-size:12.5px;}
   .main{margin-left:0;}
   .grid > *{min-width:0;}
   .split-2col > *{min-width:0;}
@@ -433,7 +623,8 @@
     .field-row, .field-row.three{grid-template-columns:minmax(0,1fr) !important;}
     .topbar{align-items:flex-start;}
     .topbar h1{font-size:17px;}
-    .denom-table input[type=number]{width:100%;min-width:60px;}
+    .cx-denom input[type=number]{width:100%;min-width:56px;}
+    .cx-review-grid{grid-template-columns:1fr 1fr;}
   }
 </style>
 
@@ -495,6 +686,13 @@
   }
 </style>
 
+
+<style>
+  /* Page-composition styling now lives in the shared "cx-" module in audit-hub.html, so both
+     the Hub and this PWA render the same Professional Audit Workbench layout. Nothing PWA-only
+     to add here beyond the install/offline chrome already in PWA_CSS above. */
+</style>
+
 </head>
 <body>
 <div id="app"></div>
@@ -524,8 +722,10 @@ const ICONS = {
   chevL:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
   chevR:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
   menu:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  alert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>',
+  dot:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="6"/></svg>',
 };
-
 
 /* ========================= UTIL ========================= */
 function esc(s){
@@ -918,6 +1118,38 @@ function formQty(f){
   if(!isNaN(a)&&!isNaN(b)&&b>=a) return b-a+1;
   return 0;
 }
+/* Appendix numbering — assigned only to the sections that actually have data, in this fixed
+   priority order: checks, unliquidated cash advances, petty cash vouchers, forms with money
+   value (overflow only), forms without money value (overflow only). Shared by the on-screen
+   hints (so they never show a number that won't match the generated file) and by the GF 74(A)
+   Excel writer itself. */
+function apNumbersFor(ao){
+  const hasPcv = num(ao.pcvPresented)>0 || num(ao.pcvAllowed)>0;
+  const hasChecks = ao.checks.length>0, hasCAs = ao.cashAdvances.length>0;
+  const fwvOverflow = ao.formsWithValue.length > 8, fnvOverflow = ao.formsNoValue.length > 8;
+  let apNum = 0; const apn = {};
+  if(hasChecks) apn.checks = ++apNum;
+  if(hasCAs) apn.cas = ++apNum;
+  if(hasPcv) apn.pcv = ++apNum;
+  if(fwvOverflow) apn.fwv = ++apNum;
+  if(fnvOverflow) apn.fnv = ++apNum;
+  return { hasPcv, hasChecks, hasCAs, fwvOverflow, fnvOverflow, apn };
+}
+function apHint(n){ return n ? `Appendix 1.${n}` : "no appendix — none entered yet"; }
+/* AO roster status — a purely presentational read of the same totals aoTotals() already
+   computes (no new accounting logic). "Shortage" reflects presented cash items that were
+   disallowed (t.disallowed > 0), the one deficiency the current model actually computes;
+   there is no separate "overage" figure in the data model, so it is not fabricated here. */
+function aoStatusInfo(ao, t){
+  t = t || aoTotals(ao);
+  const hasName = !!(ao.name && ao.name.trim());
+  const hasCount = (t.cash + t.presented) > 0 || ao.formsWithValue.length>0 || ao.formsNoValue.length>0;
+  if(!hasName && !hasCount) return { code:"pending", icon:ICONS.dot, label:"Not started", detail:"" };
+  if(!hasName) return { code:"attention", icon:ICONS.alert, label:"Needs officer name", detail:"" };
+  if(!hasCount) return { code:"progress", icon:ICONS.dot, label:"In progress", detail:"Cash count not started" };
+  if(t.disallowed>0) return { code:"attention", icon:ICONS.alert, label:"Shortage", detail:peso(t.disallowed)+" disallowed" };
+  return { code:"ok", icon:ICONS.check, label:"Balanced", detail:peso(t.total)+" total" };
+}
 
 /* ---- view ---- */
 function viewExamList(){
@@ -927,13 +1159,14 @@ function viewExamList(){
           <button class="btn btn-sm btn-primary" id="exNew">${ICONS.plus} New</button></div>
         <div style="padding:8px;max-height:70vh;overflow-y:auto;">
           <div class="helptext" style="padding:2px 4px 10px;">Saved counts stay on this device — they are never uploaded. Export the .xlsx for anything you need to keep.</div>
-          ${sessions.length ? sessions.map(s=>`
-            <div class="agenda-item" style="padding:9px 10px;margin-bottom:6px;${ex.id===s.id?"border-color:var(--accent);":""}" data-load-exam="${s.id}">
-              <div style="flex:1;min-width:0;">
-                <div style="font-weight:600;font-size:12.5px;">${esc(s.agency||"Untitled")}</div>
-                <div class="helptext">${fmtDate(s.examDate)} · ${(s.aos||[]).length} AO${(s.aos||[]).length===1?"":"s"}${s.aos&&s.aos[0]&&s.aos[0].name?" · "+esc(s.aos.map(a=>a.name).filter(Boolean).join(", ")):""}</div>
-              </div>
-            </div>`).join("") : `<div class="empty" style="padding:20px 8px;"><p>No saved examinations yet.</p></div>`}
+          ${sessions.length ? sessions.map(s=>{ const aoNames=(s.aos||[]).map(a=>a.name).filter(Boolean); return `
+            <button type="button" class="cx-register-item ${ex.id===s.id?"active":""}" data-load-exam="${s.id}">
+              <span class="cx-register-main">
+                <span class="cx-register-agency">${esc(s.agency||"Untitled")}</span>
+                <span class="cx-register-meta">${fmtDate(s.examDate)}${s.station?" · "+esc(s.station):""}${aoNames.length?" · "+esc(aoNames.join(", ")):""}</span>
+              </span>
+              <span class="cx-register-badge">${(s.aos||[]).length} AO${(s.aos||[]).length===1?"":"s"}</span>
+            </button>`;}).join("") : `<div class="empty" style="padding:20px 8px;"><p>No saved examinations yet.</p></div>`}
         </div>
       </div>`;
 }
@@ -941,7 +1174,10 @@ function viewCashExam(){
   if(!State.exam) State.exam = newSession();
   const ex = State.exam;
   if(State.examAo==null || State.examAo>=ex.aos.length) State.examAo = 0;
+  const activeAo = ex.aos[State.examAo];
   return `
+    ${viewContextBar(ex, activeAo)}
+    ${activeAo ? viewStepper(ex, activeAo) : ""}
     <div class="split-2col exam">
       ${viewExamList()}
       <div style="min-width:0;">
@@ -953,11 +1189,9 @@ function viewCashExam(){
 function viewExamEditor(ex){
   const ao = ex.aos[State.examAo];
   return `
-    <div class="card" style="margin-bottom:16px;">
+    <div class="card cx-section" id="cx-sec-details" style="margin-bottom:16px;">
       <div class="card-head"><div><h3>${ex.id?"Cash examination":"New cash examination"}</h3><div class="sub">General Form No. 74(A) — one report per accountable officer</div></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          <button class="btn btn-sm" id="exSummary">${ICONS.print} Summary</button>
-          <button class="btn btn-sm" id="exSummaryXlsx">${ICONS.download} Summary .xlsx</button>
           <button class="btn btn-sm btn-primary" id="exSave">Save examination</button>
           ${ex.id?`<button class="btn btn-sm btn-ghost btn-danger" id="exDelete">${ICONS.trash}</button>`:""}
         </div></div>
@@ -974,23 +1208,21 @@ function viewExamEditor(ex){
       </div>
     </div>
 
-    <div class="cal-toolbar" style="margin-bottom:10px;">
-      <div class="chips" id="aoChips">
-        ${ex.aos.map((a,i)=>`<button class="chip ${i===State.examAo?"active":""}" data-ao="${i}">${esc(a.label)}${a.name?` · ${esc(a.name.split(" ")[0])}`:""}</button>`).join("")}
-        <button class="chip" id="aoAdd" style="border-style:dashed;">${ICONS.plus} Add AO</button>
-      </div>
-    </div>
+    ${viewAoRoster(ex)}
 
     ${ao ? viewAoPanel(ex, ao, State.examAo) : ""}
+
+    ${ao ? viewReviewOutput(ex) : ""}
 
     ${viewConsolidated(ex)}
   `;
 }
 function viewAoPanel(ex, ao, i){
   const t = aoTotals(ao);
+  const { hasPcv, hasChecks, hasCAs, apn } = apNumbersFor(ao);
   const p = `aos.${i}.`;
   const denomRow = (v,isCoin)=>{ const k=denomKey(v,isCoin); const q=num(ao.denoms[k]);
-    return `<tr><td class="num">₱${v.toLocaleString("en-PH",{minimumFractionDigits: isCoin&&v<1?2:0})}</td><td><input type="number" min="0" step="1" data-bind="${p}denoms.${k}" value="${q}" data-recalc /></td><td class="num" style="text-align:right;" data-amt="${k}">${peso(q*v)}</td></tr>`; };
+    return `<tr><td class="cx-denom-label">₱${v.toLocaleString("en-PH",{minimumFractionDigits: isCoin&&v<1?2:0})}</td><td><input type="number" min="0" step="1" data-bind="${p}denoms.${k}" value="${q}" data-recalc /></td><td class="r cx-denom-amt" data-amt="${k}">${peso(q*v)}</td></tr>`; };
   return `
     <div class="card" style="margin-bottom:16px;">
       <div class="card-head"><div><h3 id="aoTitle">${esc(ao.label)}${ao.name?` — ${esc(ao.name)}`:""}</h3><div class="sub">Accountable officer details, cash count, cash items and unused accountable forms</div></div>
@@ -1013,89 +1245,97 @@ function viewAoPanel(ex, ao, i){
           <div class="field"><label>Bond effective date</label><input type="text" data-bind="${p}bondEffective" value="${esc(ao.bondEffective)}" placeholder="mm/dd/yy" /></div>
         </div>
 
-        <div class="section-title">Inventory of cash on hand</div>
-        <div class="grid cols-2" style="gap:18px;">
-          <div class="table-wrap"><table class="denom-table"><thead><tr><th>Bills</th><th>No. of pcs.</th><th style="text-align:right;">Amount</th></tr></thead>
-            <tbody>${BILLS.map(v=>denomRow(v,false)).join("")}</tbody></table></div>
-          <div class="table-wrap"><table class="denom-table"><thead><tr><th>Coins</th><th>No. of pcs.</th><th style="text-align:right;">Amount</th></tr></thead>
-            <tbody>${COINS.map(v=>denomRow(v,true)).join("")}</tbody></table></div>
-        </div>
-        <div style="text-align:right;font-weight:700;margin-top:8px;">Total cash on hand: <span class="num" data-total="cash">${peso(t.cash)}</span></div>
-
-        <div class="section-title">Inventory of cash items</div>
-        <div class="table-wrap"><table>
-          <thead><tr><th>Petty cash fund vouchers (Appendix 1.1)</th><th style="text-align:right;">Presented</th><th style="text-align:right;">Allowed</th><th style="text-align:right;">Disallowed</th></tr></thead>
-          <tbody><tr><td>Total PCVs on hand</td>
-            <td><input type="number" min="0" step="0.01" data-bind="${p}pcvPresented" value="${num(ao.pcvPresented)}" data-recalc style="text-align:right;" /></td>
-            <td><input type="number" min="0" step="0.01" data-bind="${p}pcvAllowed" value="${num(ao.pcvAllowed)}" data-recalc style="text-align:right;" /></td>
-            <td class="num" style="text-align:right;" data-total="pcvDis">${peso(t.pcv-t.pcvAllowed)}</td></tr></tbody></table></div>
-
-        <div class="helptext" style="margin:14px 0 6px;font-weight:700;color:var(--ink-2);">Checks for deposit (Appendix 1.2)</div>
-        <div class="table-wrap"><table>
-          <thead><tr><th>Bank</th><th>Check no.</th><th>Date</th><th>Payee</th><th style="text-align:right;">Amount</th><th>Allowed</th><th></th></tr></thead>
-          <tbody>${ao.checks.map((c,j)=>`<tr>
-            <td><input type="text" data-bind="${p}checks.${j}.bank" value="${esc(c.bank)}" placeholder="e.g. LBP" /></td>
-            <td><input type="text" data-bind="${p}checks.${j}.checkNo" value="${esc(c.checkNo)}" /></td>
-            <td><input type="date" data-bind="${p}checks.${j}.date" value="${esc(c.date)}" /></td>
-            <td><input type="text" data-bind="${p}checks.${j}.payee" value="${esc(c.payee)}" /></td>
-            <td><input type="number" min="0" step="0.01" data-bind="${p}checks.${j}.amount" value="${num(c.amount)}" data-recalc style="text-align:right;" /></td>
-            <td style="text-align:center;"><input type="checkbox" data-bind="${p}checks.${j}.allowed" ${c.allowed===false?"":"checked"} data-recalc style="width:auto;" /></td>
-            <td><button class="rm-row-btn" data-rm="${p}checks.${j}" type="button">&times;</button></td></tr>`).join("")}
-          ${ao.checks.length?"":`<tr><td colspan="7" class="helptext">No checks listed.</td></tr>`}</tbody></table></div>
-        <div class="items-add-row"><button class="btn btn-sm" data-add="${p}checks">${ICONS.plus} Add check</button><div style="flex:1;"></div><div style="font-weight:700;font-size:13px;">Total checks: <span class="num" data-total="checks">${peso(t.checks)}</span></div></div>
-
-        <div class="helptext" style="margin:14px 0 6px;font-weight:700;color:var(--ink-2);">Unliquidated cash advances (Appendix 1.3)</div>
-        <div class="table-wrap"><table>
-          <thead><tr><th>Payee / AO granted</th><th>Date granted</th><th>Reference (check/DV no.)</th><th style="text-align:right;">Amount granted</th><th style="text-align:right;">Cash on hand</th><th style="text-align:right;">Unliquidated</th><th></th></tr></thead>
-          <tbody>${ao.cashAdvances.map((c,j)=>`<tr>
-            <td><input type="text" data-bind="${p}cashAdvances.${j}.payee" value="${esc(c.payee)}" /></td>
-            <td><input type="date" data-bind="${p}cashAdvances.${j}.date" value="${esc(c.date)}" /></td>
-            <td><input type="text" data-bind="${p}cashAdvances.${j}.ref" value="${esc(c.ref||"")}" /></td>
-            <td><input type="number" min="0" step="0.01" data-bind="${p}cashAdvances.${j}.granted" value="${num(c.granted)}" data-recalc style="text-align:right;" /></td>
-            <td><input type="number" min="0" step="0.01" data-bind="${p}cashAdvances.${j}.cashOnHand" value="${num(c.cashOnHand)}" data-recalc style="text-align:right;" /></td>
-            <td class="num" style="text-align:right;" data-ca-unliq="${j}">${peso(Math.max(0,num(c.granted)-num(c.cashOnHand)))}</td>
-            <td><button class="rm-row-btn" data-rm="${p}cashAdvances.${j}" type="button">&times;</button></td></tr>`).join("")}
-          ${ao.cashAdvances.length?"":`<tr><td colspan="7" class="helptext">No cash advances listed.</td></tr>`}</tbody></table></div>
-        <div class="items-add-row"><button class="btn btn-sm" data-add="${p}cashAdvances">${ICONS.plus} Add cash advance</button><div style="flex:1;"></div><div style="font-weight:700;font-size:13px;">Total unliquidated: <span class="num" data-total="cas">${peso(t.cas)}</span></div></div>
-
-        <div class="result-banner result-balanced" style="margin-top:18px;">
-          <div><div class="label">Total inventory of cash and allowed cash items (TOD)</div>
-            <div style="font-size:11.5px;opacity:.85;">Cash <span data-total="cash2">${peso(t.cash)}</span> + cash items presented <span data-total="presented">${peso(t.presented)}</span>; disallowed <span data-total="disallowed">${peso(t.disallowed)}</span></div></div>
-          <div class="amt num" data-total="total">${peso(t.total)}</div>
+        <div class="cx-section" id="cx-sec-cash">
+          <div class="cx-section-head"><h4>Physical cash on hand</h4></div>
+          <div class="cx-cash-grid">
+            <div class="table-wrap"><table class="cx-denom"><caption>Bills</caption><thead><tr><th>Denom.</th><th class="r">Qty.</th><th class="r">Amount</th></tr></thead>
+              <tbody>${BILLS.map(v=>denomRow(v,false)).join("")}</tbody></table></div>
+            <div class="table-wrap"><table class="cx-denom"><caption>Coins</caption><thead><tr><th>Denom.</th><th class="r">Qty.</th><th class="r">Amount</th></tr></thead>
+              <tbody>${COINS.map(v=>denomRow(v,true)).join("")}</tbody></table></div>
+          </div>
+          <div class="cx-cash-total"><span class="lbl">Total physical cash</span><span class="val num" data-total="cash">${peso(t.cash)}</span></div>
         </div>
 
-        <div class="section-title">Unused accountable forms — with money value</div>
-        <div class="table-wrap"><table>
-          <thead><tr><th>Name of form</th><th>Qty.</th><th>Inclusive serial no.</th><th>Denomination</th><th style="text-align:right;">Amount</th><th></th></tr></thead>
-          <tbody>${ao.formsWithValue.map((f,j)=>`<tr>
-            <td><input type="text" data-bind="${p}formsWithValue.${j}.name" value="${esc(f.name)}" /></td>
-            <td><input type="number" min="0" data-bind="${p}formsWithValue.${j}.qty" value="${esc(f.qty)}" style="width:80px;" /></td>
-            <td><input type="text" data-bind="${p}formsWithValue.${j}.serial" value="${esc(f.serial)}" placeholder="from–to" /></td>
-            <td><input type="text" data-bind="${p}formsWithValue.${j}.denomination" value="${esc(f.denomination)}" /></td>
-            <td><input type="number" min="0" step="0.01" data-bind="${p}formsWithValue.${j}.amount" value="${num(f.amount)}" data-recalc style="text-align:right;" /></td>
-            <td><button class="rm-row-btn" data-rm="${p}formsWithValue.${j}" type="button">&times;</button></td></tr>`).join("")}
-          ${ao.formsWithValue.length?"":`<tr><td colspan="6" class="helptext">None — the form will print “N O N E”.</td></tr>`}</tbody></table></div>
-        <div class="items-add-row"><button class="btn btn-sm" data-add="${p}formsWithValue">${ICONS.plus} Add form</button><div style="flex:1;"></div><div style="font-weight:700;font-size:13px;">Total: <span class="num" data-total="formsValue">${peso(t.formsValue)}</span></div></div>
+        <div class="cx-section" id="cx-sec-items">
+          <div class="cx-section-head"><h4>Cash items</h4><span class="cx-section-hint">Petty cash fund vouchers, checks for deposit, unliquidated cash advances</span></div>
+          <div class="cx-section-head" style="margin-top:4px;"><h4 style="text-transform:none;font-size:13px;">Petty cash fund vouchers</h4><span class="cx-appendix-note" data-pcv-ap${apn.pcv?"":' style="display:none;"'}>${apn.pcv?`Appendix 1.${apn.pcv}`:""}</span></div>
+          <div class="table-wrap"><table class="cx-item-table">
+            <thead><tr><th>Particulars</th><th style="text-align:right;">Presented</th><th style="text-align:right;">Allowed</th><th style="text-align:right;">Disallowed</th></tr></thead>
+            <tbody><tr><td>Total PCVs on hand</td>
+              <td><input type="number" min="0" step="0.01" data-bind="${p}pcvPresented" value="${num(ao.pcvPresented)}" data-recalc style="text-align:right;" /></td>
+              <td><input type="number" min="0" step="0.01" data-bind="${p}pcvAllowed" value="${num(ao.pcvAllowed)}" data-recalc style="text-align:right;" /></td>
+              <td class="num" style="text-align:right;" data-total="pcvDis">${peso(t.pcv-t.pcvAllowed)}</td></tr></tbody></table></div>
 
-        <div class="section-title">Unused accountable forms — without money value</div>
-        <div class="helptext" style="margin-bottom:8px;">Enter the inclusive serial numbers; the quantity is computed as (to − from + 1). Type a quantity only to override it (e.g. for booklets counted by pad).</div>
-        <div class="table-wrap"><table>
-          <thead><tr><th>Name of form</th><th>Serial from</th><th>Serial to</th><th>Qty.</th><th></th></tr></thead>
-          <tbody>${ao.formsNoValue.map((f,j)=>`<tr>
-            <td><input type="text" data-bind="${p}formsNoValue.${j}.name" value="${esc(f.name)}" placeholder="e.g. AF 51 Official Receipt" /></td>
-            <td><input type="text" data-bind="${p}formsNoValue.${j}.serialFrom" value="${esc(f.serialFrom)}" data-recalc /></td>
-            <td><input type="text" data-bind="${p}formsNoValue.${j}.serialTo" value="${esc(f.serialTo)}" data-recalc /></td>
-            <td><input type="number" min="0" data-bind="${p}formsNoValue.${j}.qty" value="${esc(f.qty)}" placeholder="${formQty(f)||""}" data-recalc style="width:90px;" /></td>
-            <td><button class="rm-row-btn" data-rm="${p}formsNoValue.${j}" type="button">&times;</button></td></tr>`).join("")}
-          ${ao.formsNoValue.length?"":`<tr><td colspan="5" class="helptext">No forms listed.</td></tr>`}</tbody></table></div>
-        <div class="items-add-row"><button class="btn btn-sm" data-add="${p}formsNoValue">${ICONS.plus} Add form</button><div style="flex:1;"></div><div style="font-weight:700;font-size:13px;">Total pieces: <span class="num" data-total="formsNoValueQty">${t.formsNoValueQty}</span></div></div>
+          <div class="cx-section-head" style="margin-top:18px;"><h4 style="text-transform:none;font-size:13px;">Checks for deposit</h4>${apn.checks?`<span class="cx-appendix-note">Appendix 1.${apn.checks}</span>`:""}</div>
+          <div class="table-wrap"><table class="cx-item-table">
+            <thead><tr><th>Bank</th><th>Check no.</th><th>Date</th><th>Payee</th><th style="text-align:right;">Amount</th><th>Allowed</th><th></th></tr></thead>
+            <tbody>${ao.checks.map((c,j)=>`<tr>
+              <td><input type="text" data-bind="${p}checks.${j}.bank" value="${esc(c.bank)}" placeholder="e.g. LBP" /></td>
+              <td><input type="text" data-bind="${p}checks.${j}.checkNo" value="${esc(c.checkNo)}" /></td>
+              <td><input type="date" data-bind="${p}checks.${j}.date" value="${esc(c.date)}" /></td>
+              <td><input type="text" data-bind="${p}checks.${j}.payee" value="${esc(c.payee)}" /></td>
+              <td><input type="number" min="0" step="0.01" data-bind="${p}checks.${j}.amount" value="${num(c.amount)}" data-recalc style="text-align:right;" /></td>
+              <td style="text-align:center;"><input type="checkbox" data-bind="${p}checks.${j}.allowed" ${c.allowed===false?"":"checked"} data-recalc style="width:auto;" /></td>
+              <td><button class="rm-row-btn" data-rm="${p}checks.${j}" type="button" aria-label="Remove this check">&times;</button></td></tr>`).join("")}
+            ${ao.checks.length?"":`<tr><td colspan="7" class="cx-empty-row">No checks listed yet.</td></tr>`}</tbody></table></div>
+          <div class="cx-item-foot"><button class="btn btn-sm" data-add="${p}checks">${ICONS.plus} Add check</button><div class="grow"></div><div class="cx-item-total">Total checks: <span class="num" data-total="checks">${peso(t.checks)}</span></div></div>
 
-        <div class="section-title">Certification</div>
-        <div class="field-row">
-          <div class="field"><label>Witness 1 (name)</label><input type="text" data-bind="${p}witness1" value="${esc(ao.witness1)}" /></div>
-          <div class="field"><label>Witness 2 (name)</label><input type="text" data-bind="${p}witness2" value="${esc(ao.witness2)}" /></div>
+          <div class="cx-section-head" style="margin-top:18px;"><h4 style="text-transform:none;font-size:13px;">Unliquidated cash advances</h4>${apn.cas?`<span class="cx-appendix-note">Appendix 1.${apn.cas}</span>`:""}</div>
+          <div class="table-wrap"><table class="cx-item-table">
+            <thead><tr><th>Payee / AO granted</th><th>Date granted</th><th>Reference (check/DV no.)</th><th style="text-align:right;">Amount granted</th><th style="text-align:right;">Cash on hand</th><th style="text-align:right;">Unliquidated</th><th></th></tr></thead>
+            <tbody>${ao.cashAdvances.map((c,j)=>`<tr>
+              <td><input type="text" data-bind="${p}cashAdvances.${j}.payee" value="${esc(c.payee)}" /></td>
+              <td><input type="date" data-bind="${p}cashAdvances.${j}.date" value="${esc(c.date)}" /></td>
+              <td><input type="text" data-bind="${p}cashAdvances.${j}.ref" value="${esc(c.ref||"")}" /></td>
+              <td><input type="number" min="0" step="0.01" data-bind="${p}cashAdvances.${j}.granted" value="${num(c.granted)}" data-recalc style="text-align:right;" /></td>
+              <td><input type="number" min="0" step="0.01" data-bind="${p}cashAdvances.${j}.cashOnHand" value="${num(c.cashOnHand)}" data-recalc style="text-align:right;" /></td>
+              <td class="num" style="text-align:right;" data-ca-unliq="${j}">${peso(Math.max(0,num(c.granted)-num(c.cashOnHand)))}</td>
+              <td><button class="rm-row-btn" data-rm="${p}cashAdvances.${j}" type="button" aria-label="Remove this cash advance">&times;</button></td></tr>`).join("")}
+            ${ao.cashAdvances.length?"":`<tr><td colspan="7" class="cx-empty-row">No cash advances listed yet.</td></tr>`}</tbody></table></div>
+          <div class="cx-item-foot"><button class="btn btn-sm" data-add="${p}cashAdvances">${ICONS.plus} Add cash advance</button><div class="grow"></div><div class="cx-item-total">Total unliquidated: <span class="num" data-total="cas">${peso(t.cas)}</span></div></div>
+
+          ${viewReconciliation(t)}
         </div>
-        <div class="field"><label>Remarks (kept in the hub, not printed on the form)</label><textarea data-bind="${p}remarks">${esc(ao.remarks)}</textarea></div>
+
+        <div class="cx-section" id="cx-sec-forms">
+          <div class="cx-section-head"><h4>Unused accountable forms — with money value</h4>${apn.fwv?`<span class="cx-appendix-note">Appendix 1.${apn.fwv}</span>`:""}</div>
+          <div class="table-wrap"><table class="cx-item-table">
+            <thead><tr><th>Name of form</th><th>Qty.</th><th>Inclusive serial no.</th><th>Denomination</th><th style="text-align:right;">Amount</th><th></th></tr></thead>
+            <tbody>${ao.formsWithValue.map((f,j)=>`<tr>
+              <td><input type="text" data-bind="${p}formsWithValue.${j}.name" value="${esc(f.name)}" /></td>
+              <td><input type="number" min="0" data-bind="${p}formsWithValue.${j}.qty" value="${esc(f.qty)}" style="width:80px;" /></td>
+              <td><input type="text" data-bind="${p}formsWithValue.${j}.serial" value="${esc(f.serial)}" placeholder="from–to" /></td>
+              <td><input type="text" data-bind="${p}formsWithValue.${j}.denomination" value="${esc(f.denomination)}" /></td>
+              <td><input type="number" min="0" step="0.01" data-bind="${p}formsWithValue.${j}.amount" value="${num(f.amount)}" data-recalc style="text-align:right;" /></td>
+              <td><button class="rm-row-btn" data-rm="${p}formsWithValue.${j}" type="button" aria-label="Remove this form">&times;</button></td></tr>`).join("")}
+            ${ao.formsWithValue.length?"":`<tr><td colspan="6" class="cx-empty-row">None — the form will print “N O N E”.</td></tr>`}</tbody></table></div>
+          <div class="cx-item-foot"><button class="btn btn-sm" data-add="${p}formsWithValue">${ICONS.plus} Add form</button><div class="grow"></div><div class="cx-item-total">Total: <span class="num" data-total="formsValue">${peso(t.formsValue)}</span></div></div>
+
+          <div class="cx-section-head" style="margin-top:22px;"><h4>Unused accountable forms — without money value</h4>${apn.fnv?`<span class="cx-appendix-note">Appendix 1.${apn.fnv}</span>`:""}</div>
+          <div class="cx-section-hint" style="display:block;margin:-4px 0 8px;">Enter the inclusive serial numbers; the quantity is computed as (to − from + 1). Type a quantity only to override it (e.g. for booklets counted by pad).</div>
+          <div class="table-wrap"><table class="cx-item-table">
+            <thead><tr><th>Name of form</th><th>Serial from</th><th>Serial to</th><th>Qty.</th><th></th></tr></thead>
+            <tbody>${ao.formsNoValue.map((f,j)=>`<tr>
+              <td><input type="text" data-bind="${p}formsNoValue.${j}.name" value="${esc(f.name)}" placeholder="e.g. AF 51 Official Receipt" /></td>
+              <td><input type="text" data-bind="${p}formsNoValue.${j}.serialFrom" value="${esc(f.serialFrom)}" data-recalc /></td>
+              <td><input type="text" data-bind="${p}formsNoValue.${j}.serialTo" value="${esc(f.serialTo)}" data-recalc /></td>
+              <td><input type="number" min="0" data-bind="${p}formsNoValue.${j}.qty" value="${esc(f.qty)}" placeholder="${formQty(f)||""}" data-recalc style="width:90px;" /></td>
+              <td><button class="rm-row-btn" data-rm="${p}formsNoValue.${j}" type="button" aria-label="Remove this form">&times;</button></td></tr>`).join("")}
+            ${ao.formsNoValue.length?"":`<tr><td colspan="5" class="cx-empty-row">No forms listed yet.</td></tr>`}</tbody></table></div>
+          <div class="cx-item-foot"><button class="btn btn-sm" data-add="${p}formsNoValue">${ICONS.plus} Add form</button><div class="grow"></div><div class="cx-item-total">Total pieces: <span class="num" data-total="formsNoValueQty">${t.formsNoValueQty}</span></div></div>
+        </div>
+
+        <div class="cx-section" id="cx-sec-certify">
+          <div class="cx-section-head"><h4>Certification</h4></div>
+          <div class="cx-certify">
+            <div class="cx-certify-note">${ICONS.info}<span>Names entered here identify the witnesses for this working paper — typing a name is not an electronic signature. The printed GF 74(A) form is signed by hand.</span></div>
+            <div class="field-row">
+              <div class="field"><label>Witness 1 (name)</label><input type="text" data-bind="${p}witness1" value="${esc(ao.witness1)}" /></div>
+              <div class="field"><label>Witness 2 (name)</label><input type="text" data-bind="${p}witness2" value="${esc(ao.witness2)}" /></div>
+            </div>
+            <div class="field" style="margin-bottom:0;"><label>Remarks (kept in the hub, not printed on the form)</label><textarea data-bind="${p}remarks">${esc(ao.remarks)}</textarea></div>
+          </div>
+        </div>
       </div>
     </div>`;
 }
@@ -1124,6 +1364,98 @@ function viewConsolidated(ex){
     </div>`;
 }
 
+/* ---- workbench shell: context bar, workflow stepper, AO roster, reconciliation, review & output ----
+   All additive presentation built from the same aoTotals()/apNumbersFor() figures the sections above
+   already compute — no new accounting logic, nothing here touches downloadGF74A / downloadDenomSummary
+   or the embedded GF 74(A) template. */
+function viewContextBar(ex, ao){
+  const dirty = !!State.__dirty;
+  const saveLabel = dirty ? "Unsaved changes" : (ex.id ? "Saved on this device" : "Not yet saved");
+  return `
+    <div class="cx-context" id="cxContext">
+      <div class="cx-c-who">
+        <div class="cx-c-agency">${esc(ex.agency || "Untitled examination")}</div>
+        <div class="cx-c-sub">${ex.station?esc(ex.station)+" · ":""}${fmtDate(ex.examDate)}${ao?" · "+esc(ao.label+(ao.name?" – "+ao.name:"")):""}</div>
+      </div>
+      <span class="cx-c-save ${dirty?"dirty":"clean"}" id="cxSaveStatus">${ICONS.dot}<span>${saveLabel}</span></span>
+    </div>`;
+}
+function viewStepper(ex, ao){
+  const t = aoTotals(ao);
+  const hasItems = ao.checks.length>0 || ao.cashAdvances.length>0 || num(ao.pcvPresented)>0;
+  const hasForms = ao.formsWithValue.length>0 || ao.formsNoValue.length>0;
+  const hasCertify = !!(String(ao.witness1||"").trim() || String(ao.witness2||"").trim());
+  const steps = [
+    ["cx-sec-details","Details", !!(ex.agency||"").trim()],
+    ["cx-sec-officers","Officers", !!(ao.name||"").trim()],
+    ["cx-sec-cash","Physical cash", t.cash>0],
+    ["cx-sec-items","Cash items", hasItems],
+    ["cx-sec-forms","Forms", hasForms],
+    ["cx-sec-certify","Certification", hasCertify],
+    ["cx-sec-review","Review", false],
+  ];
+  return `<div class="cx-stepper" id="cxStepper">${steps.map((s,idx)=>`
+    <button type="button" class="cx-step ${s[2]?"done":""}" data-jump="${s[0]}">
+      <span class="cx-step-num">${s[2]?ICONS.check:idx+1}</span><span class="cx-step-label">${s[1]}</span>
+    </button>`).join("")}</div>`;
+}
+function viewAoRoster(ex){
+  return `<div class="cx-section" id="cx-sec-officers">
+      <div class="cx-section-head"><h4>Accountable officers</h4><span class="cx-section-hint">${ex.aos.length} in this examination — click to switch</span></div>
+      <div class="cx-ao-roster" id="aoChips">
+        ${ex.aos.map((a,i)=>{ const t=aoTotals(a); const si=aoStatusInfo(a,t);
+          return `<button type="button" class="cx-ao-card ${i===State.examAo?"active":""}" data-ao="${i}">
+            <span class="cx-ao-role">${esc(a.label)}</span>
+            <span class="cx-ao-name${a.name?"":" unset"}">${a.name?esc(a.name):"No name yet"}</span>
+            <span class="cx-status-pill ${si.code}">${si.icon}${esc(si.label)}</span>
+            ${si.detail?`<span class="cx-ao-foot">${esc(si.detail)}</span>`:""}
+          </button>`;}).join("")}
+        <button type="button" class="cx-ao-add" id="aoAdd">${ICONS.plus} Add accountable officer</button>
+      </div>
+    </div>`;
+}
+function viewReconciliation(t){
+  const shortage = t.disallowed > 0;
+  return `
+          <div class="cx-recon">
+            <div class="cx-recon-tiles">
+              <div class="cx-recon-tile"><div class="lbl">Physical cash</div><div class="val num" data-total="cash2">${peso(t.cash)}</div></div>
+              <div class="cx-recon-tile"><div class="lbl">Cash items presented</div><div class="val num" data-total="presented">${peso(t.presented)}</div></div>
+              <div class="cx-recon-tile"><div class="lbl">Disallowed</div><div class="val num" data-total="disallowed">${peso(t.disallowed)}</div></div>
+            </div>
+            <div class="cx-recon-status ${shortage?"attention":"ok"}">
+              <div class="cx-rs-label">${shortage?ICONS.alert:ICONS.check}<span>${shortage?"Needs attention — cash items disallowed":"Balanced"}</span></div>
+              <div class="cx-rs-note">Total inventory of cash and allowed cash items (TOD)</div>
+              <div class="cx-rs-amt num" data-total="total">${peso(t.total)}</div>
+            </div>
+          </div>`;
+}
+function viewReviewOutput(ex){
+  const totals = ex.aos.map(aoTotals);
+  const sum = k=>totals.reduce((s,t)=>s+t[k],0);
+  const allNamed = ex.aos.every(a=>a.name && a.name.trim());
+  const anyAppendix = ex.aos.some(a=>{ const {apn}=apNumbersFor(a); return !!(apn.checks||apn.cas||apn.pcv||apn.fwv||apn.fnv); });
+  return `
+    <div class="card cx-section" id="cx-sec-review" style="margin-bottom:16px;">
+      <div class="card-head"><div><h3>Review &amp; output</h3><div class="sub">Examination-wide summary before generating documents</div></div></div>
+      <div class="card-pad">
+        <div class="cx-review-grid">
+          <div class="cx-review-tile"><div class="lbl">Status</div><div class="val small">${allNamed?`${ICONS.check} Ready for output`:`${ICONS.alert} Officer name(s) needed`}</div></div>
+          <div class="cx-review-tile"><div class="lbl">Accountable officers</div><div class="val">${ex.aos.length}</div></div>
+          <div class="cx-review-tile"><div class="lbl">Total inventory (TOD)</div><div class="val num">${peso(sum("total"))}</div></div>
+          <div class="cx-review-tile"><div class="lbl">Disallowed</div><div class="val num">${peso(sum("disallowed"))}</div></div>
+        </div>
+        <div class="cx-output-actions">
+          <div class="cx-out-group">
+            <button class="btn btn-sm" id="exSummary">${ICONS.print} Summary</button>
+            <button class="btn btn-sm btn-primary" id="exSummaryXlsx">${ICONS.download} Summary .xlsx</button>
+          </div>
+        </div>
+        <div class="cx-output-hint">Each accountable officer's GF 74(A) — .xlsx — is available at the top of their own panel above.${anyAppendix?" One or more officers have entries that continue onto an Appendix in the generated file.":""}</div>
+      </div>
+    </div>`;
+}
+
 /* ---- state binding ---- */
 function setPath(obj, path, value){
   const parts = path.split("."); let o = obj;
@@ -1140,9 +1472,50 @@ function refreshAoTotals(){
   vp.querySelectorAll("[data-ca-unliq]").forEach(el=>{ const c=ao.cashAdvances[+el.getAttribute("data-ca-unliq")]; if(c) el.textContent = peso(Math.max(0,num(c.granted)-num(c.cashOnHand))); });
   const map = {cash:peso(t.cash), cash2:peso(t.cash), checks:peso(t.checks), cas:peso(t.cas), presented:peso(t.presented), disallowed:peso(t.disallowed), total:peso(t.total), pcvDis:peso(t.pcv-t.pcvAllowed), formsValue:peso(t.formsValue), formsNoValueQty:String(t.formsNoValueQty)};
   vp.querySelectorAll("[data-total]").forEach(el=>{ const k=el.getAttribute("data-total"); if(map[k]!=null) el.textContent = map[k]; });
+  // each "without money value" row shows its computed qty (to − from + 1) as a placeholder —
+  // update it live as serial from/to are typed, so it doesn't wait for a full re-render (e.g.
+  // clicking "Add form") to reflect what was just typed
+  ao.formsNoValue.forEach((f,j)=>{
+    const qEl = vp.querySelector(`[data-bind="aos.${State.examAo}.formsNoValue.${j}.qty"]`);
+    if(qEl) qEl.setAttribute("placeholder", formQty(f) || "");
+  });
+  // the PCV section's appendix-number hint can change the moment PCV goes from empty to non-empty
+  // (unlike checks/cash advances, it has no add/remove row that would otherwise trigger a full re-render);
+  // hidden entirely when no appendix applies, per the "don't clutter the UI" request
+  const pcvHint = vp.querySelector("[data-pcv-ap]");
+  if(pcvHint){ const n = apNumbersFor(ao).apn.pcv; pcvHint.textContent = n?`Appendix 1.${n}`:""; pcvHint.style.display = n?"":"none"; }
+  // the reconciliation status strip (balanced / disallowed) reads the same t.disallowed value
+  // already recomputed above — keep its color/icon/label in sync on every keystroke, not just on
+  // a full re-render
+  const recon = vp.querySelector(".cx-recon-status");
+  if(recon){
+    const shortage = t.disallowed > 0;
+    recon.className = "cx-recon-status " + (shortage?"attention":"ok");
+    const lbl = recon.querySelector(".cx-rs-label");
+    if(lbl) lbl.innerHTML = (shortage?ICONS.alert:ICONS.check) + `<span>${shortage?"Needs attention — cash items disallowed":"Balanced"}</span>`;
+  }
   // consolidated card is cheap to re-render in place
   const cons = document.getElementById("consolidatedCard");
   if(cons){ const tmp=document.createElement("div"); tmp.innerHTML=viewConsolidated(ex); cons.replaceWith(tmp.firstElementChild); }
+  refreshReviewOutput();
+}
+
+// keep the Review & output stage's summary tiles in sync on every keystroke that affects them
+// (a cash/check/CA amount changing the total or disallowed figure, or an officer's name changing
+// whether the exam is "ready for output") — otherwise this final-stage status only reflected
+// whatever was true at the last full re-render, which is stale exactly when a reviewer needs it
+// to be current.
+function refreshReviewOutput(){
+  const ex = State.exam; if(!ex) return;
+  const sec = document.getElementById("cx-sec-review"); if(!sec) return;
+  const totals = ex.aos.map(aoTotals);
+  const sum = k=>totals.reduce((s,t)=>s+t[k],0);
+  const allNamed = ex.aos.every(a=>a.name && a.name.trim());
+  const vals = sec.querySelectorAll(".cx-review-tile .val");
+  if(vals[0]) vals[0].innerHTML = allNamed?`${ICONS.check} Ready for output`:`${ICONS.alert} Officer name(s) needed`;
+  if(vals[1]) vals[1].textContent = String(ex.aos.length);
+  if(vals[2]) vals[2].textContent = peso(sum("total"));
+  if(vals[3]) vals[3].textContent = peso(sum("disallowed"));
 }
 
 function bindCashExamEvents(){
@@ -1153,13 +1526,36 @@ function bindCashExamEvents(){
     const el = e.target; const path = el.getAttribute && el.getAttribute("data-bind"); if(!path) return;
     let v = el.type==="checkbox" ? el.checked : el.value;
     setPath(State.exam, path, v);
+    if(path==="agency" || path==="station" || path==="examDate"){
+      const ex = State.exam, ao = ex.aos[State.examAo];
+      const agEl = document.querySelector(".cx-c-agency"); if(agEl) agEl.textContent = ex.agency || "Untitled examination";
+      const subEl = document.querySelector(".cx-c-sub");
+      if(subEl) subEl.textContent = (ex.station?ex.station+" · ":"") + fmtDate(ex.examDate) + (ao?" · "+ao.label+(ao.name?" – "+ao.name:""):"");
+      const stDetails = document.querySelector('.cx-step[data-jump="cx-sec-details"]');
+      if(stDetails && String(ex.agency||"").trim()) stDetails.classList.add("done");
+    }
     if(el.hasAttribute("data-recalc")) refreshAoTotals();
     Store.parkDraft();
-    if(el.hasAttribute("data-rechip")){ const i=State.examAo; const chip=vp.querySelector(`[data-ao="${i}"]`); const a=State.exam.aos[i]; if(chip) chip.textContent = a.label + (a.name?` · ${a.name.split(" ")[0]}`:""); const h=document.getElementById("aoTitle"); if(h) h.textContent = a.label + (a.name?` — ${a.name}`:""); }
+    if(el.hasAttribute("data-rechip")){
+      const i=State.examAo; const card=vp.querySelector(`.cx-ao-card[data-ao="${i}"]`); const a=State.exam.aos[i];
+      if(card){
+        const roleEl=card.querySelector(".cx-ao-role"); if(roleEl) roleEl.textContent=a.label;
+        const nameEl=card.querySelector(".cx-ao-name");
+        if(nameEl){ nameEl.textContent = a.name ? a.name : "No name yet"; nameEl.classList.toggle("unset", !a.name); }
+      }
+      const h=document.getElementById("aoTitle"); if(h) h.textContent = a.label + (a.name?` — ${a.name}`:"");
+      refreshReviewOutput();
+    }
   });
   vp.addEventListener("click", async (e)=>{
     if(State.view!=="cashexam") return;
     const t = e.target.closest("button,[data-load-exam],[data-ao]"); if(!t) return;
+    if(t.hasAttribute("data-jump")){
+      const el = document.getElementById(t.getAttribute("data-jump"));
+      if(el){ const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        el.scrollIntoView({behavior: reduce?"auto":"smooth", block:"start"}); }
+      return;
+    }
     if(t.id==="exNew"){ State.exam = newSession(); State.examAo=0; renderViewport(); return; }
     if(t.hasAttribute("data-load-exam")){ const s = State.collections.cashexams.find(x=>x.id===t.getAttribute("data-load-exam")); if(s){ State.exam = JSON.parse(JSON.stringify(s)); State.exam.aos.forEach(a=>{ const fresh=newAO(a.label).denoms; a.denoms=Object.assign(fresh, a.denoms||{}); }); State.examAo=0; renderViewport(); } return; }
     if(t.hasAttribute("data-ao")){ State.examAo = +t.getAttribute("data-ao"); renderViewport(); return; }
@@ -1246,6 +1642,7 @@ async function downloadGF74A(ex, ao){
   COINS.forEach(v=>{ const r=DENOM_ROWS[denomKey(v,true)]; const q=num(ao.denoms[denomKey(v,true)]); ws.getCell(`C${r}`).value=q; ws.getCell(`D${r}`).value={formula:`A${r}*C${r}`, result:q*v}; });
   ws.getCell("D41").value={formula:"SUM(D25:I40)", result:t.cash};
   // cash items rows 25..40
+  const { hasPcv, hasChecks, hasCAs, fwvOverflow, fnvOverflow, apn } = apNumbersFor(ao);
   set("N25",t.pcv); set("O25",t.pcvAllowed); ws.getCell("P25").value={formula:"N25-O25", result:t.pcv-t.pcvAllowed};
   const items=[];
   const short=(str,n)=>{ str=String(str||"").replace(/\s+/g," ").trim(); return str.length>n ? str.slice(0,n-1)+"…" : str; };
@@ -1257,29 +1654,69 @@ async function downloadGF74A(ex, ao){
   else { const room = maxRow-26; items.slice(0,room).forEach(write); const rest=items.slice(room); write({label:`Other cash items – ${rest.length} more (see Appendix)`, presented:rest.reduce((s,i)=>s+i.presented,0), allowed:rest.reduce((s,i)=>s+i.allowed,0)}); }
   ws.getCell("N41").value={formula:"SUM(N25:N40)", result:t.presented}; ws.getCell("O41").value={formula:"SUM(O25:O40)", result:t.allowed}; ws.getCell("P41").value={formula:"SUM(P25:P40)", result:t.disallowed};
   ws.getCell("P42").value={formula:"D41+N41", result:t.total};
-  // accountable forms rows 48..55
+  // accountable forms rows 48..55 — the block is a fixed 8 rows; beyond that, roll the rest into
+  // one summary row and list every entry in full on the Appendix sheet (same pattern as checks/CAs above).
   if(ao.formsWithValue.length===0){ set("A48","N O N E"); set("D48",0); set("K48","-"); set("L48",0); }
-  ao.formsWithValue.slice(0,8).forEach((f,i)=>{ const rr=48+i; set(`A${rr}`,f.name||""); set(`D${rr}`,num(f.qty)); set(`E${rr}`,f.serial||""); set(`K${rr}`,f.denomination||""); set(`L${rr}`,num(f.amount)); copyStyle(ws,"L48",`L${rr}`); });
-  ao.formsNoValue.slice(0,8).forEach((f,i)=>{ const rr=48+i; set(`M${rr}`,f.name||""); set(`O${rr}`,formQty(f)); set(`P${rr}`,[f.serialFrom,f.serialTo].filter(Boolean).join("-")); });
+  // the printed PCV label on the main sheet points at its own appendix, or says there isn't one
+  if(!hasChecks && !hasCAs && !hasPcv) set("J25","None");
+  else if(hasPcv) set("J25", `Petty Cash Fund Vouchers (See Appendix 1.${apn.pcv})`);
+  else set("J25", "Petty Cash Fund Vouchers (None)");
+  (fwvOverflow ? ao.formsWithValue.slice(0,7) : ao.formsWithValue).forEach((f,i)=>{ const rr=48+i; set(`A${rr}`,f.name||""); set(`D${rr}`,num(f.qty)); set(`E${rr}`,f.serial||""); set(`K${rr}`,f.denomination||""); set(`L${rr}`,num(f.amount)); copyStyle(ws,"L48",`L${rr}`); });
+  if(fwvOverflow){ const rest=ao.formsWithValue.slice(7); set("A55",`— ${rest.length} more, see Appendix 1.${apn.fwv} —`); set("L55", rest.reduce((s,f)=>s+num(f.amount),0)); copyStyle(ws,"L48","L55"); }
+  (fnvOverflow ? ao.formsNoValue.slice(0,7) : ao.formsNoValue).forEach((f,i)=>{ const rr=48+i; set(`M${rr}`,f.name||""); set(`O${rr}`,formQty(f)); set(`P${rr}`,[f.serialFrom,f.serialTo].filter(Boolean).join("-")); });
+  if(fnvOverflow){ const rest=ao.formsNoValue.slice(7); set("M55",`— ${rest.length} more, see Appendix 1.${apn.fnv} —`); set("O55", rest.reduce((s,f)=>s+formQty(f),0)); }
   ws.getCell("L56").value={formula:"SUM(L48:L55)", result:t.formsValue}; ws.getCell("O56").value={formula:"SUM(O48:O55)", result:t.formsNoValueQty};
   set("A58",`          I HEREBY CERTIFY on my official oath: (1) That upon demand by the Auditor/Examiner I produced all my cash, checks, money orders, cash items, paid vouchers, unused accountable forms, etc., for which I am officially accountable; (2) That the inventory of such cash items and unused accountable forms in my possession and produced to the Auditor/Examiner at the time of cash count today ${longDate(ex.examDate)} is correctly stated above and is broken down as follows: `);
   ws.getCell("N61").value={formula:"P42", result:t.total}; ws.getCell("N62").value={formula:"L56", result:t.formsValue}; ws.getCell("N63").value={formula:"O56", result:t.formsNoValueQty};
   set("A65",`of which ${money(t.disallowed)} was disallowed by the Auditor/Examiner and (3) That said cash, checks, money orders, cash items, paid vouchers, unused accountable forms, etc., were returned to me intact after the cash count. `);
   set("A67","Accountable Officer's Signature:\n\n          "+name); set("J67","Position/Designation:\n\n                         "+pos); set("N67","Agency/Station:\n"+[agency,station].filter(Boolean).join(", "));
-  set("A69","Witness' name and signature: "+(ao.witness1||"")); set("L69","Witness' name and signature: "+(ao.witness2||""));
+  // witnesses — label on its own line, the name on the line below (matches how the officer's own
+  // signature block above is laid out), the name itself in blue like a signed-in-ink entry
+  const witnessCell=(addr, wname)=>{
+    ws.getCell(addr).value = { richText: [
+      { text: "Witness' name and signature:\n\n          ", font:{name:"Times New Roman", size:10} },
+      { text: String(wname||"").toUpperCase(), font:{name:"Times New Roman", size:10, color:{argb:"FF1F4E96"}} }
+    ]};
+    ws.getCell(addr).alignment = {wrapText:true, horizontal:"left", vertical:"top"};
+  };
+  witnessCell("A69", ao.witness1); witnessCell("L69", ao.witness2);
+  ws.getRow(69).height = ws.getRow(67).height; // more room to actually sign — matches the officer's signature row
   // appendix sheet
-  if(ao.checks.length || ao.cashAdvances.length){
-    const ap = wb.addWorksheet("Appendix", {pageSetup:{orientation:"landscape", fitToPage:true, fitToWidth:1, fitToHeight:0}}); ap.columns=[{width:6},{width:22},{width:16},{width:14},{width:30},{width:16},{width:16},{width:16}];
+  if(Object.keys(apn).length > 0){
+    const ap = wb.addWorksheet("Appendix", {pageSetup:{orientation:"landscape", fitToPage:true, fitToWidth:1, fitToHeight:0}}); ap.columns=[{width:22},{width:16},{width:20},{width:24},{width:16},{width:16},{width:16}];
     const bold={bold:true}; let row=1;
     ap.getCell(`A${row}`).value=`${agency} — ${name} (${pos}) — Cash count ${longDate(ex.examDate)}`; ap.getCell(`A${row}`).font=bold; row+=2;
-    if(ao.checks.length){ ap.getCell(`A${row}`).value="Appendix 1.2 — Checks for deposit"; ap.getCell(`A${row}`).font=bold; row++;
-      ["No.","Bank","Check no.","Date","Payee","Amount","Allowed"].forEach((h,i)=>{ const c=ap.getCell(row,i+1); c.value=h; c.font=bold; }); row++;
-      ao.checks.forEach((c,i)=>{ [i+1,c.bank,c.checkNo,c.date,c.payee,num(c.amount),c.allowed===false?"No":"Yes"].forEach((v,k)=>{ const cell=ap.getCell(row,k+1); cell.value=v; if(k===5) cell.numFmt="#,##0.00"; }); row++; });
-      ap.getCell(row,5).value="Total"; ap.getCell(row,5).font=bold; ap.getCell(row,6).value=t.checks; ap.getCell(row,6).numFmt="#,##0.00"; ap.getCell(row,6).font=bold; row+=2; }
-    if(ao.cashAdvances.length){ ap.getCell(`A${row}`).value="Appendix 1.3 — Unliquidated cash advances"; ap.getCell(`A${row}`).font=bold; row++;
-      ["No.","Payee","Reference","Date","","Amount granted","Cash on hand","Unliquidated"].forEach((h,i)=>{ const c=ap.getCell(row,i+1); c.value=h; c.font=bold; }); row++;
-      ao.cashAdvances.forEach((c,i)=>{ [i+1,c.payee,c.ref||"",c.date,"",num(c.granted),num(c.cashOnHand),Math.max(0,num(c.granted)-num(c.cashOnHand))].forEach((v,k)=>{ const cell=ap.getCell(row,k+1); cell.value=v; if(k>=5) cell.numFmt="#,##0.00"; }); row++; });
-      ap.getCell(row,5).value="Total"; ap.getCell(row,5).font=bold; ap.getCell(row,8).value=t.cas; ap.getCell(row,8).numFmt="#,##0.00"; ap.getCell(row,8).font=bold; }
+    if(hasChecks){ ap.getCell(`A${row}`).value=`Appendix 1.${apn.checks} — Inventory of checks for deposit`; ap.getCell(`A${row}`).font=bold; row++;
+      ["Bank","Check no.","Date","Payee","Amount","Allowed"].forEach((h,i)=>{ const c=ap.getCell(row,i+1); c.value=h; c.font=bold; }); row++;
+      ao.checks.forEach(c=>{ [c.bank,c.checkNo,c.date,c.payee,num(c.amount),c.allowed===false?"No":"Yes"].forEach((v,k)=>{ const cell=ap.getCell(row,k+1); cell.value=v; if(k===4) cell.numFmt="#,##0.00"; }); row++; });
+      ap.getCell(row,4).value="Total"; ap.getCell(row,4).font=bold; ap.getCell(row,5).value=t.checks; ap.getCell(row,5).numFmt="#,##0.00"; ap.getCell(row,5).font=bold; row+=2; }
+    if(hasCAs){ ap.getCell(`A${row}`).value=`Appendix 1.${apn.cas} — Inventory of unliquidated cash advances`; ap.getCell(`A${row}`).font=bold; row++;
+      ["Payee","Reference","Date","","Amount granted","Cash on hand","Unliquidated"].forEach((h,i)=>{ const c=ap.getCell(row,i+1); c.value=h; c.font=bold; }); row++;
+      ao.cashAdvances.forEach(c=>{ [c.payee,c.ref||"",c.date,"",num(c.granted),num(c.cashOnHand),Math.max(0,num(c.granted)-num(c.cashOnHand))].forEach((v,k)=>{ const cell=ap.getCell(row,k+1); cell.value=v; if(k>=4) cell.numFmt="#,##0.00"; }); row++; });
+      ap.getCell(row,4).value="Total"; ap.getCell(row,4).font=bold; ap.getCell(row,7).value=t.cas; ap.getCell(row,7).numFmt="#,##0.00"; ap.getCell(row,7).font=bold; row+=2; }
+    if(hasPcv){ ap.getCell(`A${row}`).value=`Appendix 1.${apn.pcv} — Inventory of petty cash fund vouchers`; ap.getCell(`A${row}`).font=bold; row++;
+      ["Presented","Allowed","Disallowed"].forEach((h,i)=>{ const c=ap.getCell(row,i+1); c.value=h; c.font=bold; }); row++;
+      [t.pcv, t.pcvAllowed, t.pcv-t.pcvAllowed].forEach((v,k)=>{ const cell=ap.getCell(row,k+1); cell.value=v; cell.numFmt="#,##0.00"; }); row+=2; }
+    if(fwvOverflow){ ap.getCell(`A${row}`).value=`Appendix 1.${apn.fwv} — Inventory of unused accountable forms with money value`; ap.getCell(`A${row}`).font=bold; row++;
+      // "Name of Form", "Qty." and "Inclusive Serial No." headers centered, per the requested layout
+      ["Name of Form","Qty.","Inclusive Serial No.","Denomination","Amount"].forEach((h,i)=>{ const c=ap.getCell(row,i+1); c.value=h; c.font=bold; if(i<=2) c.alignment={horizontal:"center"}; }); row++;
+      ao.formsWithValue.forEach(f=>{ [f.name||"",f.qty,f.serial||"",f.denomination||"",num(f.amount)].forEach((v,k)=>{ const cell=ap.getCell(row,k+1); cell.value=v; if(k===4) cell.numFmt="#,##0.00"; if(k===2) cell.alignment={horizontal:"center"}; }); row++; });
+      ap.getCell(row,4).value="Total"; ap.getCell(row,4).font=bold; ap.getCell(row,5).value=t.formsValue; ap.getCell(row,5).numFmt="#,##0.00"; ap.getCell(row,5).font=bold; row+=2; }
+    if(fnvOverflow){ ap.getCell(`A${row}`).value=`Appendix 1.${apn.fnv} — Inventory of unused accountable forms without money value`; ap.getCell(`A${row}`).font=bold; row++;
+      ["Name of Form","Inclusive Serial No.","Qty."].forEach((h,i)=>{ const c=ap.getCell(row,i+1); c.value=h; c.font=bold; c.alignment={horizontal:"center"}; }); row++;
+      ao.formsNoValue.forEach(f=>{ [f.name||"",[f.serialFrom,f.serialTo].filter(Boolean).join("-"),formQty(f)].forEach((v,k)=>{ const cell=ap.getCell(row,k+1); cell.value=v; if(k===1) cell.alignment={horizontal:"center"}; }); row++; });
+      ap.getCell(row,2).value="Total pieces"; ap.getCell(row,2).font=bold; ap.getCell(row,3).value=t.formsNoValueQty; ap.getCell(row,3).font=bold; row+=2; }
+    // signature block — one, at the very end of the sheet
+    row+=1;
+    ap.mergeCells(`A${row}:C${row}`); ap.mergeCells(`E${row}:G${row}`);
+    ap.getCell(`A${row}`).value="_______________________________"; ap.getCell(`E${row}`).value="_______________________________"; row++;
+    ap.mergeCells(`A${row}:C${row}`); ap.mergeCells(`E${row}:G${row}`);
+    ap.getCell(`A${row}`).value=(ex.auditor||"").toUpperCase()+"\nAuditor/Examiner"+(ex.auditorDesignation?" ("+ex.auditorDesignation+")":"");
+    ap.getCell(`E${row}`).value=name+"\nAccountable Officer"+(pos?" ("+pos+")":"");
+    ap.getCell(`A${row}`).alignment={wrapText:true}; ap.getCell(`E${row}`).alignment={wrapText:true};
+    ap.getRow(row).height=30;
+    // Times New Roman throughout the Appendix sheet
+    ap.eachRow({includeEmpty:false}, rw=>rw.eachCell({includeEmpty:false}, cell=>{ cell.font = Object.assign({}, cell.font, {name:"Times New Roman"}); }));
   }
   wb.calcProperties.fullCalcOnLoad = true;
   await saveWorkbook(wb, `GF74A_${safeName(ao.name||ao.label)}_${ex.examDate||todayISO()}.xlsx`);
@@ -1313,6 +1750,8 @@ async function downloadDenomSummary(ex){
 }
 
 const GF74A_TEMPLATE_B64 = "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";
+
+/* ========================= UTA — UNDERSTANDING THE AGENCY ========================= */
 
 /* ========================= GENERAL FORM No. 74(A) — ON-SCREEN ========================= */
 function up(s){ return String(s==null?"":s).toUpperCase(); }
@@ -1653,6 +2092,113 @@ function showGF74A(ex, ao){
 function showDenomSummary(ex){
   openSheet(`Denomination summary — ${ex.agency || "cash count"}`, renderDenomSummary(ex), tsvDenom(ex));
 }
+
+
+/* ========================= SAVE-STATE TRACKING (PWA-only, additive) =========================
+   Everything below only ever READS the shared cash-exam data model (State, aoTotals, etc.) and
+   patches the DOM *after* the shared render functions have already produced it, or wraps a shared
+   function to run a little extra code around it. It never changes what viewCashExam / viewAoPanel /
+   downloadGF74A / downloadDenomSummary compute or write out. Every entry point is wrapped in
+   try/catch so a bug here cannot take the underlying app down with it. */
+
+function updateSaveStatus(){
+  const el = document.getElementById("cxSaveStatus");
+  if(!el || !State.exam) return;
+  const dirty = !!State.__dirty;
+  el.className = "cx-c-save " + (dirty?"dirty":"clean");
+  const text = dirty ? "Unsaved changes" : (State.exam.id ? "Saved on this device" : "Not yet saved");
+  const label = el.querySelector("span");
+  if(label) label.textContent = text; else el.textContent = text;
+}
+function markDirty(){ if(!State.exam) return; State.__dirty = true; updateSaveStatus(); }
+function markClean(){ State.__dirty = false; updateSaveStatus(); }
+
+// keep each AO roster card's status pill in sync on every keystroke, not just on a full
+// re-render (switching AO, adding/removing a row) — mirrors what refreshAoTotals() already
+// does for the numbers inside the active officer's own panel
+function decorateAoRoster(){
+  const ex = State.exam; if(!ex) return;
+  document.querySelectorAll(".cx-ao-card[data-ao]").forEach(card=>{
+    const i = +card.getAttribute("data-ao");
+    const ao = ex.aos[i]; if(!ao) return;
+    const t = aoTotals(ao), si = aoStatusInfo(ao, t);
+    const pill = card.querySelector(".cx-status-pill");
+    if(pill){ pill.className = "cx-status-pill " + si.code; pill.innerHTML = si.icon + "<span>" + esc(si.label) + "</span>"; }
+    let foot = card.querySelector(".cx-ao-foot");
+    if(si.detail){
+      if(!foot){ foot = document.createElement("span"); foot.className = "cx-ao-foot"; card.appendChild(foot); }
+      foot.textContent = si.detail;
+    } else if(foot){ foot.remove(); }
+  });
+}
+
+function decorateIconButtons(){
+  document.querySelectorAll(".rm-row-btn").forEach(b=>{
+    if(!b.getAttribute("aria-label")) b.setAttribute("aria-label","Remove this row");
+  });
+  const recon = document.querySelector(".cx-recon-status");
+  if(recon){ recon.setAttribute("aria-live","polite"); recon.setAttribute("aria-atomic","true"); }
+}
+
+function enhanceCashExamUI(){
+  try{
+    decorateAoRoster();
+    decorateIconButtons();
+    updateSaveStatus();
+  }catch(err){ /* the enhancement layer must never break the underlying app */ }
+}
+
+/* ---- wrap the shared render/save functions; never replace their behavior, only add to it ---- */
+const __origRenderViewport = renderViewport;
+renderViewport = function(){ __origRenderViewport(); enhanceCashExamUI(); };
+
+const __origRefreshAoTotals = refreshAoTotals;
+refreshAoTotals = function(){ __origRefreshAoTotals(); try{ decorateAoRoster(); }catch(e){} };
+
+const __origSaveExam = saveExam;
+saveExam = async function(){ await __origSaveExam(); try{ if(Store.ok) markClean(); }catch(e){} };
+
+/* ---- one-time, page-level listeners (delegated; safe to attach once at script load) ---- */
+(function bindEnhancementListeners(){
+  const app = document.getElementById("app");
+  if(!app || app._enhanceBound) return;
+  app._enhanceBound = true;
+
+  app.addEventListener("input", (e)=>{
+    try{
+      const t = e.target;
+      if(t && t.closest && t.closest("#viewport") && t.hasAttribute && t.hasAttribute("data-bind")) markDirty();
+      // role/name fields don't carry data-recalc (they don't affect totals), so refreshAoTotals()
+      // never runs for them; decorate the roster directly so the status pill (e.g. "Needs officer
+      // name" -> "In progress") updates on every keystroke, not just on the next full re-render.
+      if(t && t.hasAttribute && t.hasAttribute("data-rechip")) decorateAoRoster();
+    }catch(err){}
+  });
+
+  app.addEventListener("click", (e)=>{
+    try{
+      const t = e.target;
+      if(!t || !t.closest) return;
+      if(t.closest("#exNew") || t.closest("[data-load-exam]")){ markClean(); return; }
+      if(t.closest("[data-add]") || t.closest("[data-rm]") || t.id==="aoAdd" || t.closest("#aoRemove")){ markDirty(); return; }
+    }catch(err){}
+  });
+
+  // Enter moves to the next quantity field in the same bills/coins table — fast, keyboard-only
+  // denomination entry, per the Professional Audit Workbench's physical-cash workflow.
+  document.addEventListener("keydown", (e)=>{
+    if(e.key !== "Enter") return;
+    const t = e.target;
+    if(!(t && t.matches && t.matches(".cx-denom input[type=\"number\"]"))) return;
+    try{
+      const table = t.closest("table"); if(!table) return;
+      const inputs = Array.from(table.querySelectorAll("input[type=\"number\"]"));
+      const i = inputs.indexOf(t);
+      const next = inputs[i+1];
+      if(next){ e.preventDefault(); next.focus(); }
+    }catch(err){}
+  });
+})();
 
 
 })();
