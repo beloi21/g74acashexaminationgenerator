@@ -1,6 +1,6 @@
 /* GF 74(A) Cash Examination — offline service worker.
    Cache-first for the app shell: once installed, the app never needs a signal. */
-const CACHE = "gf74a-v202609241000";
+const CACHE = "gf74a-v202609241200";
 const ASSETS = [
   "./",
   "./index.html",

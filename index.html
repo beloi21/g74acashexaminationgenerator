@@ -1018,6 +1018,10 @@ function setupAutoUpdate(){
   navigator.serviceWorker.register("sw.js").then(r=>{ reg = r; }).catch(()=>{});
   window.addEventListener("online", ()=>check(true));
   document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState==="visible") check(false); });
+  // a desktop app window left open behind other windows is never "hidden", so also check when it
+  // regains focus and on a timer while it stays open
+  window.addEventListener("focus", ()=>check(false));
+  setInterval(()=>check(false), 30*60*1000);
   navigator.serviceWorker.addEventListener("controllerchange", ()=>{
     if(!hadController) return;
     if(!touched){ location.reload(); return; }
