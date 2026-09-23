@@ -1,6 +1,6 @@
 /* GF 74(A) Cash Examination — offline service worker.
    Cache-first for the app shell: once installed, the app never needs a signal. */
-const CACHE = "gf74a-v202609231000";
+const CACHE = "gf74a-v202609231100";
 const ASSETS = [
   "./",
   "./index.html",
@@ -14,7 +14,7 @@ const ASSETS = [
 self.addEventListener("install", (e)=>{
   e.waitUntil(
     caches.open(CACHE)
-      .then(c => c.addAll(ASSETS))
+      .then(c => c.addAll(ASSETS.map(u => new Request(u, {cache: "reload"}))))   // bypass the HTTP cache so a new version never installs stale files
       .then(() => self.skipWaiting())
   );
 });

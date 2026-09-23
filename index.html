@@ -938,6 +938,7 @@ function render(){
     <div class="shell">
       <main class="main">
         <div class="pwa-bar" id="pwaInstall"></div>
+        <div class="pwa-bar" id="pwaUpdate" role="status"></div>
         <header class="topbar">
           <div style="display:flex;align-items:center;gap:12px;min-width:0;">
             <div class="brand-crest" style="flex:none;">74A</div>
@@ -991,9 +992,43 @@ function init(){
     toast("This browser is blocking site storage, so nothing will be remembered between visits.", "err");
   }
   const secure = location.protocol === "https:" || ["localhost","127.0.0.1"].indexOf(location.hostname) >= 0;
-  if("serviceWorker" in navigator && secure){
-    navigator.serviceWorker.register("sw.js").catch(()=>{});
-  }
+  if("serviceWorker" in navigator && secure) setupAutoUpdate();
+  // ask the browser not to clear this site's storage when the phone runs low on space
+  try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p=>{ if(!p) navigator.storage.persist(); }).catch(()=>{}); }catch(e){}
+}
+
+/* ========================= AUTO-UPDATE ========================= */
+/* A new version installs in the background whenever the phone is online; saved examinations live
+   in localStorage, which an update never touches. The browser only re-checks sw.js occasionally,
+   so also ask it to check when the app opens, comes back online, or returns to the foreground
+   (at most every 30 minutes). When the new version takes over: if the user hasn't touched the app
+   yet, just reload into it; otherwise offer a reload — the draft is kept on every keystroke, so
+   reloading loses nothing. */
+function setupAutoUpdate(){
+  const hadController = !!navigator.serviceWorker.controller;   // false on the very first install: nothing to update from
+  let reg = null, lastCheck = Date.now(), touched = false;
+  ["pointerdown","keydown","input"].forEach(ev=>document.addEventListener(ev, ()=>{ touched = true; }, {once:true, capture:true}));
+  const check = (force)=>{
+    if(!reg || !navigator.onLine) return;
+    if(!force && Date.now()-lastCheck < 30*60*1000) return;
+    lastCheck = Date.now();
+    reg.update().catch(()=>{});
+  };
+  navigator.serviceWorker.register("sw.js").then(r=>{ reg = r; }).catch(()=>{});
+  window.addEventListener("online", ()=>check(true));
+  document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState==="visible") check(false); });
+  navigator.serviceWorker.addEventListener("controllerchange", ()=>{
+    if(!hadController) return;
+    if(!touched){ location.reload(); return; }
+    showUpdateBar();
+  });
+}
+function showUpdateBar(){
+  const bar = document.getElementById("pwaUpdate"); if(!bar) return;
+  bar.innerHTML = `<span class="grow"><strong>A new version is ready.</strong> Reload to use it. Your saved examinations and the count in progress are kept.</span>
+    <button class="btn btn-sm btn-primary" id="pwaReload">Reload now</button>`;
+  bar.classList.add("show");
+  bar.querySelector("#pwaReload").addEventListener("click", ()=>{ Store.parkDraft(); location.reload(); });
 }
 
 /* ========================= MODALS ========================= */
