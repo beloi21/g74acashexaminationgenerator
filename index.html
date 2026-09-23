@@ -505,6 +505,11 @@
   .cx-ao-foot{font-size:11px;color:var(--ink-3);margin-top:1px;}
   .cx-ao-card.active .cx-ao-foot{color:var(--accent-soft-ink);opacity:.8;}
   .cx-ao-src{font-size:10.5px;color:var(--ink-3);}
+  .cx-turnover{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.5;background:var(--accent-soft);color:var(--accent-soft-ink);border-radius:9px;padding:10px 12px;margin-bottom:14px;}
+  .cx-turnover svg{width:16px;height:16px;flex:none;margin-top:2px;}
+  .cx-turnover .helptext{color:inherit;opacity:.8;}
+  .cx-turnover-sum{margin-top:6px;font-weight:700;}
+  .cx-th-note{font-size:10.5px;font-weight:500;color:var(--ink-3);text-transform:none;letter-spacing:0;}
   .cx-ao-card.active .cx-ao-src{color:var(--accent-soft-ink);opacity:.8;}
 
   /* ---------- team sharing: send / import ---------- */
@@ -1206,6 +1211,20 @@ function apHint(n){ return n ? `Appendix 1.${n}` : "no appendix — none entered
    disallowed (t.disallowed > 0), the one deficiency the current model actually computes;
    there is no separate "overage" figure in the data model, so it is not fabricated here. */
 function aoStatusInfo(ao, t){
+  const ex = State.exam;
+  if(ex && ex.aos.indexOf(ao)>=0){
+    const to = turnoverTarget(ex, ao);
+    if(to) return { code:"pending", icon:ICONS.check, label:"Turned over", detail:"to "+aoDisplay(to)+" · "+peso((t||aoTotals(ao)).total) };
+    const from = turnedOverFrom(ex, ao);
+    if(from.length){
+      const s = aoStatusInfoOwn(ao, aoTotals(effectiveAO(ex, ao)));
+      s.detail = (s.detail ? s.detail+" · " : "") + "incl. "+from.length+" turned over";
+      return s;
+    }
+  }
+  return aoStatusInfoOwn(ao, t);
+}
+function aoStatusInfoOwn(ao, t){
   t = t || aoTotals(ao);
   const hasName = !!(ao.name && ao.name.trim());
   const hasCount = (t.cash + t.presented) > 0 || ao.formsWithValue.length>0 || ao.formsNoValue.length>0;
@@ -1214,6 +1233,54 @@ function aoStatusInfo(ao, t){
   if(!hasCount) return { code:"progress", icon:ICONS.dot, label:"In progress", detail:"Cash count not started" };
   if(t.disallowed>0) return { code:"attention", icon:ICONS.alert, label:"Shortage", detail:peso(t.disallowed)+" disallowed" };
   return { code:"ok", icon:ICONS.check, label:"Balanced", detail:peso(t.total)+" total" };
+}
+
+/* ---- accountability turned over to another officer ----
+   When tellers turn their collections over to the cashier before the count, the teller keeps
+   their own count here (ao.turnedOverTo = the receiving officer's id) and the receiving officer's
+   GF 74(A) is generated from effectiveAO(): their own count plus every officer turned over to
+   them — cash, cash items and unused forms. The link is live, so a corrected or re-imported
+   teller count flows through. Only one level: an officer who receives a turnover can't be turned
+   over, and a link to a removed officer is simply ignored. */
+function turnoverTarget(ex, ao){
+  if(!ao.turnedOverTo) return null;
+  const to = ex.aos.find(b=>b.id===ao.turnedOverTo);
+  return (to && to!==ao && !to.turnedOverTo) ? to : null;
+}
+function turnedOverFrom(ex, ao){ return ex.aos.filter(a=>a!==ao && turnoverTarget(ex, a)===ao); }
+function effectiveAO(ex, ao){
+  const from = turnedOverFrom(ex, ao);
+  if(!from.length) return ao;
+  const e = JSON.parse(JSON.stringify(ao));
+  from.forEach(s=>{
+    Object.keys(e.denoms).forEach(k=>{ e.denoms[k] = num(e.denoms[k]) + num(s.denoms[k]); });
+    e.pcvPresented = num(e.pcvPresented) + num(s.pcvPresented);
+    e.pcvAllowed = num(e.pcvAllowed) + num(s.pcvAllowed);
+    ["checks","cashAdvances","formsWithValue","formsNoValue"].forEach(k=>{ e[k] = e[k].concat(JSON.parse(JSON.stringify(s[k]||[]))); });
+  });
+  return e;
+}
+function viewTurnover(ex, ao, p){
+  if(ex.aos.length<2) return "";
+  const from = turnedOverFrom(ex, ao);
+  if(from.length){
+    const eff = aoTotals(effectiveAO(ex, ao));
+    return `<div class="cx-turnover">${ICONS.info}<div>
+        <strong>Includes accountability turned over by:</strong> ${from.map(a=>`${esc(aoDisplay(a))} (${peso(aoTotals(a).total)})`).join(", ")}.
+        <div class="helptext">The boxes below are ${esc(ao.label)}'s own count. The GF 74(A) uses the consolidated figures: cash, cash items and unused forms of every officer turned over.</div>
+        <div class="cx-turnover-sum">Consolidated physical cash <span class="num" data-total="effCash">${peso(eff.cash)}</span> · Total (TOD) <span class="num" data-total="effTotal">${peso(eff.total)}</span></div>
+      </div></div>`;
+  }
+  const targets = ex.aos.filter(b=>b!==ao && !b.turnedOverTo);
+  const to = turnoverTarget(ex, ao);
+  return `<div class="field" style="max-width:420px;">
+      <label>Accountability turned over to</label>
+      <select data-bind="${p}turnedOverTo" data-rerender>
+        <option value="">Not turned over (own GF 74(A))</option>
+        ${targets.map(b=>`<option value="${esc(b.id)}" ${to===b?"selected":""}>${esc(aoDisplay(b))}</option>`).join("")}
+      </select>
+      ${to?`<div class="cx-turnover" style="margin-top:8px;">${ICONS.check}<div><strong>Turned over to ${esc(aoDisplay(to))}.</strong> This officer's cash, cash items and unused forms are included in ${esc(to.label)}'s GF 74(A). No separate GF 74(A) is generated for this officer.</div></div>`:""}
+    </div>`;
 }
 
 /* ---- view ---- */
@@ -1294,8 +1361,9 @@ function viewAoPanel(ex, ao, i){
     <div class="card" style="margin-bottom:16px;">
       <div class="card-head"><div><h3 id="aoTitle">${esc(ao.label)}${ao.name?` — ${esc(ao.name)}`:""}</h3><div class="sub">Accountable officer details, cash count, cash items and unused accountable forms</div></div>
         <div style="display:flex;gap:6px;">
+          ${turnoverTarget(ex, ao) ? `<span class="cx-section-hint" style="align-self:center;">Included in ${esc(turnoverTarget(ex, ao).label)}'s GF 74(A)</span>` : `
           <button class="btn btn-sm" id="aoForm">${ICONS.print} View / Print</button>
-          <button class="btn btn-sm btn-primary" id="aoXlsx">${ICONS.download} GF 74(A) .xlsx</button>
+          <button class="btn btn-sm btn-primary" id="aoXlsx">${ICONS.download} GF 74(A) .xlsx</button>`}
           ${ex.aos.length>1?`<button class="btn btn-sm btn-ghost btn-danger" id="aoRemove" title="Remove this AO">${ICONS.trash}</button>`:""}
         </div></div>
       <div class="card-pad">
@@ -1311,6 +1379,7 @@ function viewAoPanel(ex, ao, i){
           <div class="field"><label>Risk no.</label><input type="text" data-bind="${p}riskNo" value="${esc(ao.riskNo)}" /></div>
           <div class="field"><label>Bond effective date</label><input type="text" data-bind="${p}bondEffective" value="${esc(ao.bondEffective)}" placeholder="mm/dd/yy" /></div>
         </div>
+        ${viewTurnover(ex, ao, p)}
 
         <div class="cx-section" id="cx-sec-cash">
           <div class="cx-section-head"><h4>Physical cash on hand</h4></div>
@@ -1416,7 +1485,7 @@ function viewConsolidated(ex){
     <div class="card" id="consolidatedCard">
       <div class="card-head"><div><h3>Consolidated cash count</h3><div class="sub">All accountable officers in this examination</div></div></div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Denomination</th>${ex.aos.map(a=>`<th style="text-align:right;">${esc(a.label)}</th>`).join("")}<th style="text-align:right;">Total pcs.</th><th style="text-align:right;">Amount</th></tr></thead>
+        <thead><tr><th>Denomination</th>${ex.aos.map(a=>{ const to=turnoverTarget(ex,a); return `<th style="text-align:right;">${esc(a.label)}${to?`<div class="cx-th-note">→ ${esc(to.label)}</div>`:""}</th>`; }).join("")}<th style="text-align:right;">Total pcs.</th><th style="text-align:right;">Amount</th></tr></thead>
         <tbody>
           <tr><td colspan="${ex.aos.length+3}" style="font-weight:700;background:var(--surface-2);">Bills</td></tr>
           ${BILLS.map(v=>row("₱"+v,v,false)).join("")}
@@ -1553,7 +1622,8 @@ function refreshAoTotals(){
   const vp = document.getElementById("viewport");
   vp.querySelectorAll("[data-amt]").forEach(el=>{ const k=el.getAttribute("data-amt"); const v = denomValue(k); el.textContent = peso(num(ao.denoms[k])*v); });
   vp.querySelectorAll("[data-ca-unliq]").forEach(el=>{ const c=ao.cashAdvances[+el.getAttribute("data-ca-unliq")]; if(c) el.textContent = peso(Math.max(0,num(c.granted)-num(c.cashOnHand))); });
-  const map = {cash:peso(t.cash), cash2:peso(t.cash), checks:peso(t.checks), cas:peso(t.cas), presented:peso(t.presented), disallowed:peso(t.disallowed), total:peso(t.total), pcvDis:peso(t.pcv-t.pcvAllowed), formsValue:peso(t.formsValue), formsNoValueQty:String(t.formsNoValueQty)};
+  const eff = aoTotals(effectiveAO(ex, ao));   // same as t unless officers are turned over to this one
+  const map = {effCash:peso(eff.cash), effTotal:peso(eff.total), cash:peso(t.cash), cash2:peso(t.cash), checks:peso(t.checks), cas:peso(t.cas), presented:peso(t.presented), disallowed:peso(t.disallowed), total:peso(t.total), pcvDis:peso(t.pcv-t.pcvAllowed), formsValue:peso(t.formsValue), formsNoValueQty:String(t.formsNoValueQty)};
   vp.querySelectorAll("[data-total]").forEach(el=>{ const k=el.getAttribute("data-total"); if(map[k]!=null) el.textContent = map[k]; });
   // each "without money value" row shows its computed qty (to − from + 1) as a placeholder —
   // update it live as serial from/to are typed, so it doesn't wait for a full re-render (e.g.
@@ -1618,6 +1688,7 @@ function bindCashExamEvents(){
       const stDetails = document.querySelector('.cx-step[data-jump="cx-sec-details"]');
       if(stDetails && String(ex.agency||"").trim()) stDetails.classList.add("done");
     }
+    if(el.hasAttribute("data-rerender")){ Store.parkDraft(); renderViewport(); return; }
     if(el.hasAttribute("data-recalc")) refreshAoTotals();
     Store.parkDraft();
     if(el.hasAttribute("data-rechip")){
@@ -1653,8 +1724,9 @@ function bindCashExamEvents(){
     if(t.id==="exImport"){ pickImportFiles(); return; }
     if(t.id==="exSave"){ await saveExam(); return; }
     if(t.id==="exDelete"){ if(!await confirmDialog("Delete this saved examination? It is removed from this device only.","Delete")) return; Store.remove(State.exam.id); State.exam=newSession(); State.examAo=0; renderViewport(); toast("Examination deleted.","ok"); return; }
-    if(t.id==="aoForm"){ showGF74A(State.exam, State.exam.aos[State.examAo]); return; }
-    if(t.id==="aoXlsx"){ await downloadGF74A(State.exam, State.exam.aos[State.examAo]); return; }
+    // an officer who received a turnover prints the consolidated figures
+    if(t.id==="aoForm"){ showGF74A(State.exam, effectiveAO(State.exam, State.exam.aos[State.examAo])); return; }
+    if(t.id==="aoXlsx"){ await downloadGF74A(State.exam, effectiveAO(State.exam, State.exam.aos[State.examAo])); return; }
     if(t.id==="exSummary"){ showDenomSummary(State.exam); return; }
     if(t.id==="exSummaryXlsx"){ await downloadDenomSummary(State.exam); return; }
   });
@@ -2188,8 +2260,8 @@ function showDenomSummary(ex){
    an officer already on this device asks the user which to keep. */
 const SHARE_FORMAT = "gf74a-cashcount";
 const SHARE_VERSION = 1;
-const AO_TEXT_FIELDS = ["label","name","position","maxAccountability","bondAmount","riskNo","bondEffective","witness1","witness2","remarks"];
-const AO_DETAIL_FIELDS = ["name","position","maxAccountability","bondAmount","riskNo","bondEffective"];
+const AO_TEXT_FIELDS = ["label","name","position","maxAccountability","bondAmount","riskNo","bondEffective","witness1","witness2","remarks","turnedOverTo"];
+const AO_DETAIL_FIELDS = ["name","position","maxAccountability","bondAmount","riskNo","bondEffective","turnedOverTo"];
 
 function normTxt(s){ return String(s==null?"":s).trim().replace(/\s+/g," ").toLowerCase(); }
 function aoHasData(ao){ const t=aoTotals(ao); return (t.cash+t.presented)>0 || ao.formsWithValue.length>0 || ao.formsNoValue.length>0; }
