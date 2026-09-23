@@ -254,6 +254,7 @@
   }
   textarea{resize:vertical;min-height:64px;}
   input::placeholder,textarea::placeholder{color:var(--ink-3);}
+  input[data-num]::placeholder{opacity:.5;}
 
   .searchbar{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
   .searchbar input[type=text]{max-width:280px;}
@@ -541,7 +542,7 @@
   table.cx-denom td{padding:3px 8px;border-bottom:1px solid var(--border);vertical-align:middle;}
   table.cx-denom tr:last-child td{border-bottom:none;}
   table.cx-denom .cx-denom-label{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:13px;color:var(--ink-2);white-space:nowrap;}
-  table.cx-denom input[type=number]{
+  table.cx-denom input[data-num]{
     width:100%;max-width:88px;text-align:center;padding:7px 6px;font-family:var(--font-mono);font-size:14px;font-weight:600;
     -moz-appearance:textfield;
   }
@@ -616,7 +617,7 @@
     .btn-sm{padding:9px 12px;min-height:38px;}
     .rm-row-btn{padding:9px 10px;font-size:19px;}
     input[type=checkbox]{width:19px;height:19px;}
-    table.cx-denom input[type=number]{min-height:38px;}
+    table.cx-denom input[data-num]{min-height:38px;}
     .cx-ao-card,.cx-register-item{min-height:44px;}
   }
   @media (prefers-reduced-motion: reduce){
@@ -643,7 +644,7 @@
     .field-row, .field-row.three{grid-template-columns:minmax(0,1fr) !important;}
     .topbar{align-items:flex-start;}
     .topbar h1{font-size:17px;}
-    .cx-denom input[type=number]{width:100%;min-width:56px;}
+    .cx-denom input[data-num]{width:100%;min-width:56px;}
     .cx-review-grid{grid-template-columns:1fr 1fr;}
   }
 </style>
@@ -1284,7 +1285,7 @@ function viewAoPanel(ex, ao, i){
   const { hasPcv, hasChecks, hasCAs, apn } = apNumbersFor(ao);
   const p = `aos.${i}.`;
   const denomRow = (v,isCoin)=>{ const k=denomKey(v,isCoin); const q=num(ao.denoms[k]);
-    return `<tr><td class="cx-denom-label">₱${v.toLocaleString("en-PH",{minimumFractionDigits: isCoin&&v<1?2:0})}</td><td><input type="number" min="0" step="1" data-bind="${p}denoms.${k}" value="${q}" data-recalc /></td><td class="r cx-denom-amt" data-amt="${k}">${peso(q*v)}</td></tr>`; };
+    return `<tr><td class="cx-denom-label">₱${v.toLocaleString("en-PH",{minimumFractionDigits: isCoin&&v<1?2:0})}</td><td><input type="text" inputmode="numeric" data-num="int" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="Quantity of ₱${v}" data-bind="${p}denoms.${k}" value="${q||""}" data-recalc /></td><td class="r cx-denom-amt" data-amt="${k}">${peso(q*v)}</td></tr>`; };
   return `
     <div class="card" style="margin-bottom:16px;">
       <div class="card-head"><div><h3 id="aoTitle">${esc(ao.label)}${ao.name?` — ${esc(ao.name)}`:""}</h3><div class="sub">Accountable officer details, cash count, cash items and unused accountable forms</div></div>
@@ -1301,8 +1302,8 @@ function viewAoPanel(ex, ao, i){
           <div class="field"><label>Position / designation</label><input type="text" data-bind="${p}position" value="${esc(ao.position)}" /></div>
         </div>
         <div class="field-row" style="grid-template-columns:1fr 1fr 1fr 1fr;">
-          <div class="field"><label>Maximum cash accountability</label><input type="number" min="0" step="0.01" data-bind="${p}maxAccountability" value="${esc(ao.maxAccountability)}" /></div>
-          <div class="field"><label>Amount of bond</label><input type="number" min="0" step="0.01" data-bind="${p}bondAmount" value="${esc(ao.bondAmount)}" /></div>
+          <div class="field"><label>Maximum cash accountability</label><input type="text" inputmode="decimal" data-num="dec" enterkeyhint="done" autocomplete="off" placeholder="0.00" data-bind="${p}maxAccountability" value="${esc(ao.maxAccountability)}" /></div>
+          <div class="field"><label>Amount of bond</label><input type="text" inputmode="decimal" data-num="dec" enterkeyhint="done" autocomplete="off" placeholder="0.00" data-bind="${p}bondAmount" value="${esc(ao.bondAmount)}" /></div>
           <div class="field"><label>Risk no.</label><input type="text" data-bind="${p}riskNo" value="${esc(ao.riskNo)}" /></div>
           <div class="field"><label>Bond effective date</label><input type="text" data-bind="${p}bondEffective" value="${esc(ao.bondEffective)}" placeholder="mm/dd/yy" /></div>
         </div>
@@ -1324,8 +1325,8 @@ function viewAoPanel(ex, ao, i){
           <div class="table-wrap"><table class="cx-item-table">
             <thead><tr><th>Particulars</th><th style="text-align:right;">Presented</th><th style="text-align:right;">Allowed</th><th style="text-align:right;">Disallowed</th></tr></thead>
             <tbody><tr><td>Total PCVs on hand</td>
-              <td><input type="number" min="0" step="0.01" data-bind="${p}pcvPresented" value="${num(ao.pcvPresented)}" data-recalc style="text-align:right;" /></td>
-              <td><input type="number" min="0" step="0.01" data-bind="${p}pcvAllowed" value="${num(ao.pcvAllowed)}" data-recalc style="text-align:right;" /></td>
+              <td><input type="text" inputmode="decimal" data-num="dec" enterkeyhint="done" autocomplete="off" placeholder="0.00" data-bind="${p}pcvPresented" value="${num(ao.pcvPresented)||""}" data-recalc style="text-align:right;" /></td>
+              <td><input type="text" inputmode="decimal" data-num="dec" enterkeyhint="done" autocomplete="off" placeholder="0.00" data-bind="${p}pcvAllowed" value="${num(ao.pcvAllowed)||""}" data-recalc style="text-align:right;" /></td>
               <td class="num" style="text-align:right;" data-total="pcvDis">${peso(t.pcv-t.pcvAllowed)}</td></tr></tbody></table></div>
 
           <div class="cx-section-head" style="margin-top:18px;"><h4 style="text-transform:none;font-size:13px;">Checks for deposit</h4>${apn.checks?`<span class="cx-appendix-note">Appendix 1.${apn.checks}</span>`:""}</div>
@@ -1336,7 +1337,7 @@ function viewAoPanel(ex, ao, i){
               <td><input type="text" data-bind="${p}checks.${j}.checkNo" value="${esc(c.checkNo)}" /></td>
               <td><input type="date" data-bind="${p}checks.${j}.date" value="${esc(c.date)}" /></td>
               <td><input type="text" data-bind="${p}checks.${j}.payee" value="${esc(c.payee)}" /></td>
-              <td><input type="number" min="0" step="0.01" data-bind="${p}checks.${j}.amount" value="${num(c.amount)}" data-recalc style="text-align:right;" /></td>
+              <td><input type="text" inputmode="decimal" data-num="dec" enterkeyhint="done" autocomplete="off" placeholder="0.00" data-bind="${p}checks.${j}.amount" value="${num(c.amount)||""}" data-recalc style="text-align:right;" /></td>
               <td style="text-align:center;"><input type="checkbox" data-bind="${p}checks.${j}.allowed" ${c.allowed===false?"":"checked"} data-recalc style="width:auto;" /></td>
               <td><button class="rm-row-btn" data-rm="${p}checks.${j}" type="button" aria-label="Remove this check">&times;</button></td></tr>`).join("")}
             ${ao.checks.length?"":`<tr><td colspan="7" class="cx-empty-row">No checks listed yet.</td></tr>`}</tbody></table></div>
@@ -1349,8 +1350,8 @@ function viewAoPanel(ex, ao, i){
               <td><input type="text" data-bind="${p}cashAdvances.${j}.payee" value="${esc(c.payee)}" /></td>
               <td><input type="date" data-bind="${p}cashAdvances.${j}.date" value="${esc(c.date)}" /></td>
               <td><input type="text" data-bind="${p}cashAdvances.${j}.ref" value="${esc(c.ref||"")}" /></td>
-              <td><input type="number" min="0" step="0.01" data-bind="${p}cashAdvances.${j}.granted" value="${num(c.granted)}" data-recalc style="text-align:right;" /></td>
-              <td><input type="number" min="0" step="0.01" data-bind="${p}cashAdvances.${j}.cashOnHand" value="${num(c.cashOnHand)}" data-recalc style="text-align:right;" /></td>
+              <td><input type="text" inputmode="decimal" data-num="dec" enterkeyhint="done" autocomplete="off" placeholder="0.00" data-bind="${p}cashAdvances.${j}.granted" value="${num(c.granted)||""}" data-recalc style="text-align:right;" /></td>
+              <td><input type="text" inputmode="decimal" data-num="dec" enterkeyhint="done" autocomplete="off" placeholder="0.00" data-bind="${p}cashAdvances.${j}.cashOnHand" value="${num(c.cashOnHand)||""}" data-recalc style="text-align:right;" /></td>
               <td class="num" style="text-align:right;" data-ca-unliq="${j}">${peso(Math.max(0,num(c.granted)-num(c.cashOnHand)))}</td>
               <td><button class="rm-row-btn" data-rm="${p}cashAdvances.${j}" type="button" aria-label="Remove this cash advance">&times;</button></td></tr>`).join("")}
             ${ao.cashAdvances.length?"":`<tr><td colspan="7" class="cx-empty-row">No cash advances listed yet.</td></tr>`}</tbody></table></div>
@@ -1365,10 +1366,10 @@ function viewAoPanel(ex, ao, i){
             <thead><tr><th>Name of form</th><th>Qty.</th><th>Inclusive serial no.</th><th>Denomination</th><th style="text-align:right;">Amount</th><th></th></tr></thead>
             <tbody>${ao.formsWithValue.map((f,j)=>`<tr>
               <td><input type="text" data-bind="${p}formsWithValue.${j}.name" value="${esc(f.name)}" /></td>
-              <td><input type="number" min="0" data-bind="${p}formsWithValue.${j}.qty" value="${esc(f.qty)}" style="width:80px;" /></td>
+              <td><input type="text" inputmode="numeric" data-num="int" enterkeyhint="done" autocomplete="off" placeholder="0" data-bind="${p}formsWithValue.${j}.qty" value="${esc(f.qty)}" style="width:80px;" /></td>
               <td><input type="text" data-bind="${p}formsWithValue.${j}.serial" value="${esc(f.serial)}" placeholder="from–to" /></td>
               <td><input type="text" data-bind="${p}formsWithValue.${j}.denomination" value="${esc(f.denomination)}" /></td>
-              <td><input type="number" min="0" step="0.01" data-bind="${p}formsWithValue.${j}.amount" value="${num(f.amount)}" data-recalc style="text-align:right;" /></td>
+              <td><input type="text" inputmode="decimal" data-num="dec" enterkeyhint="done" autocomplete="off" placeholder="0.00" data-bind="${p}formsWithValue.${j}.amount" value="${num(f.amount)||""}" data-recalc style="text-align:right;" /></td>
               <td><button class="rm-row-btn" data-rm="${p}formsWithValue.${j}" type="button" aria-label="Remove this form">&times;</button></td></tr>`).join("")}
             ${ao.formsWithValue.length?"":`<tr><td colspan="6" class="cx-empty-row">None — the form will print “N O N E”.</td></tr>`}</tbody></table></div>
           <div class="cx-item-foot"><button class="btn btn-sm" data-add="${p}formsWithValue">${ICONS.plus} Add form</button><div class="grow"></div><div class="cx-item-total">Total: <span class="num" data-total="formsValue">${peso(t.formsValue)}</span></div></div>
@@ -1381,7 +1382,7 @@ function viewAoPanel(ex, ao, i){
               <td><input type="text" data-bind="${p}formsNoValue.${j}.name" value="${esc(f.name)}" placeholder="e.g. AF 51 Official Receipt" /></td>
               <td><input type="text" data-bind="${p}formsNoValue.${j}.serialFrom" value="${esc(f.serialFrom)}" data-recalc /></td>
               <td><input type="text" data-bind="${p}formsNoValue.${j}.serialTo" value="${esc(f.serialTo)}" data-recalc /></td>
-              <td><input type="number" min="0" data-bind="${p}formsNoValue.${j}.qty" value="${esc(f.qty)}" placeholder="${formQty(f)||""}" data-recalc style="width:90px;" /></td>
+              <td><input type="text" inputmode="numeric" data-num="int" enterkeyhint="done" autocomplete="off" data-bind="${p}formsNoValue.${j}.qty" value="${esc(f.qty)}" placeholder="${formQty(f)||""}" data-recalc style="width:90px;" /></td>
               <td><button class="rm-row-btn" data-rm="${p}formsNoValue.${j}" type="button" aria-label="Remove this form">&times;</button></td></tr>`).join("")}
             ${ao.formsNoValue.length?"":`<tr><td colspan="5" class="cx-empty-row">No forms listed yet.</td></tr>`}</tbody></table></div>
           <div class="cx-item-foot"><button class="btn btn-sm" data-add="${p}formsNoValue">${ICONS.plus} Add form</button><div class="grow"></div><div class="cx-item-total">Total pieces: <span class="num" data-total="formsNoValueQty">${t.formsNoValueQty}</span></div></div>
@@ -1527,6 +1528,21 @@ function setPath(obj, path, value){
 }
 function getPath(obj, path){ return path.split(".").reduce((o,k)=>o==null?undefined:o[k], obj); }
 
+/* Number fields are plain text boxes (no spinner arrows, no "0" to delete first — an empty box
+   counts as zero everywhere through num()). Keep what's typed or pasted to digits: whole numbers
+   for quantities, and at most one decimal point with two decimals for peso amounts, so a pasted
+   "1,500.00" becomes "1500.00". */
+function cleanNumInput(el){
+  const dec = el.getAttribute("data-num")==="dec";
+  const raw = el.value;
+  let s = raw.replace(dec ? /[^\d.]/g : /\D/g, "");
+  if(dec){ const i = s.indexOf("."); if(i>=0) s = s.slice(0,i+1) + s.slice(i+1).replace(/\./g,"").slice(0,2); }
+  if(s === raw) return;
+  const pos = Math.max(0, (el.selectionStart||raw.length) - (raw.length - s.length));
+  el.value = s;
+  try{ el.setSelectionRange(pos, pos); }catch(e){}
+}
+
 function refreshAoTotals(){
   const ex = State.exam, ao = ex.aos[State.examAo]; if(!ao) return;
   const t = aoTotals(ao);
@@ -1587,6 +1603,7 @@ function bindCashExamEvents(){
   vp.addEventListener("input", (e)=>{
     if(State.view!=="cashexam") return;
     const el = e.target; const path = el.getAttribute && el.getAttribute("data-bind"); if(!path) return;
+    if(el.hasAttribute("data-num")) cleanNumInput(el);
     let v = el.type==="checkbox" ? el.checked : el.value;
     setPath(State.exam, path, v);
     if(path==="agency" || path==="station" || path==="examDate"){
@@ -2542,13 +2559,17 @@ saveExam = async function(){ await __origSaveExam(); try{ if(Store.ok) markClean
 
   // Enter moves to the next quantity field in the same bills/coins table — fast, keyboard-only
   // denomination entry, per the Professional Audit Workbench's physical-cash workflow.
+  // On a phone the keyboard's Enter/Done key just closes the keyboard instead.
   document.addEventListener("keydown", (e)=>{
     if(e.key !== "Enter") return;
     const t = e.target;
-    if(!(t && t.matches && t.matches(".cx-denom input[type=\"number\"]"))) return;
+    if(t && t.matches && t.matches("input[data-num]") && window.matchMedia && window.matchMedia("(pointer: coarse)").matches){
+      e.preventDefault(); t.blur(); return;
+    }
+    if(!(t && t.matches && t.matches(".cx-denom input[data-num]"))) return;
     try{
       const table = t.closest("table"); if(!table) return;
-      const inputs = Array.from(table.querySelectorAll("input[type=\"number\"]"));
+      const inputs = Array.from(table.querySelectorAll("input[data-num]"));
       const i = inputs.indexOf(t);
       const next = inputs[i+1];
       if(next){ e.preventDefault(); next.focus(); }
