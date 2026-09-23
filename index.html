@@ -503,6 +503,26 @@
   .cx-ao-name.unset{color:var(--ink-3);font-weight:600;font-style:italic;}
   .cx-ao-foot{font-size:11px;color:var(--ink-3);margin-top:1px;}
   .cx-ao-card.active .cx-ao-foot{color:var(--accent-soft-ink);opacity:.8;}
+  .cx-ao-src{font-size:10.5px;color:var(--ink-3);}
+  .cx-ao-card.active .cx-ao-src{color:var(--accent-soft-ink);opacity:.8;}
+
+  /* ---------- team sharing: send / import ---------- */
+  .cx-share-opt{
+    display:flex;flex-direction:column;align-items:flex-start;gap:3px;width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;
+    border:1px solid var(--border-strong);border-radius:9px;background:var(--surface);color:var(--ink);cursor:pointer;font-family:var(--font-body);min-height:44px;
+  }
+  .cx-share-opt:hover{border-color:var(--accent);}
+  .cx-share-opt:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+  .cx-share-opt .t{font-weight:700;font-size:13.5px;}
+  .cx-share-opt .d{font-size:11.5px;color:var(--ink-3);line-height:1.4;}
+  .cx-share-warn{font-size:12px;background:var(--warning-soft);color:var(--warning);border-radius:8px;padding:8px 10px;margin-bottom:12px;}
+  .cx-import-log{list-style:none;margin:0;padding:0;font-size:13px;}
+  .cx-import-log li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);}
+  .cx-import-log li:last-child{border-bottom:none;}
+  .cx-import-log .what{color:var(--ink-3);white-space:nowrap;}
+  .cx-compare{width:100%;font-size:12.5px;border-collapse:collapse;}
+  .cx-compare th,.cx-compare td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:right;}
+  .cx-compare th:first-child,.cx-compare td:first-child{text-align:left;color:var(--ink-3);}
   .cx-ao-add{
     display:flex;align-items:center;justify-content:center;gap:6px;border:1.5px dashed var(--border-strong);
     border-radius:9px;background:transparent;color:var(--ink-2);font-weight:600;font-size:12.5px;cursor:pointer;
@@ -1053,13 +1073,18 @@ function openAboutModal(){
         PDF. <strong>Summary</strong> covers every officer in the count on one sheet.</p>
         <div class="banner" style="margin:14px 0;">
           <div>
-            <strong>Works with no signal, and nothing leaves this device.</strong>
+            <strong>Works with no signal, and nothing leaves this device unless you send it.</strong>
             <div class="helptext" style="margin-top:4px;">Once installed, the app runs entirely offline. Saved
             examinations and the in-progress draft live in this device's own storage — not uploaded, not shared,
             not visible to anyone else. Clearing browsing data, or uninstalling, loses them: export the .xlsx for
             anything you need to keep.</div>
           </div>
         </div>
+        <p><strong>Team counts.</strong> When several auditors count different tellers at the same time, each one
+        taps <strong>Send to team</strong> and shares the file through the phone's own share menu — Quick Share /
+        Nearby Share (Android) or AirDrop (iPhone) work without internet; Messenger, Viber or email work too. The
+        consolidator taps <strong>Import counts</strong> and the officers are merged into one examination. Tip: the
+        team lead sends the <em>Team setup</em> first so everyone counts under the same examination.</p>
         <p class="helptext" style="margin-bottom:0;">Denominations follow the Philippine peso (₱1,000 to ₱0.01).
         Amounts are computed to two decimal places. Verify the printed form against your own working papers before
         signing.</p>
@@ -1192,6 +1217,8 @@ function viewExamEditor(ex){
     <div class="card cx-section" id="cx-sec-details" style="margin-bottom:16px;">
       <div class="card-head"><div><h3>${ex.id?"Cash examination":"New cash examination"}</h3><div class="sub">General Form No. 74(A) — one report per accountable officer</div></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-sm" id="exSend" title="Send counts to a team member's phone">${ICONS.upload} Send to team</button>
+          <button class="btn btn-sm" id="exImport" title="Merge counts received from team members">${ICONS.download} Import counts</button>
           <button class="btn btn-sm btn-primary" id="exSave">Save examination</button>
           ${ex.id?`<button class="btn btn-sm btn-ghost btn-danger" id="exDelete">${ICONS.trash}</button>`:""}
         </div></div>
@@ -1407,6 +1434,7 @@ function viewAoRoster(ex){
           return `<button type="button" class="cx-ao-card ${i===State.examAo?"active":""}" data-ao="${i}">
             <span class="cx-ao-role">${esc(a.label)}</span>
             <span class="cx-ao-name${a.name?"":" unset"}">${a.name?esc(a.name):"No name yet"}</span>
+            ${a.importedFrom&&a.importedFrom.by?`<span class="cx-ao-src">Counted by ${esc(a.importedFrom.by)}</span>`:""}
             <span class="cx-status-pill ${si.code}">${si.icon}${esc(si.label)}</span>
             ${si.detail?`<span class="cx-ao-foot">${esc(si.detail)}</span>`:""}
           </button>`;}).join("")}
@@ -1565,6 +1593,8 @@ function bindCashExamEvents(){
       arr.push(kind==="checks"?{bank:"",checkNo:"",date:"",payee:"",amount:0,allowed:true}:kind==="cashAdvances"?{payee:"",date:"",ref:"",granted:0,cashOnHand:0}:kind==="formsWithValue"?{name:"",qty:"",serial:"",denomination:"",amount:0}:{name:"",serialFrom:"",serialTo:"",qty:""});
       renderViewport(); return; }
     if(t.hasAttribute("data-rm")){ const path=t.getAttribute("data-rm"); const idx=+path.split(".").pop(); const arr=getPath(State.exam, path.split(".").slice(0,-1).join(".")); arr.splice(idx,1); renderViewport(); return; }
+    if(t.id==="exSend"){ openSendModal(); return; }
+    if(t.id==="exImport"){ pickImportFiles(); return; }
     if(t.id==="exSave"){ await saveExam(); return; }
     if(t.id==="exDelete"){ if(!await confirmDialog("Delete this saved examination? It is removed from this device only.","Delete")) return; Store.remove(State.exam.id); State.exam=newSession(); State.examAo=0; renderViewport(); toast("Examination deleted.","ok"); return; }
     if(t.id==="aoForm"){ showGF74A(State.exam, State.exam.aos[State.examAo]); return; }
@@ -2091,6 +2121,297 @@ function showGF74A(ex, ao){
 }
 function showDenomSummary(ex){
   openSheet(`Denomination summary — ${ex.agency || "cash count"}`, renderDenomSummary(ex), tsvDenom(ex));
+}
+
+
+/* ========================= TEAM SHARING — SEND / IMPORT COUNT FILES =========================
+   Phone-to-phone hand-off for team counts. A member sends one officer (or all, or just the setup)
+   as a small JSON file through the phone's own share sheet — Quick Share / AirDrop / Messenger /
+   email — and the consolidator imports it; officers are merged into the matching examination.
+   Nothing goes through a server. Merging never overwrites a count silently: a differing count for
+   an officer already on this device asks the user which to keep. */
+const SHARE_FORMAT = "gf74a-cashcount";
+const SHARE_VERSION = 1;
+const AO_TEXT_FIELDS = ["label","name","position","maxAccountability","bondAmount","riskNo","bondEffective","witness1","witness2","remarks"];
+const AO_DETAIL_FIELDS = ["name","position","maxAccountability","bondAmount","riskNo","bondEffective"];
+
+function normTxt(s){ return String(s==null?"":s).trim().replace(/\s+/g," ").toLowerCase(); }
+function aoHasData(ao){ const t=aoTotals(ao); return (t.cash+t.presented)>0 || ao.formsWithValue.length>0 || ao.formsNoValue.length>0; }
+function aoDisplay(ao){ return ao.label + (ao.name ? " – "+ao.name : ""); }
+function fmtStamp(iso){
+  const d = new Date(iso||""); if(isNaN(d)) return "";
+  return d.toLocaleString("en-PH",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
+}
+
+/* An examination's shareKey ties files from every team member to the same examination. It is
+   created the first time something is sent and, for an already-saved examination, written into
+   the saved record straight away so re-opening it later still matches the team's files. */
+function ensureShareKey(ex){
+  if(ex.shareKey) return ex.shareKey;
+  ex.shareKey = uid() + uid();
+  if(ex.id){
+    const arr = Store.read(); const rec = arr.find(x=>x.id===ex.id);
+    if(rec && !rec.shareKey){ rec.shareKey = ex.shareKey; Store.write(arr); Store.refresh(); }
+  }
+  Store.parkDraft();
+  return ex.shareKey;
+}
+
+/* rebuild an officer from untrusted file data onto a fresh newAO() so every field the app
+   expects exists with the right type */
+function cleanAO(raw){
+  const ao = newAO(String(raw.label || "Cashier"));
+  if(typeof raw.id === "string" && raw.id) ao.id = raw.id;
+  AO_TEXT_FIELDS.forEach(k=>{ if(raw[k]!=null && typeof raw[k]!=="object") ao[k] = String(raw[k]); });
+  Object.keys(ao.denoms).forEach(k=>{ ao.denoms[k] = num(raw.denoms && raw.denoms[k]); });
+  ao.pcvPresented = num(raw.pcvPresented); ao.pcvAllowed = num(raw.pcvAllowed);
+  ["checks","cashAdvances","formsWithValue","formsNoValue"].forEach(k=>{
+    ao[k] = Array.isArray(raw[k]) ? raw[k].filter(x=>x && typeof x==="object").map(x=>Object.assign({}, x)) : [];
+  });
+  if(raw.importedFrom && typeof raw.importedFrom==="object")
+    ao.importedFrom = { by: String(raw.importedFrom.by||""), at: String(raw.importedFrom.at||"") };
+  return ao;
+}
+function aoFingerprint(ao){ const c = cleanAO(JSON.parse(JSON.stringify(ao))); delete c.id; delete c.importedFrom; return JSON.stringify(c); }
+
+function buildPackage(ex, aos, kind){
+  const me = (Me.get()||{}).name || "";
+  const at = new Date().toISOString();
+  return {
+    format: SHARE_FORMAT, version: SHARE_VERSION, kind, sentAt: at, sentBy: me,
+    exam: { shareKey: ensureShareKey(ex), agency: ex.agency||"", station: ex.station||"", examDate: ex.examDate||"",
+            auditor: ex.auditor||"", auditorDesignation: ex.auditorDesignation||"" },
+    aos: aos.map(a=>{
+      if(kind==="setup"){
+        const s = newAO(a.label); s.id = a.id;
+        AO_DETAIL_FIELDS.forEach(k=>{ s[k] = a[k]; });
+        return s;
+      }
+      const c = JSON.parse(JSON.stringify(a));
+      c.importedFrom = a.importedFrom && a.importedFrom.by ? a.importedFrom : { by: me, at };
+      return c;
+    })
+  };
+}
+
+/* Hand the file to the phone's share sheet. Chrome on Android only shares an allow-listed set of
+   file types (.json is not on it), so fall back to .txt there; if the browser can't share files at
+   all, save the file instead so it can be attached by hand. */
+async function sendPackage(pkg, baseName){
+  const text = JSON.stringify(pkg);
+  if(navigator.share && navigator.canShare){
+    for(const [ext, type] of [[".json","application/json"],[".txt","text/plain"]]){
+      let f; try{ f = new File([text], baseName+ext, {type}); }catch(e){ break; }
+      if(!navigator.canShare({files:[f]})) continue;
+      try{ await navigator.share({files:[f], title: baseName}); toast("Sent. The receiver taps Import counts to add it.", "ok"); return; }
+      catch(e){ if(e && e.name==="AbortError") return; break; }
+    }
+  }
+  if(nativeSave(baseName+".json", new Blob([text], {type:"application/json"})))
+    toast("Saved "+baseName+".json. Send it to the consolidator, who taps Import counts.", "ok");
+  else toast("Couldn't create the file.", "err");
+}
+
+function openSendModal(){
+  const ex = State.exam; const ao = ex.aos[State.examAo];
+  if(!String(ex.agency||"").trim()){ toast("Enter the agency name first, so the receiver knows which examination it belongs to.", "err"); return; }
+  const me = Me.get();
+  const all = ex.aos.map(aoTotals).reduce((s,t)=>s+t.total,0);
+  openModal(`
+    <div class="modal" style="max-width:480px;">
+      <div class="modal-head"><h3>Send to team</h3><button class="modal-close" data-modal-close>&times;</button></div>
+      <div class="modal-body">
+        <p class="helptext" style="margin:0 0 12px;">Opens your phone's share menu. <strong>Quick Share / Nearby Share</strong> (Android) and
+        <strong>AirDrop</strong> (iPhone) work without internet; Messenger, Viber or email work too. The receiver taps <strong>Import counts</strong>.</p>
+        ${me?"":`<div class="cx-share-warn">Set your name first (top right) so the consolidator can see who counted.</div>`}
+        ${ao?`<button type="button" class="cx-share-opt" data-send="one"><span class="t">This officer only</span>
+          <span class="d">${esc(aoDisplay(ao))} · ${peso(aoTotals(ao).total)}${aoHasData(ao)?"":" · nothing counted yet"}</span></button>`:""}
+        <button type="button" class="cx-share-opt" data-send="all"><span class="t">All officers in this examination</span>
+          <span class="d">${ex.aos.length} officer${ex.aos.length===1?"":"s"} · ${peso(all)}</span></button>
+        <button type="button" class="cx-share-opt" data-send="setup"><span class="t">Team setup (no amounts)</span>
+          <span class="d">Agency, date and the list of officers only. Send this before the count so everyone works on the same examination.</span></button>
+      </div>
+      <div class="modal-foot"><button class="btn" data-modal-close>Cancel</button></div>
+    </div>`, { onMount(wrap){
+    wrap.querySelectorAll("[data-send]").forEach(b=>b.addEventListener("click", ()=>{
+      const kind = b.getAttribute("data-send");
+      const aos = kind==="one" ? [ao] : ex.aos;
+      const pkg = buildPackage(ex, aos, kind==="setup" ? "setup" : "count");
+      const what = kind==="one" ? safeName(ao.label+(ao.name?" "+ao.name:"")) : kind==="setup" ? "Setup" : "All";
+      closeModal();
+      sendPackage(pkg, `CashCount_${safeName(ex.agency)}_${what}_${ex.examDate||todayISO()}`);
+    }));
+  }});
+}
+
+function pickImportFiles(){
+  // no accept= filter on purpose: some Android pickers grey out .json files they can't map to a type
+  const inp = document.createElement("input");
+  inp.type = "file"; inp.multiple = true; inp.style.display = "none";
+  inp.addEventListener("change", ()=>{ const files = Array.from(inp.files||[]); inp.remove(); if(files.length) importFiles(files); });
+  document.body.appendChild(inp);
+  inp.click();
+}
+
+/* modal with a set of buttons; resolves to the chosen value, or null if dismissed */
+function choiceDialog(title, bodyHtml, buttons){
+  return new Promise((resolve)=>{
+    let done = false; const finish = v=>{ if(done) return; done = true; closeModal(); resolve(v); };
+    openModal(`
+      <div class="modal" style="max-width:480px;">
+        <div class="modal-head"><h3>${esc(title)}</h3><button class="modal-close" data-modal-close>&times;</button></div>
+        <div class="modal-body" style="font-size:13.5px;">${bodyHtml}</div>
+        <div class="modal-foot" style="flex-wrap:wrap;">${buttons.map((b,i)=>`<button class="btn${b.primary?" btn-primary":""}" data-choice="${i}">${esc(b.label)}</button>`).join("")}</div>
+      </div>`, { onMount(wrap){
+      wrap.querySelectorAll("[data-choice]").forEach(el=>el.addEventListener("click", ()=>finish(buttons[+el.getAttribute("data-choice")].value)));
+      wrap.querySelectorAll("[data-modal-close]").forEach(el=>el.addEventListener("click", ()=>finish(null)));
+      wrap.addEventListener("click", (e)=>{ if(e.target===wrap) finish(null); });
+    }});
+  });
+}
+
+function examMatches(ex, pe){
+  if(!ex) return false;
+  if(ex.shareKey && pe.shareKey && ex.shareKey===pe.shareKey) return true;
+  // members who each started their own copy still match on agency + date
+  return !!normTxt(ex.agency) && normTxt(ex.agency)===normTxt(pe.agency) && String(ex.examDate||"")===String(pe.examDate||"");
+}
+function examIsBlank(ex){ return !String(ex.agency||"").trim() && ex.aos.every(a=>!aoHasData(a) && !String(a.name||"").trim()); }
+function examFromFile(pe){
+  const ex = newSession();
+  ["agency","station","examDate","auditorDesignation"].forEach(k=>{ if(pe[k]) ex[k] = String(pe[k]); });
+  if(!ex.auditor && pe.auditor) ex.auditor = String(pe.auditor);
+  if(pe.shareKey) ex.shareKey = String(pe.shareKey);
+  ex.aos = [];
+  State.__dirty = false;
+  return ex;
+}
+function openSavedExam(s){
+  State.exam = JSON.parse(JSON.stringify(s));
+  State.exam.aos.forEach(a=>{ const fresh=newAO(a.label).denoms; a.denoms=Object.assign(fresh, a.denoms||{}); });
+  State.examAo = 0; State.__dirty = false;
+}
+/* before switching to another examination, keep the open one's unsaved edits in its saved record */
+function keepOpenExam(){
+  const ex = State.exam;
+  if(!State.__dirty || !String(ex.agency||"").trim()) return false;
+  const body = JSON.parse(JSON.stringify(ex));
+  body.id = ex.id || uid(); body.updatedAt = new Date().toISOString(); body.updatedBy = (Me.get()||{}).name || "";
+  if(!ex.id) body.createdAt = body.updatedAt;
+  return Store.put(body);
+}
+
+/* point State.exam at the examination this file belongs to; false if the user cancels */
+async function resolveTarget(pe){
+  const cur = State.exam;
+  if(examMatches(cur, pe)) return true;
+  const saved = State.collections.cashexams.find(s=>examMatches(s, pe));
+  const fileLbl = `${pe.agency||"Untitled"} · ${fmtDate(pe.examDate)}`;
+  if(examIsBlank(cur)){
+    if(saved) openSavedExam(saved); else State.exam = examFromFile(pe);
+    return true;
+  }
+  const buttons = [];
+  if(saved) buttons.push({value:"saved", label:"Open the saved one and add it there", primary:true});
+  else buttons.push({value:"new", label:"Start a new examination", primary:true});
+  buttons.push({value:"here", label:"Add to the open one anyway"}, {value:null, label:"Cancel"});
+  const choice = await choiceDialog("Different examination",
+    `<p style="margin-top:0;">This file is for <strong>${esc(fileLbl)}</strong>, but the examination open now is
+    <strong>${esc((cur.agency||"Untitled")+" · "+fmtDate(cur.examDate))}</strong>.</p>
+    ${saved?`<p>A saved examination for ${esc(fileLbl)} is on this device.</p>`:""}
+    ${State.__dirty?`<p class="helptext">Unsaved changes to the open examination will be saved first.</p>`:""}`, buttons);
+  if(!choice) return false;
+  if(choice==="here") return true;
+  if(keepOpenExam()) toast("Saved your changes to "+(cur.agency||"the open examination")+".", "ok");
+  if(choice==="saved") openSavedExam(State.collections.cashexams.find(s=>examMatches(s, pe)) || saved);
+  else State.exam = examFromFile(pe);
+  return true;
+}
+
+function conflictDialog(cur, inc){
+  const a = aoTotals(cur), b = aoTotals(inc);
+  const who = x=>x.importedFrom && x.importedFrom.by ? esc(x.importedFrom.by)+(fmtStamp(x.importedFrom.at)?`<br><span class="helptext">${esc(fmtStamp(x.importedFrom.at))}</span>`:"") : "This device";
+  const row = (lbl, x, y)=>`<tr><td>${lbl}</td><td class="num">${x}</td><td class="num">${y}</td></tr>`;
+  return choiceDialog("Officer already counted",
+    `<p style="margin-top:0;"><strong>${esc(aoDisplay(cur))}</strong> is already in this examination with a different count.</p>
+    <table class="cx-compare"><thead><tr><th></th><th>On this device</th><th>In the file</th></tr></thead><tbody>
+      ${row("Counted by", who(cur), who(inc))}
+      ${row("Physical cash", peso(a.cash), peso(b.cash))}
+      ${row("Cash items", peso(a.presented), peso(b.presented))}
+      ${row("Total (TOD)", peso(a.total), peso(b.total))}
+    </tbody></table>`,
+    [{value:"replace", label:"Use the file's count", primary:true}, {value:"both", label:"Keep both"}, {value:"skip", label:"Keep mine"}]);
+}
+
+async function mergeAO(ex, inc){
+  const lbl = aoDisplay(inc);
+  let i = ex.aos.findIndex(a=>a.id===inc.id);
+  if(i<0 && normTxt(inc.name)) i = ex.aos.findIndex(a=>normTxt(a.label)===normTxt(inc.label) && normTxt(a.name)===normTxt(inc.name));
+  if(i<0) i = ex.aos.findIndex(a=>normTxt(a.label)===normTxt(inc.label) && !aoHasData(a) && (!normTxt(a.name) || !normTxt(inc.name)));
+  if(i<0){ ex.aos.push(inc); return {lbl, what:"Added"}; }
+  const cur = ex.aos[i];
+  if(!aoHasData(inc)){
+    // a setup/roster entry: never wipe a count, only fill in details that are still blank
+    let filled = false;
+    AO_DETAIL_FIELDS.forEach(k=>{ if(!String(cur[k]||"").trim() && String(inc[k]||"").trim()){ cur[k] = inc[k]; filled = true; } });
+    return {lbl, what: filled ? "Details filled in" : "Already here"};
+  }
+  if(!aoHasData(cur)){
+    AO_DETAIL_FIELDS.forEach(k=>{ if(!String(inc[k]||"").trim() && String(cur[k]||"").trim()) inc[k] = cur[k]; });
+    ex.aos[i] = inc; return {lbl, what:"Added"};
+  }
+  if(aoFingerprint(cur)===aoFingerprint(inc)) return {lbl, what:"Already imported"};
+  const choice = await conflictDialog(cur, inc);
+  if(choice==="replace"){ inc.id = cur.id; ex.aos[i] = inc; return {lbl, what:"Replaced with the file's count"}; }
+  if(choice==="both"){ inc.id = uid(); inc.label = inc.label+" (imported)"; ex.aos.push(inc); return {lbl, what:"Added as a second copy"}; }
+  return {lbl, what:"Kept the count on this device"};
+}
+
+async function importFiles(files){
+  const pkgs = [], bad = [];
+  for(const f of files){
+    try{
+      if(f.size > 5*1024*1024) throw 0;
+      const p = JSON.parse(await f.text());
+      if(!p || p.format!==SHARE_FORMAT || !Array.isArray(p.aos) || !p.exam || typeof p.exam!=="object") throw 0;
+      if(num(p.version) > SHARE_VERSION){ bad.push(f.name+" (made by a newer version: update this app first)"); continue; }
+      pkgs.push(p);
+    }catch(e){ bad.push(f.name); }
+  }
+  if(bad.length) toast("Not a cash count file: "+bad.join(", "), "err");
+  if(!pkgs.length) return;
+  pkgs.sort((a,b)=>String(a.sentAt||"").localeCompare(String(b.sentAt||"")));   // oldest first, so newer counts are offered last
+
+  const log = [];
+  for(const p of pkgs){
+    if(!await resolveTarget(p.exam)){ renderViewport(); break; }
+    const ex = State.exam;
+    ["agency","station","auditorDesignation"].forEach(k=>{ if(!String(ex[k]||"").trim() && p.exam[k]) ex[k] = String(p.exam[k]); });
+    if(!ex.shareKey && p.exam.shareKey) ex.shareKey = String(p.exam.shareKey);
+    for(const raw of p.aos){
+      if(!raw || typeof raw!=="object") continue;
+      log.push(Object.assign({from: p.sentBy||""}, await mergeAO(ex, cleanAO(raw))));
+    }
+  }
+  if(!log.length) return;
+  if(!State.exam.aos.length) State.exam.aos.push(newAO("Cashier"));
+  State.examAo = 0;
+  Store.parkDraft();
+  const UNCHANGED = ["Already here","Already imported","Kept the count on this device"];
+  if(!State.exam.id || log.some(r=>UNCHANGED.indexOf(r.what)<0)) markDirty();
+  renderViewport();
+  openModal(`
+    <div class="modal" style="max-width:480px;">
+      <div class="modal-head"><h3>Import complete</h3><button class="modal-close" data-modal-close>&times;</button></div>
+      <div class="modal-body">
+        <p class="helptext" style="margin:0 0 8px;">${esc(State.exam.agency||"Untitled")} · ${fmtDate(State.exam.examDate)}</p>
+        <ul class="cx-import-log">${log.map(r=>`<li><span>${esc(r.lbl)}${r.from?`<br><span class="helptext">from ${esc(r.from)}</span>`:""}</span><span class="what">${esc(r.what)}</span></li>`).join("")}</ul>
+        <p class="helptext" style="margin:12px 0 0;">Check the figures, then save the examination to keep them.</p>
+      </div>
+      <div class="modal-foot"><button class="btn" data-modal-close>Close</button><button class="btn btn-primary" id="importSave">Save examination</button></div>
+    </div>`, { onMount(wrap){
+    wrap.querySelector("#importSave").addEventListener("click", ()=>{ closeModal(); saveExam(); });
+  }});
 }
 
 
